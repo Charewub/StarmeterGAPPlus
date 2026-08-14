@@ -45,6 +45,20 @@
   .screen.center{display:none;}
   .screen.center.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
 
+  /* ===== Loading Spinner ===== */
+  .loader-container { text-align: center; }
+  .spinner { 
+    width: 44px; height: 44px; 
+    border: 4px solid var(--blue-tint-2); 
+    border-top: 4px solid var(--blue); 
+    border-radius: 50%; 
+    animation: spin 1s linear infinite; 
+    margin: 0 auto 20px; 
+  }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .loading-text { font-size: 15px; font-weight: 700; color: #3a3f4c; margin-top:16px; }
+  .loading-subtext { font-size: 12px; color: #9aa0ae; margin-top:6px; }
+
   /* ===== logo ===== */
   .logo-slot{display:inline-flex;align-items:center;gap:9px;}
   .logo-slot .wordmark{font-weight:800;color:var(--navy);letter-spacing:-.3px;}
@@ -186,6 +200,7 @@
   .field-label{font-size:14px;font-weight:700;color:#1c2130;margin-top:4px;}
   .field-hint{font-size:11.5px;color:#9aa0ae;margin-bottom:8px;}
   .lorem-box{width:100%;border:1px solid var(--gray-line);border-radius:10px;background:#fff;padding:12px 14px;font-size:13px;color:#4a4f5c;resize:none;line-height:1.6;}
+  .char-hint{text-align:right;font-size:10.5px;color:#9aa0ae;margin-top:4px;}
   .just-grid{display:flex;gap:30px;}
   .just-fields{flex:1;min-width:0;}
   .just-point{width:230px;flex-shrink:0;}
@@ -259,6 +274,7 @@
   .modal-card h3{font-size:19px;margin:2px 0 14px;color:#1c2130;}
   .modal-card .desc{font-size:12.5px;color:#4a4f5c;line-height:1.7;}
   .modal-card .section-label{font-size:14px;font-weight:700;margin:18px 0 10px;color:#1c2130;}
+  .mandatory-note{font-size:11.5px;color:#5a5f6c;background:rgba(255,255,255,.6);border-radius:10px;padding:9px 12px;margin-top:8px;}
   .activity-item{border-bottom:1px dashed rgba(0,0,0,.08);}
   .activity-item:last-child{border-bottom:none;}
   .activity-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;cursor:pointer;}
@@ -346,8 +362,18 @@
 <body>
 <div id="app">
 
+  <!-- LOADING SCREEN -->
+  <section id="scr-loading" class="screen center active">
+    <div class="loader-container">
+      <div class="logo-slot" data-size="big" style="margin-bottom: 40px;"></div>
+      <div class="spinner"></div>
+      <div class="loading-text">กำลังเข้าสู่ระบบและเตรียมข้อมูล...</div>
+      <div class="loading-subtext">Preparing your dashboard</div>
+    </div>
+  </section>
+
   <!-- LOGIN -->
-  <section id="scr-login" class="screen center active">
+  <section id="scr-login" class="screen center">
     <div class="logo-slot" data-size="big"></div>
     <div class="subtitle" style="margin-top:-2px;">Sign in to continue</div>
     
@@ -377,7 +403,7 @@
           <div class="header-name" id="header-name"></div>
           <div class="header-role" id="header-role"></div>
         </div>
-        <img id="header-avatar" class="header-avatar" src="" alt="">
+        <img id="header-avatar" class="header-avatar" src="" alt="" onerror="this.onerror=null; this.src=avatarUrl();">
         <button class="logout-link" onclick="handleLogout()">ออกจากระบบ</button>
       </div>
     </header>
@@ -415,7 +441,7 @@
         <div class="mini-header">
           <div class="mini-identity">
             <div class="mini-avatar-wrap">
-              <img id="me-photo" class="mini-avatar" src="" alt="">
+              <img id="me-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=avatarUrl();">
               <label class="mini-photo-edit-btn" title="Edit photo · แก้ไขรูปภาพ">
                 <i class="fa-solid fa-camera"></i>
                 <input type="file" accept="image/png, image/jpeg, image/jpg" style="display:none" onchange="handleProfileUpload(event)">
@@ -467,7 +493,7 @@
       <div id="panel-justification" class="tab-panel subscreen" style="padding-left:0;padding-right:0;">
         <div class="mini-header" style="margin-top:0;">
           <div class="mini-identity">
-            <img id="just-photo" class="mini-avatar" src="" alt="">
+            <img id="just-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=avatarUrl();">
             <div>
               <div class="mini-name" id="just-name"></div>
               <div class="mini-role" id="just-role">Officer</div>
@@ -512,7 +538,7 @@
       <div id="panel-edit" class="tab-panel subscreen" style="padding-left:0;padding-right:0;">
         <div class="mini-header" style="margin-top:0;">
           <div class="mini-identity">
-            <img id="edit-photo" class="mini-avatar" src="" alt="">
+            <img id="edit-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=avatarUrl();">
             <div>
               <div class="mini-name" id="edit-name"></div>
               <div class="mini-role" id="edit-role">Officer</div>
@@ -597,13 +623,11 @@ function renderInfo(){
 function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&gt;'); }
 
-function avatarUrl(seed){ 
-  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f2f3f6'/%3E%3Cpath d='M50 55c11.05 0 20-8.95 20-20s-8.95-20-20-20-20 8.95-20 20 8.95 20 20 20zm0 10c-13.35 0-40 6.7-40 20v15h80v-15c0-13.3-26.65-20-40-20z' fill='%23b7bbc6'/%3E%3C/svg%3E`; 
+// Base64 encoded generic user silhouette (100% reliable across browsers)
+window.avatarUrl = function(){ 
+  return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNFM0U2RUMiLz48cGF0aCBkPSJNNTAgNDlDNTYuNjI3NCA0OSA2MiA0My42Mjc0IDYyIDM3QzYyIDMwLjM3MjYgNTYuNjI3NCAyNSA1MCAyNUM0My4zNzI2IDI1ICgzOCAzMC4zNzI2IDM4IDM3QzM4IDQzLjYyNzQgNDMuMzcyNiA0OSA1MCA0OVoiIGZpbGw9IiM4QjkwQTAiLz48cGF0aCBkPSJNNTAgNTZDMzYuNzQ1MiA1NiAyNiA2Ni43NDUyIDI2IDgwVjgzSDc0VjgwQzc0IDY2Ljc0NTIgNjMuMjU0OCA1NiA1MCA1NloiIGZpbGw9IiM4QjkwQTAiLz48L3N2Zz4="; 
 }
 
-/* =========================================================================
-   Image Compression Function (Client-side)
-   ========================================================================= */
 function compressImage(file, maxWidth, maxHeight, quality) {
   return new Promise((resolve, reject) => {
     if (!file.type.match(/image.*/)) return resolve(file); 
@@ -669,6 +693,8 @@ onAuthStateChanged(auth, async (user) => {
             if (querySnapshot.empty) {
                 alert("ไม่พบข้อมูลพนักงาน (Email: " + user.email + ") ในระบบ กรุณาติดต่อ HR");
                 await signOut(auth);
+                document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+                document.getElementById('scr-login').classList.add('active');
                 return;
             }
 
@@ -812,7 +838,7 @@ onAuthStateChanged(auth, async (user) => {
 
             document.getElementById('header-name').textContent = session.name;
             document.getElementById('header-role').textContent = isManager ? 'Line Manager' : 'AllStar';
-            document.getElementById('header-avatar').src = profileImages.me || avatarUrl(session.seed);
+            document.getElementById('header-avatar').src = profileImages.me || avatarUrl();
 
             buildTabBars();
             document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -823,6 +849,8 @@ onAuthStateChanged(auth, async (user) => {
         } catch (error) {
             console.error(error);
             alert("เกิดข้อผิดพลาดในการดึงข้อมูล: " + error.message);
+            document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+            document.getElementById('scr-login').classList.add('active');
         }
     } else {
         session.loggedIn = false;
@@ -831,10 +859,17 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-// เปลี่ยนจาก signInWithPopup เป็น signInWithRedirect 
 window.handleGoogleSignIn = async () => {
-    try { await signInWithRedirect(auth, provider); } 
-    catch (err) { console.error(err); alert("Login failed: " + err.message); }
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('scr-loading').classList.add('active');
+    try { 
+        await signInWithRedirect(auth, provider); 
+    } catch (err) { 
+        console.error(err); 
+        alert("Login failed: " + err.message); 
+        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+        document.getElementById('scr-login').classList.add('active');
+    }
 };
 
 window.handleLogout = async () => {
@@ -925,7 +960,7 @@ window.validateLearningSelection = function(){
 };
 
 window.renderMyPerformance = function(){
-  document.getElementById('me-photo').src = profileImages.me || avatarUrl(session.seed);
+  document.getElementById('me-photo').src = profileImages.me || avatarUrl();
   document.getElementById('me-name').textContent = session.name;
   document.getElementById('me-role').textContent = session.position;
   document.getElementById('me-balance').textContent = session.balance;
@@ -1006,7 +1041,7 @@ window.renderPerfGrid = function(page){
     return `
     <div class="member-card">
       <div class="member-top">
-        <img class="member-photo" src="${m.photoURL || avatarUrl(m.seed)}" alt="">
+        <img class="member-photo" src="${m.photoURL || avatarUrl()}" onerror="this.onerror=null; this.src=window.avatarUrl();" alt="">
         <div class="member-name">${m.name}</div>
       </div>
       <div class="member-stats">
@@ -1025,7 +1060,7 @@ let currentMemberIdx = 0;
 window.openJustification = function(i){
   currentMemberIdx = i;
   const m = TEAM[i];
-  document.getElementById('just-photo').src = m.photoURL || avatarUrl(m.seed);
+  document.getElementById('just-photo').src = m.photoURL || avatarUrl();
   document.getElementById('just-name').textContent = m.name;
   document.getElementById('just-role').textContent = m.position;
   document.getElementById('just-balance').textContent = m.balance;
@@ -1100,7 +1135,7 @@ window.openEdit = async function(i){
   currentMemberIdx = i;
   const m = TEAM[i];
   
-  document.getElementById('edit-photo').src = m.photoURL || avatarUrl(m.seed);
+  document.getElementById('edit-photo').src = m.photoURL || avatarUrl();
   document.getElementById('edit-name').textContent = m.name;
   document.getElementById('edit-role').textContent = m.position;
   document.getElementById('edit-balance').textContent = m.balance;
@@ -1219,7 +1254,7 @@ window.renderLearnRows = function(){
     }).join('');
     return `<div class="lteam-block">
       <div class="lteam-row">
-        <div class="lteam-head"><img src="${m.photoURL || avatarUrl(m.seed)}" alt=""><div class="lteam-name">${m.name}</div></div>
+        <div class="lteam-head"><img src="${m.photoURL || avatarUrl()}" onerror="this.onerror=null; this.src=window.avatarUrl();" alt=""><div class="lteam-name">${m.name}</div></div>
         <div class="comp-chips">${chips}</div>
       </div>
     </div>`;
@@ -1228,7 +1263,6 @@ window.renderLearnRows = function(){
 
 let modalCtx = null;
 let expandedActivity = null; 
-const fileState = {};
 
 window.openCompetency = function(key, interactive, scope){
   modalCtx = {key, interactive, scope};
@@ -1258,7 +1292,7 @@ window.handleUpload = async function(evt, i){
   if (i === 'self') {
       instituteName = document.getElementById('custom-institute-input').value.trim();
       if (!instituteName) {
-          alert('กรุณาระบุชื่อสถาบัน');
+          alert('กรุณาระบุชื่อสถาบันให้เรียบร้อยก่อนแนบไฟล์');
           return;
       }
   }
@@ -1289,7 +1323,7 @@ window.handleUpload = async function(evt, i){
       session.idpDetails[key].status = 'Completed';
       session.idpDetails[key].certs[i] = { url: downloadURL, name: f.name, institute: instituteName };
 
-      window.showToast("อัปโหลดสำเร็จ! สถานะอัปเดตเป็น Completed");
+      window.showToast("อัปโหลดสำเร็จ! อัปเดตสถานะเป็น Completed แล้ว");
       window.renderModalBody();
 
   } catch (error) {
