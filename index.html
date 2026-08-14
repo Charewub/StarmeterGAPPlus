@@ -45,7 +45,7 @@
   .screen.center{display:none;}
   .screen.center.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
 
-  /* ===== logo (configurable) ===== */
+  /* ===== logo ===== */
   .logo-slot{display:inline-flex;align-items:center;gap:9px;}
   .logo-slot .wordmark{font-weight:800;color:var(--navy);letter-spacing:-.3px;}
   .logo-slot[data-size="small"] .wordmark{font-size:19px;}
@@ -64,15 +64,26 @@
   .btn-navy:hover{background:var(--navy-dark);}
   .login-cta{margin-top:30px;}
 
-  .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:min(320px,100%);background:#fff;border:1px solid #dadce0;border-radius:24px;padding:12px 20px;font-weight:600;font-size:15px;color:#3c4043;margin-top:34px;transition:box-shadow .15s ease,transform .15s ease;}
+  .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:min(320px,100%);background:#fff;border:1px solid #dadce0;border-radius:24px;padding:12px 20px;font-weight:600;font-size:15px;color:#3c4043;margin-top:26px;transition:box-shadow .15s ease,transform .15s ease;}
   .google-btn:hover{box-shadow:0 4px 14px rgba(60,64,67,.18);transform:translateY(-1px);}
-  .login-hint{margin-top:10px;font-size:12px;color:#9aa0ae;}
+  
+  /* คำแนะนำหน้า Login */
+  .login-warning {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    color: #d48806;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 12.5px;
+    margin-top: 24px;
+    width: min(340px, 100%);
+    text-align: left;
+    line-height: 1.6;
+  }
+  .login-warning ul { margin: 8px 0 0; padding-left: 22px; color: #5a5f6c; }
+  .login-warning li { margin-bottom: 6px; }
 
-  .demo-toggle{margin-top:30px;display:flex;gap:8px;align-items:center;font-size:12px;color:#9aa0ae; display:none;}
-  .demo-toggle button{border:1px solid var(--gray-line);background:#fff;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:600;color:#6a6f7c;}
-  .demo-toggle button.on{background:var(--navy);color:#fff;border-color:var(--navy);}
-
-  /* ===== app shell / tab navigation ===== */
+  /* ===== app shell ===== */
   .app-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 40px;border-bottom:1px solid var(--gray-line);position:sticky;top:0;background:#fff;z-index:40;}
   .tabbar-desktop{position:relative;display:flex;gap:4px;}
   .tabbar-desktop .tab-btn{background:none;border:none;padding:10px 18px;font-weight:600;font-size:13.5px;color:#6a6f7c;border-radius:10px;position:relative;z-index:1;transition:color .2s ease,background .2s ease;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.3;}
@@ -88,19 +99,19 @@
   .logout-link{background:none;border:none;font-size:11.5px;color:var(--red);font-weight:700;}
 
   .tabbar-mobile{display:none;}
-
   main#tab-content{padding:32px 56px 90px;position:relative;}
   .tab-panel{display:none;}
   .tab-panel.active{display:block;opacity:1;transform:translateY(0);transition:opacity .22s ease, transform .22s ease;}
   .tab-panel.active.entering{opacity:0;transform:translateY(8px);}
-
   .subscreen{padding:32px 56px 110px;position:relative;}
 
   /* toast */
-  .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-14px);background:var(--red-dark);color:#fff;font-size:13.5px;font-weight:600;padding:13px 22px;border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.25);z-index:500;opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;max-width:90vw;text-align:center;}
+  .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-14px);background:var(--navy-dark);color:#fff;font-size:13.5px;font-weight:600;padding:13px 22px;border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.25);z-index:9999;opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;max-width:90vw;text-align:center;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .toast.error{background:var(--red-dark);}
+  .toast.success{background:var(--green-dark);}
 
-  /* back / nav fab (used only inside sub-screens) */
+  /* fab */
   .fab{position:fixed;bottom:30px;right:calc(50% - 624px);background:var(--blue);color:#fff;border:none;padding:11px 26px;border-radius:24px;font-weight:700;font-size:14px;box-shadow:0 6px 16px rgba(0,145,255,.35);transition:transform .15s ease;}
   .fab:hover{transform:translateY(-2px);}
   @media (max-width:1360px){.fab{right:30px;}}
@@ -110,7 +121,7 @@
   .page-title-en{font-size:15px;color:#9aa0ae;text-align:right;}
   .page-title-th{font-size:13px;color:#b7bbc6;text-align:right;}
 
-  /* team members grid */
+  /* grids */
   .team-grid-wrap{background:#f4f6f9;border-radius:26px;padding:22px;margin-top:26px;}
   .members-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
   .member-card{background:linear-gradient(180deg,#eaf6fc 0%,#ffffff 100%);border:1px solid var(--blue-tint-2);border-radius:18px;padding:18px;}
@@ -143,7 +154,7 @@
   .pager button:last-child{border-radius:0 20px 20px 0;}
   .pager button.active{background:#fff;border-color:var(--blue);color:var(--blue);position:relative;z-index:1;}
 
-  /* slim header used on My Performance / Justification / Edit */
+  /* slim header */
   .mini-header{display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:14px;}
   .mini-identity{display:flex;align-items:center;gap:14px;}
   .mini-avatar-wrap{position:relative;flex-shrink:0;}
@@ -156,12 +167,11 @@
   .mini-balance-label .sub{display:block;font-size:11px;color:#9aa0ae;}
   .balance-pill-lg{background:#fff;border:1px solid #d8dbe2;border-radius:30px;padding:11px 30px;font-size:26px;font-weight:800;color:#1c2130;min-width:90px;text-align:center;}
 
-  /* gradient "fade to dark" panel */
+  /* fade panel */
   .fade-panel{background:linear-gradient(180deg,#f8f9fb 0%,#eef1f5 100%);border-radius:22px;padding:22px;margin-top:18px;position:relative;}
   .fade-panel.scroll{max-height:600px;overflow-y:auto;}
   .fade-panel .entry-card{background:#fff;border:1px solid var(--gray-line);border-radius:16px;padding:18px 22px;margin-bottom:14px;}
   .fade-panel .entry-card:first-child{border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,145,255,.15);}
-  .fade-panel .entry-card:last-child{margin-bottom:0;}
   .fade-colname{font-size:11px;color:#9aa0ae;margin-bottom:4px;}
   .fade-topic{font-weight:700;font-size:16px;}
   .fade-topic.g{color:var(--green-dark);}
@@ -176,7 +186,6 @@
   .field-label{font-size:14px;font-weight:700;color:#1c2130;margin-top:4px;}
   .field-hint{font-size:11.5px;color:#9aa0ae;margin-bottom:8px;}
   .lorem-box{width:100%;border:1px solid var(--gray-line);border-radius:10px;background:#fff;padding:12px 14px;font-size:13px;color:#4a4f5c;resize:none;line-height:1.6;}
-  .char-hint{text-align:right;font-size:10.5px;color:#9aa0ae;margin-top:4px;}
   .just-grid{display:flex;gap:30px;}
   .just-fields{flex:1;min-width:0;}
   .just-point{width:230px;flex-shrink:0;}
@@ -192,7 +201,6 @@
   .btn-pill.green{background:var(--green);}
   .btn-pill.blue{background:var(--blue);}
 
-  /* edit table */
   .edit-table-head{display:grid;grid-template-columns:1fr 2fr 110px;gap:20px;font-weight:700;font-size:14px;color:#1c2130;padding-bottom:10px;border-bottom:1px solid var(--gray-line);}
   .edit-table-row{display:grid;grid-template-columns:1fr 2fr 110px;gap:20px;padding:18px 0;border-bottom:1px solid var(--gray-line);align-items:start;}
   .edit-table-row:last-child{border-bottom:none;}
@@ -237,41 +245,23 @@
   .goal-card .desc{font-size:10.5px;color:#6b7280;margin-top:8px;line-height:1.5;}
   .goal-card .arrow{position:absolute;bottom:14px;right:16px;color:var(--blue);font-size:15px;}
 
-  /* modal - Updated for Mobile scroll and centering */
-  .modal-overlay{position:fixed;inset:0;background:rgba(20,25,40,.45);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;} /* z-index up to 500 to cover mobile menu */
+  /* modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(20,25,40,.45);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;} 
   .modal-overlay.active{display:flex;}
   .modal-card{background:var(--green-tint);border-radius:26px;padding:34px 38px;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;overflow-x:hidden; position:relative;}
   
-  /* Close Button */
-  .modal-close-btn {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: rgba(0,0,0,0.06);
-    border: none;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: #5a5f6c;
-    cursor: pointer;
-    transition: background 0.2s;
-    z-index: 10;
-  }
-  .modal-close-btn:hover { background: rgba(0,0,0,0.12); color: #1c2130; }
+  .modal-close-btn { position:absolute; top:16px; right:16px; background:rgba(0,0,0,0.06); border:none; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:#5a5f6c; cursor:pointer; transition:background 0.2s; z-index:10; }
+  .modal-close-btn:hover { background:rgba(0,0,0,0.12); color:#1c2130; }
 
   .modal-card.blue{background:var(--blue-tint);}
-  .modal-card .tag{font-size:13px;color:#5a5f6c; padding-right: 30px;} /* Prevent tag from hiding under close button */
-  .modal-card h2{font-size:19px;margin:6px 0 0;color:#1c2130; padding-right: 20px;}
+  .modal-card .tag{font-size:13px;color:#5a5f6c; padding-right:30px;} 
+  .modal-card h2{font-size:19px;margin:6px 0 0;color:#1c2130; padding-right:20px;}
   .modal-card h3{font-size:19px;margin:2px 0 14px;color:#1c2130;}
   .modal-card .desc{font-size:12.5px;color:#4a4f5c;line-height:1.7;}
   .modal-card .section-label{font-size:14px;font-weight:700;margin:18px 0 10px;color:#1c2130;}
   .activity-item{border-bottom:1px dashed rgba(0,0,0,.08);}
   .activity-item:last-child{border-bottom:none;}
-  .activity-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:10px 0;cursor:pointer;}
+  .activity-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;cursor:pointer;}
   .activity-row .title{color:#1c2130;font-size:13px;line-height:1.4;}
   .activity-provider{font-size:12px;color:#4a4f5c;white-space:nowrap;display:flex;align-items:center;gap:6px;}
   .activity-detail{padding:2px 0 16px 30px;}
@@ -282,14 +272,22 @@
   .pill-status{border-radius:18px;padding:9px 24px;font-size:13px;font-weight:700;border:none;}
   .pill-status.not{background:#d7dade;color:#8b90a0;}
   .pill-status.progress{background:var(--blue);color:#fff;}
+  .pill-status.completed{background:var(--green-dark);color:#fff;} 
   .btn-select{background:var(--green);color:#fff;border:none;border-radius:18px;padding:10px 26px;font-weight:700;font-size:13px;}
   .btn-select.selected{background:#c0392b;}
   .btn-back-dark{background:#161b26;color:#fff;border:none;border-radius:18px;padding:10px 26px;font-weight:700;font-size:13px;}
+  .cert-upload{background:#161b26;color:#fff;border:none;border-radius:12px;padding:10px 16px;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:8px;margin-top:6px; cursor:pointer;}
+  .cert-hint{font-size:10.5px;color:var(--red-dark);margin-top:6px;font-weight:600;}
 
-  /* contact tab */
+  .info-layout{display:flex;gap:56px;align-items:flex-start;margin-top:14px;}
+  .info-image-col{flex:0 0 auto;width:min(440px, 42%);}
+  .info-image-box{width:100%;aspect-ratio:1/1;border-radius:var(--radius-lg);background:#e3e6ec;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
+  .info-image-box img{width:100%;height:100%;object-fit:cover;display:block;}
+  .info-image-box .info-image-placeholder{font-size:12.5px;color:#9aa0ae;text-align:center;padding:0 20px;line-height:1.6;}
+  .info-text-col{flex:1 1 420px;min-width:0;}
   .contact-copy{max-width:760px;font-size:13px;line-height:1.75;color:#1c2130;margin-top:8px;}
   .contact-copy p{margin:0 0 16px;}
-  .contact-footer{display:flex;justify-content:space-between;align-items:center;margin-top:56px;flex-wrap:wrap;gap:24px;}
+  .info-contact-block{margin-top:40px;}
   .contact-title{font-size:26px;font-weight:800;letter-spacing:9px;color:#1c2130;}
   .contact-email{display:block;margin-top:10px;font-size:14px;color:var(--blue);text-decoration:underline;}
 
@@ -305,14 +303,16 @@
     .tabbar-mobile .tab-btn .ic{font-size:19px;transition:transform .2s ease;}
     .tabbar-mobile .tab-btn.active{color:var(--blue);}
     .tabbar-mobile .tab-btn.active .ic{transform:translateY(-2px) scale(1.1);}
-    .fab{left:14px;right:14px;bottom:14px;width:auto;border-radius:14px;padding:14px 0;}
+    .fab{left:14px;right:14px;bottom:14px;width:auto;border-radius:14px;padding:14px 0;font-size:15px; padding-bottom:max(14px, env(safe-area-inset-bottom));}
     .field-input{height:48px;font-size:16px;} 
     .btn-navy{width:100%;padding:15px 0;font-size:16px;}
     .google-btn{padding:14px 20px;font-size:15px;}
-    .team-grid-wrap{padding:14px;}
+    .team-grid-wrap{padding:14px;border-radius:20px;}
     .members-grid{grid-template-columns:1fr;gap:16px;}
-    .goal-grid{grid-template-columns:1fr;}
+    .goal-grid{grid-template-columns:1fr;gap:14px;}
     .round-btn{width:44px;height:44px;font-size:19px;}
+    .pager button{padding:11px 22px;font-size:13.5px;}
+    .mini-header{margin-top:4px;}
     .mini-balance{width:100%;justify-content:space-between;}
     .fade-panel{padding:16px;margin-top:14px;}
     .just-grid{flex-direction:column;gap:18px;}
@@ -320,13 +320,26 @@
     .just-actions{flex-wrap:wrap;}
     .just-actions .btn-pill{flex:1;text-align:center;}
     .edit-table-head{display:none;}
-    .edit-table-row{grid-template-columns:1fr;}
-    .lteam-row{flex-direction:column;align-items:stretch;}
-    .comp-chips{display:grid;grid-template-columns:1fr 1fr;}
-    
-    /* Modal mobile fixes */
-    .modal-overlay{padding:16px;align-items:center;} /* Changed from flex-end to center */
-    .modal-card{padding:34px 20px 24px;border-radius:22px;max-height:85vh;width:100%;max-width:100%;} /* Restored border radius, constrained height for scrolling */
+    .edit-table-row{grid-template-columns:1fr;gap:6px;padding:14px 0;}
+    .edit-table-point{width:90px;}
+    .lteam-row{flex-direction:column;align-items:stretch;gap:12px;padding:16px;border-radius:18px;}
+    .comp-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .modal-overlay{padding:16px;align-items:center;} 
+    .modal-card{padding:34px 20px 24px;border-radius:22px;max-height:85vh;width:100%;max-width:100%;} 
+    .activity-row{flex-wrap:wrap;gap:6px 10px;}
+    .progress-row{flex-direction:column-reverse;align-items:stretch;gap:12px;}
+    .progress-row > div:first-child{width:100%;}
+    .pill-status{width:100%;text-align:center;}
+    .btn-select,.btn-back-dark{width:100%;text-align:center;padding:13px 0;}
+    .cert-upload{width:100%;justify-content:center;padding:12px 0;}
+    .info-layout{flex-direction:column;gap:22px;margin-top:6px;}
+    .info-image-col{width:min(320px, 72vw);margin:0 auto;}
+    .info-text-col{width:100%;}
+  }
+
+  @media (max-width:900px) and (min-width:641px){
+    .info-layout{gap:34px;}
+    .info-image-col{width:min(300px, 38%);}
   }
 </style>
 </head>
@@ -337,11 +350,19 @@
   <section id="scr-login" class="screen center active">
     <div class="logo-slot" data-size="big"></div>
     <div class="subtitle" style="margin-top:-2px;">Sign in to continue</div>
+    
+    <div class="login-warning">
+      <div><i class="fa-solid fa-triangle-exclamation"></i> <b>คำแนะนำการใช้งาน:</b></div>
+      <ul>
+        <li>กรุณาเข้าสู่ระบบด้วยอีเมล <b>@airasia.com</b> เท่านั้น</li>
+        <li style="margin-top: 4px;">หากเปิดลิงก์ผ่านแอป LINE แนะนำให้กดปุ่ม <b>⋮</b> (มุมขวาบน) แล้วเลือก <b>เปิดในเบราว์เซอร์อื่น</b> (Open in Browser) เพื่อป้องกันปัญหาการล็อกอิน</li>
+      </ul>
+    </div>
+
     <button class="google-btn" onclick="handleGoogleSignIn()">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.03l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.97l2.99 2.33C4.66 5.17 6.65 3.58 9 3.58z"/></svg>
       Sign in with Google
     </button>
-    <div class="login-hint">ระบบจะพาไปยังหน้าของคุณโดยอัตโนมัติตามสิทธิ์การใช้งาน · You'll land straight in your view based on your account role.</div>
   </section>
 
   <!-- POST-LOGIN APP SHELL -->
@@ -362,6 +383,32 @@
     </header>
 
     <main id="tab-content">
+
+      <!-- INFO -->
+      <div id="panel-info" class="tab-panel">
+        <div class="info-layout">
+          <div class="info-image-col">
+            <div class="info-image-box">
+              <img id="info-image" src="" alt="Instructional guide" style="display:none;">
+              <div class="info-image-placeholder" id="info-image-placeholder">Instructional image<br>1:1 · set INFO_IMAGE_URL</div>
+            </div>
+          </div>
+          <div class="info-text-col">
+            <div class="contact-copy">
+              <p>The Training Management Center (TMC) is here to ensure you have a seamless experience managing your Individual Development Plan (IDP) and 2026 performance goals. We encourage you to reach out to our team if you encounter any of the following situations:</p>
+              <p><strong>Technical Assistance &amp; Access</strong><br>Contact us if you are unable to log into the StarMeter platform, experience system timeouts or errors while saving your goals, or if your dashboard is not loading correctly.</p>
+              <p><strong>Performance &amp; Goal Setting Inquiries</strong><br>Reach out if you need clarification on how to navigate the system to input your 2026 Key Performance Indicators (KPIs), have questions regarding the IDP submission and approval workflow, or need guidance on finding specific learning courses to attach to your development plan.</p>
+              <p><strong>Data &amp; Profile Corrections</strong><br>Let us know if your user profile contains incorrect information, such as an outdated job title, incorrect department, or if your assigned reporting manager is incorrect. Accurate reporting lines are essential to ensure your IDP routes to the right approver. You should also contact us if your past training records or certifications are missing from your profile.</p>
+              <p><strong>How to Reach Us</strong><br>For any of the scenarios above, or for general inquiries regarding your learning and performance journey on the platform, please email the Training Management Center (TMC) at taa_learning@airasia.com.</p>
+              <p><strong>To help us resolve your inquiry quickly, please ensure you include your full name, Employee ID, and a brief description of the issue or question in your email.</strong></p>
+            </div>
+            <div class="info-contact-block">
+              <div class="contact-title">CONTACT</div>
+              <a class="contact-email" href="mailto:taa_learning@airasia.com">taa_learning@airasia.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- MY PERFORMANCE -->
       <div id="panel-my-performance" class="tab-panel">
@@ -416,25 +463,7 @@
         <div class="pager"><button class="active">Page 1</button><button>Page 2</button></div>
       </div>
 
-      <!-- CONTACT -->
-      <div id="panel-contact" class="tab-panel">
-        <div class="contact-copy">
-          <p>The Training Management Center (TMC) is here to ensure you have a seamless experience managing your Individual Development Plan (IDP) and 2026 performance goals. We encourage you to reach out to our team if you encounter any of the following situations:</p>
-          <p><strong>Technical Assistance &amp; Access</strong><br>Contact us if you are unable to log into the StarMeter platform, experience system timeouts or errors while saving your goals, or if your dashboard is not loading correctly.</p>
-          <p><strong>Performance &amp; Goal Setting Inquiries</strong><br>Reach out if you need clarification on how to navigate the system to input your 2026 Key Performance Indicators (KPIs), have questions regarding the IDP submission and approval workflow, or need guidance on finding specific learning courses to attach to your development plan.</p>
-          <p><strong>Data &amp; Profile Corrections</strong><br>Let us know if your user profile contains incorrect information, such as an outdated job title, incorrect department, or if your assigned reporting manager is incorrect.</p>
-          <p><strong>How to Reach Us</strong><br>For any of the scenarios above, please email the Training Management Center (TMC) at taa_learning@airasia.com.</p>
-        </div>
-        <div class="contact-footer">
-          <div>
-            <div class="contact-title">CONTACT</div>
-            <a class="contact-email" href="mailto:taa_learning@airasia.com">taa_learning@airasia.com</a>
-          </div>
-          <div class="contact-logo logo-slot" data-size="mark"></div>
-        </div>
-      </div>
-
-      <!-- JUSTIFICATION (add point) -->
+      <!-- JUSTIFICATION -->
       <div id="panel-justification" class="tab-panel subscreen" style="padding-left:0;padding-right:0;">
         <div class="mini-header" style="margin-top:0;">
           <div class="mini-identity">
@@ -479,7 +508,7 @@
         <button class="fab" onclick="showContent('team-performance')">กลับ</button>
       </div>
 
-      <!-- EDIT (manager) -->
+      <!-- EDIT -->
       <div id="panel-edit" class="tab-panel subscreen" style="padding-left:0;padding-right:0;">
         <div class="mini-header" style="margin-top:0;">
           <div class="mini-identity">
@@ -504,6 +533,7 @@
     </main>
     <nav class="tabbar-mobile" id="tabbar-mobile"></nav>
   </section>
+
 </div>
 
 <!-- toast / tooltip / modal -->
@@ -515,8 +545,8 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, doc, updateDoc, runTransaction } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc, runTransaction, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-storage.js";
 
 const firebaseConfig = {
@@ -536,6 +566,8 @@ const storage = getStorage(app);
 const provider = new GoogleAuthProvider();
 
 let LOGO_URL = ''; 
+let INFO_IMAGE_URL = ''; 
+
 const LOGO_SVG_SMALL = `<svg width="26" height="17" viewBox="0 0 66 42"><defs><radialGradient id="g1s" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1s)"/><circle cx="48" cy="21" r="18" fill="url(#g1s)"/></svg>`;
 const LOGO_SVG_BIG = `<svg width="60" height="38" viewBox="0 0 66 42"><defs><radialGradient id="g1b" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1b)"/><circle cx="48" cy="21" r="18" fill="url(#g1b)"/></svg>`;
 
@@ -547,36 +579,83 @@ function renderLogos(){
     el.innerHTML = mark + (markOnly ? '' : `<span class="wordmark">StarMeter</span>`);
   });
 }
+
+function renderInfo(){
+  const img = document.getElementById('info-image');
+  const placeholder = document.getElementById('info-image-placeholder');
+  if(INFO_IMAGE_URL){
+    img.src = INFO_IMAGE_URL;
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    img.removeAttribute('src');
+    img.style.display = 'none';
+    placeholder.style.display = 'block';
+  }
+}
+
 function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&gt;'); }
-function avatarUrl(seed){ return `https://api.dicebear.com/10.x/avataaars/svg?seed=${seed}&clothing=blazerAndShirt,blazerAndSweater,collarAndSweater&clothingColor=262e33,3c4f5c,65c9ff,929598,e6e6e6&accessoriesProbability=15&backgroundColor=eaf6fc,d7edf9,ffe3e1,fdeecb&radius=8`; }
 
-let COMPETENCIES = [
-  {key:'c1', tag:'Competency 1', th:'ทักษะการแก้ปัญหาอย่างเป็นระบบและการตัดสินใจ', en:'Problem Solving & Decision Making', desc:'ความสามารถในการทำความเข้าใจปัญหาและหาทางแก้ไขอย่างเป็นขั้นตอน โดยเริ่มจากการค้นหาสาเหตุที่แท้จริง รวบรวมข้อมูล วิเคราะห์ทางเลือก และตัดสินใจเลือกวิธีจัดการที่ดีที่สุด', activities:[['Effective Problem-Solving and Decision-Making','Coursera'],['การแก้ปัญหาอย่างเป็นระบบ (Structured problem solving)','CMU MOOC']], type:'selective'},
-  {key:'c2', tag:'Competency 2', th:'การประยุกต์ใช้เทคโนโลยีและดิจิทัล', en:'Tech & Digital Utilization', desc:'ความสามารถในการเรียนรู้และนำเทคโนโลยี โปรแกรม หรือเครื่องมือดิจิทัลใหม่ๆ มาประยุกต์ใช้ในการทำงานได้อย่างคล่องแคล่ว', activities:[['AI for Everyone','TDGA']], type:'selective'},
-  {key:'c3', tag:'Competency 3', th:'ความยืดหยุ่นและการปรับตัวในการทำงาน', en:'Workplace Adaptability & Flexibility', desc:'ความสามารถในการเปิดรับและปรับตัวให้เข้ากับสไตล์การทำงานของเพื่อนร่วมงาน...', activities:[['Adaptability and Flexibility','AirAsia NEXT']], type:'selective'},
-  {key:'p1', tag:'Plus One', th:'การทำงานและประสานความร่วมมือข้ามสายงาน', en:'Cross-Functional Collaboration', desc:'ความสามารถในการประสานงาน แลกเปลี่ยนข้อมูล และทำงานร่วมกับแผนกอื่นได้อย่างไร้รอยต่อ', activities:[['Cross-Team Collaboration Essentials','AirAsia NEXT']], type:'mandatory'},
-];
+function avatarUrl(seed){ 
+  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f2f3f6'/%3E%3Cpath d='M50 55c11.05 0 20-8.95 20-20s-8.95-20-20-20-20 8.95-20 20 8.95 20 20 20zm0 10c-13.35 0-40 6.7-40 20v15h80v-15c0-13.3-26.65-20-40-20z' fill='%23b7bbc6'/%3E%3C/svg%3E`; 
+}
 
+/* =========================================================================
+   Image Compression Function (Client-side)
+   ========================================================================= */
+function compressImage(file, maxWidth, maxHeight, quality) {
+  return new Promise((resolve, reject) => {
+    if (!file.type.match(/image.*/)) return resolve(file); 
+    const reader = new FileReader();
+    reader.onload = (readerEvent) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        if (width > height) {
+          if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
+        } else {
+          if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob((blob) => {
+          const newFile = new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() });
+          resolve(newFile);
+        }, 'image/jpeg', quality);
+      };
+      img.src = readerEvent.target.result;
+    };
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+  });
+}
+
+let COMPETENCIES = []; 
 let TEAM = []; 
 let MY_ENTRIES = [];
 let CURRENT_MEMBER_ENTRIES = []; 
-let session = { loggedIn:false, role:'', empId:'', name:'', position: '', seed:'me', balance: 100, selections:{}, outcomeNotes:{} };
+
+let session = { loggedIn:false, role:'', empId:'', name:'', position: '', seed:'me', balance: 100, selections:{}, idpDetails:{}, outcomeNotes:{} };
 let profileImages = { me:null };
-let currentTabId = 'my-performance';
+let currentTabId = 'info';
 
 const TABS = {
   manager: [
+    {id:'info',            en:'Info',              th:'ข้อมูล',            ic:'ℹ️'},
     {id:'my-performance', en:'My Performance', th:'ผลงานของฉัน', ic:'★'},
     {id:'my-learning',    en:'My Learning',    th:'การเรียนรู้ของฉัน', ic:'🎓'},
     {id:'team-performance', en:"Team's Performance", th:'ผลงานทีม', ic:'👥'},
     {id:'team-learning',    en:"Team's Learning",    th:'การเรียนรู้ทีม', ic:'📘'},
-    {id:'contact', en:'Contact', th:'ติดต่อ', ic:'✉️'},
   ],
   staff: [
+    {id:'info',            en:'Info',              th:'ข้อมูล',            ic:'ℹ️'},
     {id:'my-performance', en:'My Performance', th:'ผลงานของฉัน', ic:'★'},
     {id:'my-learning',    en:'My Learning',    th:'การเรียนรู้ของฉัน', ic:'🎓'},
-    {id:'contact', en:'Contact', th:'ติดต่อ', ic:'✉️'},
   ]
 };
 
@@ -610,7 +689,7 @@ onAuthStateChanged(auth, async (user) => {
                         balance: tData.pointBalance !== undefined ? tData.pointBalance : 100,
                         seed: tData.empId, 
                         photoURL: tData.photoURL || null,
-                        selections: {}, outcomeNotes: {},
+                        selections: {}, idpDetails: {}, outcomeNotes: {},
                         recentLogs: []
                     };
                     
@@ -620,10 +699,19 @@ onAuthStateChanged(auth, async (user) => {
                         let lData = l.data();
                         member.recentLogs.push({ topic: lData.topic, points: lData.point, desc: lData.desc, timestamp: lData.timestamp });
                     });
-                    
                     member.recentLogs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
                     member.recentLogs = member.recentLogs.slice(0, 3);
                     
+                    const teamIdpQ = query(collection(db, "idp_records"), where("empId", "==", tData.empId));
+                    const teamIdpSnap = await getDocs(teamIdpQ);
+                    teamIdpSnap.forEach(d => {
+                        member.selections[d.data().compKey] = true;
+                        member.idpDetails[d.data().compKey] = {
+                            status: d.data().status || 'In Progress',
+                            certs: d.data().certificates || {}
+                        };
+                    });
+
                     TEAM.push(member);
                 }
             }
@@ -631,15 +719,84 @@ onAuthStateChanged(auth, async (user) => {
             MY_ENTRIES = [];
             const myLogQ = query(collection(db, "performance_logs"), where("empId", "==", empData.empId)); 
             const myLogSnap = await getDocs(myLogQ);
-            
             myLogSnap.forEach(lSnap => {
                 let lData = lSnap.data();
                 MY_ENTRIES.push({ logId: lSnap.id, topic: lData.topic, point: lData.point, desc: lData.desc, timestamp: lData.timestamp });
             });
             MY_ENTRIES.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
             if(MY_ENTRIES.length === 0) {
                 MY_ENTRIES.push({topic:'ยังไม่มีประวัติคะแนน', point:0, desc:'เมื่อคุณได้รับคะแนนหรือถูกหักคะแนน ประวัติจะแสดงที่นี่'});
+            }
+
+            const myIdpQ = query(collection(db, "idp_records"), where("empId", "==", empData.empId));
+            const myIdpSnap = await getDocs(myIdpQ);
+            let mySelections = {};
+            let myIdpDetails = {};
+            myIdpSnap.forEach(d => {
+                mySelections[d.data().compKey] = true;
+                myIdpDetails[d.data().compKey] = {
+                    status: d.data().status || 'In Progress',
+                    certs: d.data().certificates || {}
+                };
+            });
+
+            let userMandatory = "";
+            let userElectives = [];
+            if (empData.jobCode) {
+                const safeJobCode = empData.jobCode.replace(/\//g, '_');
+                const matrixDocRef = doc(db, "training_matrices", safeJobCode);
+                const matrixDocSnap = await getDoc(matrixDocRef);
+                if (matrixDocSnap.exists()) {
+                    let mData = matrixDocSnap.data();
+                    userMandatory = mData.mandatory || "";
+                    userElectives = mData.electives || [];
+                }
+            }
+
+            const compSnap = await getDocs(collection(db, "competencies"));
+            if (!compSnap.empty) {
+                COMPETENCIES = [];
+                const cleanStr = (s) => s ? s.toString().toLowerCase().replace(/\s+/g, '') : '';
+                const cleanUserMandatory = cleanStr(userMandatory);
+                const addedComps = new Set(); 
+
+                compSnap.forEach(c => {
+                    let data = c.data();
+                    let originalName = data.competencyName || "";
+                    let compClean = cleanStr(originalName);
+                    
+                    let isMandatory = cleanUserMandatory !== "" && compClean.includes(cleanUserMandatory);
+                    let isElective = userElectives.some(el => compClean.includes(cleanStr(el)));
+
+                    if (!isMandatory && !isElective) return;
+
+                    let th = originalName;
+                    let en = originalName;
+                    if (originalName.includes('\n')) {
+                        let parts = originalName.split('\n');
+                        th = parts[0].trim();
+                        en = parts[1].trim();
+                    }
+                    
+                    let uniqueKey = cleanStr(en);
+                    if (addedComps.has(uniqueKey)) return;
+                    addedComps.add(uniqueKey);
+
+                    let activities = [];
+                    if (data.courses && Array.isArray(data.courses)) {
+                        activities = data.courses.map(course => [course.name, course.institute, course.link || '']);
+                    }
+                    
+                    COMPETENCIES.push({
+                        key: c.id, 
+                        tag: isMandatory ? 'Mandatory (วิชาบังคับ)' : 'Selective (วิชาเลือก)', 
+                        th: th, 
+                        en: en, 
+                        desc: data.description || '', 
+                        activities: activities, 
+                        type: isMandatory ? 'mandatory' : 'selective' 
+                    });
+                });
             }
 
             session.loggedIn = true;
@@ -649,6 +806,8 @@ onAuthStateChanged(auth, async (user) => {
             session.position = empData.position || (isManager ? 'Manager' : 'Officer');
             session.balance = empData.pointBalance !== undefined ? empData.pointBalance : 100;
             session.seed = empData.empId;
+            session.selections = mySelections; 
+            session.idpDetails = myIdpDetails;
             profileImages.me = empData.photoURL || null;
 
             document.getElementById('header-name').textContent = session.name;
@@ -659,7 +818,7 @@ onAuthStateChanged(auth, async (user) => {
             document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
             document.getElementById('scr-app').classList.add('active');
             window.scrollTo(0,0);
-            window.switchTab('my-performance', true);
+            window.switchTab('info', true);
             
         } catch (error) {
             console.error(error);
@@ -672,8 +831,9 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
+// เปลี่ยนจาก signInWithPopup เป็น signInWithRedirect 
 window.handleGoogleSignIn = async () => {
-    try { await signInWithPopup(auth, provider); } 
+    try { await signInWithRedirect(auth, provider); } 
     catch (err) { console.error(err); alert("Login failed: " + err.message); }
 };
 
@@ -734,6 +894,7 @@ window.showContent = function(id){
   window.closeModal();
   window.scrollTo({top:0, behavior:'smooth'});
 
+  if(id==='info') renderInfo();
   if(id==='my-performance') window.renderMyPerformance();
   if(id==='my-learning') window.renderMyLearning();
   if(id==='team-performance') window.renderPerfGrid(1);
@@ -741,9 +902,13 @@ window.showContent = function(id){
 };
 
 let toastTimer = null;
-window.showToast = function(msg){
+window.showToast = function(msg, isError=false){
   const t = document.getElementById('toast');
   t.textContent = msg;
+  t.className = 'toast';
+  if(isError) t.classList.add('error');
+  else t.classList.add('success');
+  
   t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(()=>t.classList.remove('show'), 3400);
@@ -753,7 +918,7 @@ window.validateLearningSelection = function(){
   const selectiveKeys = COMPETENCIES.filter(c=>c.type==='selective').map(c=>c.key);
   const anySelected = selectiveKeys.some(k=>session.selections[k]);
   if(!anySelected && selectiveKeys.length > 0){
-    window.showToast('Select at least 1 competency (selective) to continue · กรุณาเลือกอย่างน้อย 1 สมรรถนะ (Selective)');
+    window.showToast('Select at least 1 competency (selective) to continue · กรุณาเลือกอย่างน้อย 1 สมรรถนะ (Selective)', true);
     return false;
   }
   return true;
@@ -775,15 +940,16 @@ window.renderMyPerformance = function(){
 };
 
 window.handleProfileUpload = async function(evt){
-  const f = evt.target.files[0];
+  let f = evt.target.files[0];
   if(!f) return;
   
   const avatarImg = document.getElementById('me-photo');
   avatarImg.style.opacity = '0.5';
-  window.showToast("กำลังอัปโหลดรูปภาพ... รอสักครู่");
+  window.showToast("กำลังบีบอัดและอัปโหลดรูปภาพ...");
 
   try {
-      const storageRef = ref(storage, `profile_images/${session.empId}`);
+      f = await compressImage(f, 800, 800, 0.8);
+      const storageRef = ref(storage, `profile_images/${session.empId}.jpg`);
       await uploadBytes(storageRef, f);
       const downloadURL = await getDownloadURL(storageRef);
       
@@ -806,18 +972,20 @@ window.handleProfileUpload = async function(evt){
 window.renderMyLearning = function(){
   const sel = COMPETENCIES.filter(c=>c.type==='selective');
   const man = COMPETENCIES.filter(c=>c.type==='mandatory');
-  document.getElementById('mylearn-selective').innerHTML = sel.map(c=>{
+  
+  document.getElementById('mylearn-selective').innerHTML = sel.length > 0 ? sel.map(c=>{
     const active = !!session.selections[c.key];
     return `<button class="goal-card green ${active?'selected':''}" onclick="openCompetency('${c.key}', true, 'me')">
       <div class="tag">${c.tag}</div><div class="th-name">${c.th}</div><div class="en-name">${c.en}</div>
       <div class="desc">${c.desc.slice(0,90)}…</div><div class="arrow">↘</div>
     </button>`;
-  }).join('');
-  document.getElementById('mylearn-mandatory').innerHTML = man.map(c=>`
+  }).join('') : '<div style="color:#8b90a0; font-size:14px;">ยังไม่มีวิชาเลือกสำหรับตำแหน่งของคุณ</div>';
+  
+  document.getElementById('mylearn-mandatory').innerHTML = man.length > 0 ? man.map(c=>`
     <button class="goal-card blue" onclick="openCompetency('${c.key}', true, 'me')">
       <div class="tag">${c.tag}</div><div class="th-name">${c.th}</div><div class="en-name">${c.en}</div>
       <div class="desc">${c.desc.slice(0,90)}…</div><div class="arrow">↘</div>
-    </button>`).join('');
+    </button>`).join('') : '<div style="color:#8b90a0; font-size:14px;">ยังไม่มีวิชาบังคับสำหรับตำแหน่งของคุณ</div>';
 };
 
 window.renderPerfGrid = function(page){
@@ -1074,19 +1242,104 @@ window.toggleActivity = function(i){
   window.renderModalBody();
 };
 
-window.handleUpload = function(evt, i){
-  const f = evt.target.files[0];
+window.handleUpload = async function(evt, i){
+  let f = evt.target.files[0];
   if(!f) return;
-  if(!fileState[modalCtx.scope]) fileState[modalCtx.scope] = {};
-  if(!fileState[modalCtx.scope][modalCtx.key]) fileState[modalCtx.scope][modalCtx.key] = [null,null,null];
-  fileState[modalCtx.scope][modalCtx.key][i] = f.name;
-  window.renderModalBody();
+
+  if (!f.type.match(/image.*/) && f.type !== 'application/pdf') {
+      alert('รองรับเฉพาะไฟล์ PDF และรูปภาพ (.png, .jpg, .jpeg) เท่านั้น');
+      return;
+  }
+
+  const {key, scope} = modalCtx;
+  if(scope !== 'me') return;
+
+  let instituteName = '';
+  if (i === 'self') {
+      instituteName = document.getElementById('custom-institute-input').value.trim();
+      if (!instituteName) {
+          alert('กรุณาระบุชื่อสถาบัน');
+          return;
+      }
+  }
+
+  window.showToast("กำลังย่อขนาดและอัปโหลดไฟล์...");
+
+  try {
+      f = await compressImage(f, 1200, 1200, 0.8);
+      const ext = f.name.split('.').pop();
+      const fileName = `cert_${session.empId}_${key}_${i}.${ext}`;
+      const storageRef = ref(storage, `certificates/${session.empId}/${fileName}`);
+      
+      await uploadBytes(storageRef, f);
+      const downloadURL = await getDownloadURL(storageRef);
+
+      const docId = `${session.empId}_${key}`;
+      const docRef = doc(db, "idp_records", docId);
+      
+      await setDoc(docRef, {
+          status: 'Completed',
+          certificates: {
+              [i]: { url: downloadURL, name: f.name, institute: instituteName }
+          },
+          timestamp: new Date().toISOString()
+      }, { merge: true });
+
+      if(!session.idpDetails[key]) session.idpDetails[key] = { status: 'In Progress', certs: {} };
+      session.idpDetails[key].status = 'Completed';
+      session.idpDetails[key].certs[i] = { url: downloadURL, name: f.name, institute: instituteName };
+
+      window.showToast("อัปโหลดสำเร็จ! สถานะอัปเดตเป็น Completed");
+      window.renderModalBody();
+
+  } catch (error) {
+      console.error(error);
+      alert("อัปโหลดไม่สำเร็จ: " + error.message);
+  }
 };
 
-window.setOutcomeFor = function(scope, key, text){
-  if(scope==='me'){ session.outcomeNotes[key] = text; return; }
-  const m = TEAM.find(t=>t.seed===scope);
-  if(m) m.outcomeNotes[key] = text;
+window.toggleSelection = async function(key){
+  const c = COMPETENCIES.find(x=>x.key===key);
+  if(c.type==='mandatory') return; 
+
+  const isCurrentlySelected = !!session.selections[key];
+  const confirmMsg = isCurrentlySelected 
+      ? "คุณต้องการ 'ยกเลิก' การเลือกสมรรถนะนี้ใช่หรือไม่?" 
+      : "ยืนยัน 'เลือก' สมรรถนะนี้เป็นเป้าหมายการเรียนรู้ของคุณ?";
+
+  if(!confirm(confirmMsg)) return;
+
+  try {
+      window.showToast("กำลังบันทึกข้อมูล...");
+      const docId = `${session.empId}_${key}`;
+      const docRef = doc(db, "idp_records", docId);
+
+      if (isCurrentlySelected) {
+          await deleteDoc(docRef);
+          delete session.selections[key];
+          if(session.idpDetails[key]) delete session.idpDetails[key];
+          window.showToast("ยกเลิกสมรรถนะเรียบร้อยแล้ว");
+      } else {
+          await setDoc(docRef, {
+              empId: session.empId,
+              compKey: key,
+              compName: c.en,
+              type: c.type,
+              status: 'In Progress',
+              certificates: {},
+              timestamp: new Date().toISOString()
+          });
+          session.selections[key] = true;
+          session.idpDetails[key] = { status: 'In Progress', certs: {} };
+          window.showToast("บันทึกสมรรถนะเรียบร้อยแล้ว");
+      }
+
+      window.renderModalBody();
+      window.renderMyLearning();
+  } catch (error) {
+      console.error(error);
+      alert("เกิดข้อผิดพลาดในการบันทึก: " + error.message);
+  }
 };
 
 window.renderModalBody = function(){
@@ -1094,55 +1347,123 @@ window.renderModalBody = function(){
   const c = COMPETENCIES.find(x=>x.key===key);
   const isMandatory = c.type==='mandatory';
   const isSelected = isMandatory || (scope==='me' ? !!session.selections[key] : (TEAM.find(t=>t.seed===scope)?.selections[key]));
-  const progressState = isSelected ? 'progress' : 'not';
-  const files = fileState[scope]?.[key] || [null,null,null];
+  
+  const details = scope === 'me' ? session.idpDetails[key] : (TEAM.find(t=>t.seed===scope)?.idpDetails[key]);
+  
+  let progressState = 'not';
+  let statusText = 'Not Selected';
+  if (isSelected) {
+      if (details && details.status === 'Completed') {
+          progressState = 'completed'; 
+          statusText = 'Completed สำเร็จแล้ว ✔';
+      } else {
+          progressState = 'progress';
+          statusText = 'In Progress กำลังเรียนรู้ ▶';
+      }
+  }
 
   const body = document.getElementById('modal-body');
   body.classList.toggle('blue', c.type==='mandatory');
-  body.innerHTML = `
-    <button class="modal-close-btn" onclick="window.closeModal()"><i class="fa-solid fa-xmark"></i></button>
-    <div class="tag">${c.tag}</div><h2>${c.th}</h2><h3>${c.en}</h3><div class="desc">${c.desc}</div>
-    <div class="section-label">Activity | ช่องทางการเรียนรู้</div>
-    ${c.activities.map((a,i)=>{
+  
+  let activitiesHtml = c.activities.map((a,i)=>{
       const expanded = expandedActivity===i;
-      const fname = files[i];
+      const certInfo = (details && details.certs && details.certs[i]) ? details.certs[i] : null;
+      const fname = certInfo ? certInfo.name : null;
+      const certUrl = certInfo ? certInfo.url : null;
+      
+      const courseName = a[0];
+      const provider = a[1];
+      const link = a[2];
+
+      const courseTitleHtml = link 
+          ? `<a href="${escapeAttr(link)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue); text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+               <i class="fa-solid fa-desktop" style="font-size:12px; color:#1c2130;"></i> ${escapeHtml(courseName)} 
+               <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px;"></i>
+             </a>`
+          : `<span style="display:inline-flex; align-items:center; gap:6px;">
+               <i class="fa-solid fa-desktop" style="font-size:12px; color:#1c2130;"></i> ${escapeHtml(courseName)}
+             </span>`;
+
       return `
       <div class="activity-item">
         <div class="activity-row" onclick="toggleActivity(${i})">
-          <div class="title">🖥️ ${a[0]}</div>
-          <div class="activity-provider">โดย ${a[1]} <span class="chevron">${expanded?'▲':'▾'}</span></div>
+          <div class="title" style="flex:1; line-height:1.6; padding-right:10px;">${courseTitleHtml}</div>
+          <div class="activity-provider" style="flex-shrink:0;">โดย ${escapeHtml(provider)} <span class="chevron" style="margin-left:4px;">${expanded?'▲':'▾'}</span></div>
         </div>
         ${expanded ? `
           <div class="activity-detail">
             <div class="detail-label">สถานะใบรับรอง | Certificate status</div>
-            <div class="file-status ${fname?'uploaded':''}">${fname ? '📄 '+escapeHtml(fname) : 'No File Uploaded'}</div>
-            ${interactive ? `
-              <label class="cert-upload">⭱ Upload certificate
-                <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, ${i})">
-              </label>
-            ` : ''}
+            <div class="file-status ${fname?'uploaded':''}">
+              <i class="fa-solid fa-file-contract"></i> 
+              ${fname ? `<a href="${escapeAttr(certUrl)}" target="_blank" style="color:var(--green-dark);text-decoration:underline;">${escapeHtml(fname)}</a>` : 'No File Uploaded'}
+            </div>
+            ${interactive ? (
+                isSelected 
+                ? `<label class="cert-upload">⭱ Upload certificate
+                     <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, ${i})">
+                   </label>` 
+                : `<div class="cert-hint" style="color:#e0281e;">* กรุณากดเลือก (Select) สมรรถนะนี้ก่อน จึงจะสามารถแนบเอกสารได้</div>`
+            ) : ''}
           </div>` : ''}
       </div>`;
-    }).join('')}
+  }).join('');
+
+  const selfCertInfo = (details && details.certs && details.certs['self']) ? details.certs['self'] : null;
+  const selfFname = selfCertInfo ? selfCertInfo.name : null;
+  const selfCertUrl = selfCertInfo ? selfCertInfo.url : null;
+  const selfInst = selfCertInfo ? selfCertInfo.institute : '';
+  const selfExpanded = expandedActivity === 'self';
+
+  activitiesHtml += `
+  <div class="activity-item">
+    <div class="activity-row" onclick="toggleActivity('self')">
+      <div class="title" style="flex:1; line-height:1.6; padding-right:10px;">
+        <span style="display:inline-flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-graduation-cap" style="font-size:12px; color:#1c2130;"></i> เรียนรู้ด้วยตัวเองจากสถาบันอื่น
+        </span>
+      </div>
+      <div class="activity-provider" style="flex-shrink:0;">${selfInst ? `โดย ${escapeHtml(selfInst)}` : ''} <span class="chevron" style="margin-left:4px;">${selfExpanded?'▲':'▾'}</span></div>
+    </div>
+    ${selfExpanded ? `
+      <div class="activity-detail">
+        ${interactive && !selfFname && isSelected ? `
+          <div style="margin-bottom:10px;">
+            <input type="text" id="custom-institute-input" placeholder="ระบุชื่อสถาบัน (เช่น Udemy, SkillLane...)" style="width:100%; border:1px solid var(--gray-line); border-radius:8px; padding:8px 10px; font-size:13px; outline:none;" value="${escapeAttr(selfInst)}">
+          </div>
+        ` : ''}
+        <div class="detail-label">สถานะใบรับรอง | Certificate status</div>
+        <div class="file-status ${selfFname?'uploaded':''}">
+          <i class="fa-solid fa-file-contract"></i> 
+          ${selfFname ? `<a href="${escapeAttr(selfCertUrl)}" target="_blank" style="color:var(--green-dark);text-decoration:underline;">${escapeHtml(selfFname)}</a>` : 'No File Uploaded'}
+        </div>
+        ${interactive ? (
+            isSelected 
+            ? `<label class="cert-upload">⭱ Upload certificate
+                 <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, 'self')">
+               </label>` 
+            : `<div class="cert-hint" style="color:#e0281e;">* กรุณากดเลือก (Select) สมรรถนะนี้ก่อน จึงจะสามารถแนบเอกสารได้</div>`
+        ) : ''}
+      </div>` : ''}
+  </div>
+  `;
+
+  const actionButton = interactive
+        ? (isMandatory ? `<button class="btn-select" disabled style="opacity:.6;">🔒 Locked</button>` : `<button class="btn-select ${isSelected?'selected':''}" onclick="toggleSelection('${key}')">${isSelected ? '✓ Selected (แตะเพื่อยกเลิก)' : 'Select'}</button>`)
+        : `<button class="btn-back-dark" onclick="window.closeModal()">Back</button>`;
+
+  body.innerHTML = `
+    <button class="modal-close-btn" onclick="window.closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="tag">${c.tag}</div><h2>${c.th}</h2><h3>${c.en}</h3><div class="desc">${c.desc}</div>
+    <div class="section-label">Activity | ช่องทางการเรียนรู้</div>
+    ${activitiesHtml}
     <div class="progress-row" style="margin-top:20px;">
       <div>
         <div class="section-label" style="margin:0 0 8px;">Progress | การดำเนินการ</div>
-        <button class="pill-status ${progressState}">${progressState==='progress' ? 'In Progress กำลังเรียนรู้ ▶' : 'Not Selected'}</button>
+        <button class="pill-status ${progressState}">${statusText}</button>
       </div>
-      ${interactive
-        ? (isMandatory ? `<button class="btn-select" disabled style="opacity:.6;">🔒 Locked</button>` : `<button class="btn-select ${isSelected?'selected':''}" onclick="toggleSelection('${key}')">${isSelected ? '✓ Selected (แตะเพื่อยกเลิก)' : 'Select'}</button>`)
-        : `<button class="btn-back-dark" onclick="window.closeModal()">Back</button>`
-      }
+      ${actionButton}
     </div>
   `;
-};
-
-window.toggleSelection = function(key){
-  const c = COMPETENCIES.find(x=>x.key===key);
-  if(c.type==='mandatory') return;
-  session.selections[key] = !session.selections[key];
-  window.renderModalBody();
-  window.renderMyLearning();
 };
 
 window.closeModal = function(){ document.getElementById('modal').classList.remove('active'); modalCtx=null; };
@@ -1168,6 +1489,7 @@ document.addEventListener('mousemove', (e)=>{ if(entryTip.classList.contains('sh
 document.addEventListener('mouseout', (e)=>{ if(e.target.closest('.entry-item')) entryTip.classList.remove('show'); });
 
 renderLogos();
+renderInfo();
 </script>
 </body>
 </html>
