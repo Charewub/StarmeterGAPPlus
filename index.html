@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>StarMeter — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --navy:#28344c;
+    --navy-dark:#1c2537;
+    --red:#ff3b30;
+    --red-dark:#e0281e;
+    --red-tint:#ffe3e1;
+    --blue:#0091ff;
+    --blue-dark:#0077d6;
+    --blue-tint:#eaf6fc;
+    --blue-tint-2:#d7edf9;
+    --green:#1fae4d;
+    --green-dark:#159440;
+    --green-tint:#e6faec;
+    --green-tint-2:#c8f0d2;
+    --green-select:#3fbe5c;
+    --cream:#fdeecb;
+    --cream-text:#c98a1f;
+    --gray-input:#d6d6d6;
+    --gray-text:#8b90a0;
+    --gray-line:#e3e6ec;
+    --card-shadow: 0 10px 30px rgba(30,40,70,.06);
+    --radius-lg:22px;
+    --radius-md:16px;
+    --radius-sm:10px;
+    font-family:'Noto Sans Thai','Inter',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#f2f3f6;color:#1c2130;}
+  button{font-family:inherit;cursor:pointer;}
+  textarea,input{font-family:inherit;}
+  #app{max-width:1360px;margin:0 auto;background:#fff;min-height:100vh;position:relative;box-shadow:0 0 60px rgba(0,0,0,.06);}
+
+  .screen{display:none;min-height:100vh;}
+  .screen.active{display:block;}
+  .screen.center{display:none;}
+  .screen.center.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
+
+  /* ===== logo (configurable) ===== */
+  .logo-slot{display:inline-flex;align-items:center;gap:9px;}
+  .logo-slot .wordmark{font-weight:800;color:var(--navy);letter-spacing:-.3px;}
+  .logo-slot[data-size="small"] .wordmark{font-size:19px;}
+  .logo-slot[data-size="big"]{flex-direction:column;gap:6px;}
+  .logo-slot[data-size="big"] .wordmark{font-size:36px;letter-spacing:-.5px;}
+  .logo-img{display:block;object-fit:contain;}
+  .logo-slot[data-size="small"] .logo-img{height:26px;width:auto;}
+  .logo-slot[data-size="big"] .logo-img{height:56px;width:auto;}
+  .subtitle{font-size:18px;color:#333;margin-top:2px;font-weight:500;}
+
+  /* login */
+  .field-group{width:min(340px, 100%);margin-top:18px;text-align:left;}
+  .field-group label{display:block;font-size:14px;color:#3a3f4c;margin-bottom:8px;font-weight:500;}
+  .field-input{width:100%;height:46px;border-radius:10px;border:none;background:var(--gray-input);}
+  .btn-navy{background:var(--navy);color:#fff;border:none;border-radius:22px;padding:13px 40px;font-weight:700;font-size:15px;}
+  .btn-navy:hover{background:var(--navy-dark);}
+  .login-cta{margin-top:30px;}
+
+  .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:min(320px,100%);background:#fff;border:1px solid #dadce0;border-radius:24px;padding:12px 20px;font-weight:600;font-size:15px;color:#3c4043;margin-top:34px;transition:box-shadow .15s ease,transform .15s ease;}
+  .google-btn:hover{box-shadow:0 4px 14px rgba(60,64,67,.18);transform:translateY(-1px);}
+  .login-hint{margin-top:10px;font-size:12px;color:#9aa0ae;}
+
+  /* ===== app shell / tab navigation ===== */
+  .app-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 40px;border-bottom:1px solid var(--gray-line);position:sticky;top:0;background:#fff;z-index:40;}
+  .tabbar-desktop{position:relative;display:flex;gap:4px;}
+  .tabbar-desktop .tab-btn{background:none;border:none;padding:10px 18px;font-weight:600;font-size:13.5px;color:#6a6f7c;border-radius:10px;position:relative;z-index:1;transition:color .2s ease,background .2s ease;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.3;}
+  .tabbar-desktop .tab-btn:hover{background:#f4f5f7;}
+  .tabbar-desktop .tab-btn.active{color:var(--blue);}
+  .tabbar-desktop .tab-btn .th-sub{font-size:10.5px;color:#9aa0ae;font-weight:500;}
+  .tabbar-desktop .tab-btn.active .th-sub{color:var(--blue-dark);}
+  .tab-indicator{position:absolute;bottom:-2px;height:3px;background:var(--blue);border-radius:3px;transition:left .28s cubic-bezier(.4,0,.2,1), width .28s cubic-bezier(.4,0,.2,1);}
+  .header-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+  .header-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--gray-line);}
+  .header-name{font-size:13px;font-weight:700;color:#1c2130;text-align:right;}
+  .header-role{font-size:11px;color:#9aa0ae;text-align:right;}
+  .logout-link{background:none;border:none;font-size:11.5px;color:var(--red);font-weight:700;}
+
+  .tabbar-mobile{display:none;}
+
+  main#tab-content{padding:32px 56px 90px;position:relative;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;opacity:1;transform:translateY(0);transition:opacity .22s ease, transform .22s ease;}
+  .tab-panel.active.entering{opacity:0;transform:translateY(8px);}
+
+  .subscreen{padding:32px 56px 110px;position:relative;}
+
+  /* toast */
+  .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-14px);background:var(--red-dark);color:#fff;font-size:13.5px;font-weight:600;padding:13px 22px;border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.25);z-index:500;opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;max-width:90vw;text-align:center;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* back / nav fab (used only inside sub-screens) */
+  .fab{position:fixed;bottom:30px;right:calc(50% - 624px);background:var(--blue);color:#fff;border:none;padding:11px 26px;border-radius:24px;font-weight:700;font-size:14px;box-shadow:0 6px 16px rgba(0,145,255,.35);transition:transform .15s ease;}
+  .fab:hover{transform:translateY(-2px);}
+  @media (max-width:1360px){.fab{right:30px;}}
+
+  /* section header */
+  .page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-top:6px;margin-bottom:8px;}
+  .page-title-en{font-size:15px;color:#9aa0ae;text-align:right;}
+  .page-title-th{font-size:13px;color:#b7bbc6;text-align:right;}
+
+  /* team members grid */
+  .team-grid-wrap{background:#f4f6f9;border-radius:26px;padding:22px;margin-top:26px;}
+  .members-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .member-card{background:linear-gradient(180deg,#eaf6fc 0%,#ffffff 100%);border:1px solid var(--blue-tint-2);border-radius:18px;padding:18px;}
+  .member-top{display:flex;gap:14px;align-items:center;}
+  .member-photo{width:78px;height:78px;border-radius:14px;object-fit:cover;flex-shrink:0;border:1px solid #fff; background:#fff;}
+  .member-name{font-weight:700;font-size:19px;color:#1c2130;flex:1; word-break:break-word;}
+  .member-stats{display:flex;gap:10px;margin-top:16px;}
+  .stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .stat .label-en{font-size:11px;font-weight:700;color:#333;}
+  .stat .label-th{font-size:10px;color:#8b90a0;}
+  .balance-pill{background:var(--cream);border-radius:10px;padding:8px 0;width:100%;text-align:center;font-weight:800;font-size:16px;color:#7a5410;}
+  .round-btn{width:38px;height:38px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;}
+  .round-btn.blue{background:var(--blue);}
+  .round-btn.blue-lt{background:#bfe0f5;color:var(--blue-dark);}
+  .entry-list{margin-top:14px;max-height:118px;overflow:auto;padding:0;font-size:12.5px;line-height:2;}
+  .entry-list .entry-item{cursor:default;display:block;font-weight:700;}
+  .entry-list .entry-item.g{color:var(--green-dark);}
+  .entry-list .entry-item.r{color:var(--red-dark);}
+  .entry-list .entry-item:hover{text-decoration:underline;}
+
+  .entry-tooltip{position:fixed;z-index:300;background:#161b26;color:#fff;padding:10px 14px;border-radius:10px;font-size:12px;line-height:1.55;max-width:230px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s ease, transform .12s ease;box-shadow:0 10px 26px rgba(0,0,0,.28);}
+  .entry-tooltip.show{opacity:1;transform:translateY(0);}
+  .entry-tooltip .tip-desc{color:#e7e9ee;}
+  .entry-tooltip .tip-points{margin-top:6px;font-weight:800;font-size:13px;}
+  .entry-tooltip .tip-points.g{color:#6fe39a;}
+  .entry-tooltip .tip-points.r{color:#ff8f88;}
+  .pager{display:flex;justify-content:center;gap:0;margin-top:34px;}
+  .pager button{border:1px solid var(--gray-line);background:#fff;padding:9px 26px;font-weight:600;font-size:13px;color:#666;}
+  .pager button:first-child{border-radius:20px 0 0 20px;}
+  .pager button:last-child{border-radius:0 20px 20px 0;}
+  .pager button.active{background:#fff;border-color:var(--blue);color:var(--blue);position:relative;z-index:1;}
+
+  /* slim header used on My Performance / Justification / Edit */
+  .mini-header{display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:14px;}
+  .mini-identity{display:flex;align-items:center;gap:14px;}
+  .mini-avatar-wrap{position:relative;flex-shrink:0;}
+  .mini-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;display:block; background:#fff; border:1px solid var(--gray-line);}
+  .mini-photo-edit-btn{position:absolute;bottom:-4px;right:-4px;width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;box-shadow:0 3px 8px rgba(0,0,0,.25);border:2px solid #fff; cursor:pointer;}
+  .mini-name{font-weight:700;font-size:16px;color:#1c2130;line-height:1.3;}
+  .mini-role{font-size:13px;color:#8b90a0;line-height:1.3;}
+  .mini-balance{display:flex;align-items:center;gap:16px;}
+  .mini-balance-label{font-size:13px;color:#333;text-align:right;line-height:1.3;}
+  .mini-balance-label .sub{display:block;font-size:11px;color:#9aa0ae;}
+  .balance-pill-lg{background:#fff;border:1px solid #d8dbe2;border-radius:30px;padding:11px 30px;font-size:26px;font-weight:800;color:#1c2130;min-width:90px;text-align:center;}
+
+  /* gradient "fade to dark" panel */
+  .fade-panel{background:linear-gradient(180deg,#f8f9fb 0%,#eef1f5 100%);border-radius:22px;padding:22px;margin-top:18px;position:relative;}
+  .fade-panel.scroll{max-height:600px;overflow-y:auto;}
+  .fade-panel .entry-card{background:#fff;border:1px solid var(--gray-line);border-radius:16px;padding:18px 22px;margin-bottom:14px;}
+  .fade-panel .entry-card:first-child{border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,145,255,.15);}
+  .fade-panel .entry-card:last-child{margin-bottom:0;}
+  .fade-colname{font-size:11px;color:#9aa0ae;margin-bottom:4px;}
+  .fade-topic{font-weight:700;font-size:16px;}
+  .fade-topic.g{color:var(--green-dark);}
+  .fade-topic.r{color:var(--red-dark);}
+  .fade-point{font-size:24px;font-weight:800;text-align:right;}
+  .fade-point.g{color:var(--green-dark);}
+  .fade-point.r{color:var(--red-dark);}
+  .fade-desc{font-size:13px;color:#4a4f5c;margin-top:10px;line-height:1.6;}
+  .fade-entry-top{display:flex;justify-content:space-between;gap:20px;}
+  .fade-entry-top .col{flex:1;}
+
+  .field-label{font-size:14px;font-weight:700;color:#1c2130;margin-top:4px;}
+  .field-hint{font-size:11.5px;color:#9aa0ae;margin-bottom:8px;}
+  .lorem-box{width:100%;border:1px solid var(--gray-line);border-radius:10px;background:#fff;padding:12px 14px;font-size:13px;color:#4a4f5c;resize:none;line-height:1.6;}
+  .char-hint{text-align:right;font-size:10.5px;color:#9aa0ae;margin-top:4px;}
+  .just-grid{display:flex;gap:30px;}
+  .just-fields{flex:1;min-width:0;}
+  .just-point{width:230px;flex-shrink:0;}
+  .point-pill-input{width:100%;height:64px;border-radius:32px;text-align:center;font-size:30px;font-weight:800;border:none;outline:none;}
+  .point-pill-input.pos{background:var(--green-tint-2);color:var(--green-dark);box-shadow:0 0 0 6px rgba(31,174,77,.12);}
+  .point-pill-input.neg{background:#fcd6d3;color:var(--red-dark);box-shadow:0 0 0 6px rgba(224,40,30,.12);}
+  .point-hint{font-size:11px;line-height:1.7;margin-top:6px;}
+  .point-hint .g{color:var(--green-dark);display:block;}
+  .point-hint .r{color:var(--red-dark);display:block;}
+  .just-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;}
+  .btn-pill{border:none;border-radius:20px;padding:11px 26px;font-weight:700;font-size:13.5px;color:#fff;}
+  .btn-pill.red{background:var(--red);}
+  .btn-pill.green{background:var(--green);}
+  .btn-pill.blue{background:var(--blue);}
+
+  /* edit table */
+  .edit-table-head{display:grid;grid-template-columns:1fr 2fr 110px;gap:20px;font-weight:700;font-size:14px;color:#1c2130;padding-bottom:10px;border-bottom:1px solid var(--gray-line);}
+  .edit-table-row{display:grid;grid-template-columns:1fr 2fr 110px;gap:20px;padding:18px 0;border-bottom:1px solid var(--gray-line);align-items:start;}
+  .edit-table-row:last-child{border-bottom:none;}
+  .edit-table-topic{font-weight:700;font-size:14px;background:none;border:none;text-align:left;padding:0;cursor:pointer;font-family:inherit;}
+  .edit-table-topic.g{color:var(--green-dark);}
+  .edit-table-topic.r{color:var(--red-dark);}
+  .edit-table-desc{font-size:12.5px;color:#4a4f5c;line-height:1.6;}
+  .edit-table-point{background:#fff;border:1px solid var(--gray-line);border-radius:20px;padding:8px 0;text-align:center;font-weight:800;font-size:16px;color:#1c2130;}
+  .edit-table-editrow{grid-column:1/-1;background:var(--blue-tint);border-radius:14px;padding:16px;margin-top:-6px;}
+  .btn-chip{border:none;border-radius:16px;padding:8px 20px;font-size:12.5px;font-weight:700;}
+  .btn-chip.gray{background:#dfe2e8;color:#555;}
+  .btn-chip.blue{background:var(--blue);color:#fff;}
+
+  /* learning team grid */
+  .lteam-block{margin-bottom:20px;}
+  .lteam-row{background:var(--blue-tint);border:1px solid var(--blue-tint-2);border-radius:18px;padding:16px 20px;display:flex;align-items:center;gap:20px;}
+  .lteam-head{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+  .lteam-row img{width:44px;height:44px;border-radius:10px;object-fit:cover; background:#fff;}
+  .lteam-name{width:130px;font-weight:700;font-size:15px;flex-shrink:0; word-break:break-word;}
+  .comp-chips{display:flex;gap:10px;flex:1;flex-wrap:wrap;}
+  .comp-chip{flex:1;min-width:140px;border:none;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:12px;line-height:1.5;}
+  .comp-chip .en{font-weight:700;display:block;margin-bottom:2px;}
+  .comp-chip.on{background:var(--green-select);color:#fff;}
+  .comp-chip.off{background:var(--green-tint-2);color:#1a6b34;}
+  .comp-chip.plus{background:var(--blue-tint-2);color:var(--blue-dark);}
+  .comp-chip .arrow{float:right;opacity:.7;}
+  
+  /* goal page */
+  .goal-sub{font-size:13px;color:#5a5f6c;margin:4px 0 16px;}
+  .goal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .goal-card{border:none;text-align:left;border-radius:16px;padding:20px;cursor:pointer;position:relative;min-height:150px;transition:background .15s ease,color .15s ease;}
+  .goal-card.green{background:var(--green-tint);}
+  .goal-card.blue{background:var(--blue-tint);}
+  .goal-card.green.selected{background:var(--green-select);}
+  .goal-card.green.selected .th-name,.goal-card.green.selected .en-name{color:#fff;}
+  .goal-card.green.selected .desc{color:rgba(255,255,255,.88);}
+  .goal-card.green.selected .tag{color:rgba(255,255,255,.75);}
+  .goal-card.green.selected .arrow{color:#fff;}
+  .goal-card .tag{font-size:11px;color:#7a8090;}
+  .goal-card .th-name{font-weight:700;font-size:13.5px;margin-top:4px;color:#1c2130;padding-right:26px;}
+  .goal-card .en-name{font-weight:700;font-size:13.5px;color:#1c2130;}
+  .goal-card .desc{font-size:10.5px;color:#6b7280;margin-top:8px;line-height:1.5;}
+  .goal-card .arrow{position:absolute;bottom:14px;right:16px;color:var(--blue);font-size:15px;}
+
+  /* modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(20,25,40,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
+  .modal-overlay.active{display:flex;}
+  .modal-card{background:var(--green-tint);border-radius:26px;padding:34px 38px;max-width:640px;width:100%;max-height:88vh;overflow:auto;}
+  .modal-card.blue{background:var(--blue-tint);}
+  .modal-card .tag{font-size:13px;color:#5a5f6c;}
+  .modal-card h2{font-size:19px;margin:6px 0 0;color:#1c2130;}
+  .modal-card h3{font-size:19px;margin:2px 0 14px;color:#1c2130;}
+  .modal-card .desc{font-size:12.5px;color:#4a4f5c;line-height:1.7;}
+  .modal-card .section-label{font-size:14px;font-weight:700;margin:18px 0 10px;color:#1c2130;}
+  .activity-item{border-bottom:1px dashed rgba(0,0,0,.08);}
+  .activity-item:last-child{border-bottom:none;}
+  .activity-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:10px 0;cursor:pointer;}
+  .activity-row .title{color:#1c2130;font-size:13px;line-height:1.4;}
+  .activity-provider{font-size:12px;color:#4a4f5c;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+  .activity-detail{padding:2px 0 16px 30px;}
+  .detail-label{font-size:11px;color:#7a8090;margin-bottom:5px;font-weight:600;}
+  .file-status{font-size:12.5px;font-weight:700;color:#8b90a0;}
+  .file-status.uploaded{color:var(--green-dark);}
+  .progress-row{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:16px;}
+  .pill-status{border-radius:18px;padding:9px 24px;font-size:13px;font-weight:700;border:none;}
+  .pill-status.not{background:#d7dade;color:#8b90a0;}
+  .pill-status.progress{background:var(--blue);color:#fff;}
+  .btn-select{background:var(--green);color:#fff;border:none;border-radius:18px;padding:10px 26px;font-weight:700;font-size:13px;}
+  .btn-select.selected{background:#c0392b;}
+  .btn-back-dark{background:#161b26;color:#fff;border:none;border-radius:18px;padding:10px 26px;font-weight:700;font-size:13px;}
+
+  /* contact tab */
+  .contact-copy{max-width:760px;font-size:13px;line-height:1.75;color:#1c2130;margin-top:8px;}
+  .contact-copy p{margin:0 0 16px;}
+  .contact-footer{display:flex;justify-content:space-between;align-items:center;margin-top:56px;flex-wrap:wrap;gap:24px;}
+  .contact-title{font-size:26px;font-weight:800;letter-spacing:9px;color:#1c2130;}
+  .contact-email{display:block;margin-top:10px;font-size:14px;color:var(--blue);text-decoration:underline;}
+
+  /* ============ MOBILE ============ */
+  @media (max-width:640px){
+    .app-header{padding:14px 16px;}
+    .tabbar-desktop{display:none;}
+    .header-name,.header-role{display:none;}
+    main#tab-content{padding:20px 16px 96px;}
+    .subscreen{padding:20px 16px 110px;}
+    .tabbar-mobile{display:flex;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--gray-line);padding:6px 4px max(6px, env(safe-area-inset-bottom));z-index:100;box-shadow:0 -4px 16px rgba(0,0,0,.06);}
+    .tabbar-mobile .tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;padding:6px 2px;font-size:10px;color:#9aa0ae;transition:color .2s ease;}
+    .tabbar-mobile .tab-btn .ic{font-size:19px;transition:transform .2s ease;}
+    .tabbar-mobile .tab-btn.active{color:var(--blue);}
+    .tabbar-mobile .tab-btn.active .ic{transform:translateY(-2px) scale(1.1);}
+    .fab{left:14px;right:14px;bottom:14px;width:auto;border-radius:14px;padding:14px 0;}
+    .field-input{height:48px;font-size:16px;} 
+    .btn-navy{width:100%;padding:15px 0;font-size:16px;}
+    .google-btn{padding:14px 20px;font-size:15px;}
+    .team-grid-wrap{padding:14px;}
+    .members-grid{grid-template-columns:1fr;gap:16px;}
+    .goal-grid{grid-template-columns:1fr;}
+    .round-btn{width:44px;height:44px;font-size:19px;}
+    .mini-balance{width:100%;justify-content:space-between;}
+    .fade-panel{padding:16px;margin-top:14px;}
+    .just-grid{flex-direction:column;gap:18px;}
+    .just-point{width:100%;}
+    .just-actions{flex-wrap:wrap;}
+    .just-actions .btn-pill{flex:1;text-align:center;}
+    .edit-table-head{display:none;}
+    .edit-table-row{grid-template-columns:1fr;}
+    .lteam-row{flex-direction:column;align-items:stretch;}
+    .comp-chips{display:grid;grid-template-columns:1fr 1fr;}
+    .modal-overlay{padding:12px;align-items:flex-end;}
+    .modal-card{padding:22px 18px;border-radius:22px 22px 0 0;max-height:92vh;}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- LOGIN -->
+  <section id="scr-login" class="screen center active">
+    <div class="logo-slot" data-size="big"></div>
+    <div class="subtitle" style="margin-top:-2px;">Sign in to continue</div>
+    <button class="google-btn" onclick="handleGoogleSignIn()">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.03l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.97l2.99 2.33C4.66 5.17 6.65 3.58 9 3.58z"/></svg>
+      Sign in with Google
+    </button>
+    <div class="login-hint">ระบบจะพาไปยังหน้าของคุณโดยอัตโนมัติตามสิทธิ์การใช้งาน · You'll land straight in your view based on your account role.</div>
+  </section>
+
+  <!-- POST-LOGIN APP SHELL -->
+  <section id="scr-app" class="screen">
+    <header class="app-header">
+      <div class="logo-slot" data-size="small"></div>
+      <nav class="tabbar-desktop" id="tabbar-desktop">
+        <span class="tab-indicator" id="tab-indicator"></span>
+      </nav>
+      <div class="header-right">
+        <div>
+          <div class="header-name" id="header-name"></div>
+          <div class="header-role" id="header-role"></div>
+        </div>
+        <img id="header-avatar" class="header-avatar" src="" alt="">
+        <button class="logout-link" onclick="handleLogout()">ออกจากระบบ</button>
+      </div>
+    </header>
+
+    <main id="tab-content">
+
+      <!-- MY PERFORMANCE -->
+      <div id="panel-my-performance" class="tab-panel">
+        <div class="mini-header">
+          <div class="mini-identity">
+            <div class="mini-avatar-wrap">
+              <img id="me-photo" class="mini-avatar" src="" alt="">
+              <label class="mini-photo-edit-btn" title="Edit photo · แก้ไขรูปภาพ">
+                <i class="fa-solid fa-camera"></i>
+                <input type="file" accept="image/png, image/jpeg, image/jpg" style="display:none" onchange="handleProfileUpload(event)">
+              </label>
+            </div>
+            <div>
+              <div class="mini-name" id="me-name"></div>
+              <div class="mini-role" id="me-role"></div>
+            </div>
+          </div>
+          <div class="mini-balance">
+            <div class="mini-balance-label">Balance<span class="sub">ยอดคงเหลือ</span></div>
+            <div class="balance-pill-lg" id="me-balance">100</div>
+          </div>
+        </div>
+        <div class="fade-panel scroll" id="my-perf-list"></div>
+      </div>
+
+      <!-- MY LEARNING -->
+      <div id="panel-my-learning" class="tab-panel">
+        <h2 style="font-size:22px;margin:0 0 4px;">Learning <span style="font-weight:400;color:#5a5f6c;">| การเรียนรู้</span></h2>
+        <div class="goal-sub"><b>Selective</b> บังคับเลือกอย่างน้อย 1 สมรรถนะ (เลือกได้มากกว่า 1)</div>
+        <div class="goal-grid" id="mylearn-selective"></div>
+        <div class="goal-sub" style="margin-top:26px;"><b>Mandatory</b> บังคับตามตำแหน่งงานของท่าน (เริ่ม "กำลังเรียนรู้" ให้อัตโนมัติ)</div>
+        <div class="goal-grid" id="mylearn-mandatory"></div>
+      </div>
+
+      <!-- TEAM PERFORMANCE -->
+      <div id="panel-team-performance" class="tab-panel">
+        <div class="page-header">
+          <div></div>
+          <div><div class="page-title-en">Your Team Members</div><div class="page-title-th">สมาชิกทีมของท่าน</div></div>
+        </div>
+        <div class="team-grid-wrap"><div class="members-grid" id="perf-grid"></div></div>
+        <div class="pager"><button class="active" onclick="renderPerfGrid(1)">Page 1</button><button onclick="renderPerfGrid(2)">Page 2</button></div>
+      </div>
+
+      <!-- TEAM LEARNING -->
+      <div id="panel-team-learning" class="tab-panel">
+        <div class="page-header">
+          <div></div>
+          <div><div class="page-title-en">Your Team Members</div><div class="page-title-th">สมาชิกทีมของท่าน</div></div>
+        </div>
+        <div id="learn-rows" style="margin-top:26px;"></div>
+        <div class="pager"><button class="active">Page 1</button><button>Page 2</button></div>
+      </div>
+
+      <!-- CONTACT -->
+      <div id="panel-contact" class="tab-panel">
+        <div class="contact-copy">
+          <p>The Training Management Center (TMC) is here to ensure you have a seamless experience managing your Individual Development Plan (IDP) and 2026 performance goals. We encourage you to reach out to our team if you encounter any of the following situations:</p>
+          <p><strong>Technical Assistance &amp; Access</strong><br>Contact us if you are unable to log into the StarMeter platform, experience system timeouts or errors while saving your goals, or if your dashboard is not loading correctly.</p>
+          <p><strong>Performance &amp; Goal Setting Inquiries</strong><br>Reach out if you need clarification on how to navigate the system to input your 2026 Key Performance Indicators (KPIs), have questions regarding the IDP submission and approval workflow, or need guidance on finding specific learning courses to attach to your development plan.</p>
+          <p><strong>Data &amp; Profile Corrections</strong><br>Let us know if your user profile contains incorrect information, such as an outdated job title, incorrect department, or if your assigned reporting manager is incorrect.</p>
+          <p><strong>How to Reach Us</strong><br>For any of the scenarios above, please email the Training Management Center (TMC) at taa_learning@airasia.com.</p>
+        </div>
+        <div class="contact-footer">
+          <div>
+            <div class="contact-title">CONTACT</div>
+            <a class="contact-email" href="mailto:taa_learning@airasia.com">taa_learning@airasia.com</a>
+          </div>
+          <div class="contact-logo logo-slot" data-size="mark"></div>
+        </div>
+      </div>
+
+      <!-- JUSTIFICATION (add point) -->
+      <div id="panel-justification" class="tab-panel subscreen" style="padding-left:0;padding-right:0;">
+        <div class="mini-header" style="margin-top:0;">
+          <div class="mini-identity">
+            <img id="just-photo" class="mini-avatar" src="" alt="">
+            <div>
+              <div class="mini-name" id="just-name"></div>
+              <div class="mini-role" id="just-role">Officer</div>
+            </div>
+          </div>
+          <div class="mini-balance">
+            <div class="mini-balance-label">Balance<span class="sub">ยอดคงเหลือ</span></div>
+            <div class="balance-pill-lg" id="just-balance">100</div>
+          </div>
+        </div>
+        <div class="fade-panel">
+          <h2 style="margin:0 0 18px;font-size:20px;">Justification <span style="font-weight:400;color:#20232c;">เหตุผลประกอบ</span></h2>
+          <div class="just-grid">
+            <div class="just-fields">
+              <div class="field-label">Topic | หัวเรื่อง</div>
+              <div class="field-hint">เช่น เวลาการเข้าทำงาน</div>
+              <textarea class="lorem-box" id="just-topic-input" rows="2" placeholder="พิมพ์หัวเรื่อง..."></textarea>
+              <div class="field-label" style="margin-top:16px;">Description | คำอธิบาย</div>
+              <div class="field-hint">เช่น มาเข้างานตรงต่อเวลาตลอดทั้งปี 2026</div>
+              <textarea class="lorem-box" id="just-desc-input" rows="5" placeholder="พิมพ์คำอธิบาย..."></textarea>
+              <div class="char-hint">*ตัวอักษรไม่ควรเกิน 100 คำ</div>
+            </div>
+            <div class="just-point">
+              <div class="field-label">Point | จำนวนคะแนน</div>
+              <div class="point-hint">
+                <span class="g">เพิ่มคะแนน กรอกคะแนน กล่องจะเป็นสีเขียว</span>
+                <span class="r">หักคะแนน กรอกคะแนนพร้อมเครื่องหมายลบ กล่องจะเป็นสีแดง</span>
+              </div>
+              <input type="number" id="just-point-input" class="point-pill-input pos" value="10" oninput="updatePointBox(this)" style="margin-top:14px;">
+            </div>
+          </div>
+          <div class="just-actions">
+            <button class="btn-pill red" onclick="showContent('team-performance')">ยกเลิก</button>
+            <button class="btn-pill green" onclick="submitJustification(false)">บันทึก (ไม่ปรับคะแนน)</button>
+            <button class="btn-pill blue" onclick="submitJustification(true)">บันทึกและปรับคะแนน</button>
+          </div>
+        </div>
+        <button class="fab" onclick="showContent('team-performance')">กลับ</button>
+      </div>
+
+      <!-- EDIT (manager) -->
+      <div id="panel-edit" class="tab-panel subscreen" style="padding-left:0;padding-right:0;">
+        <div class="mini-header" style="margin-top:0;">
+          <div class="mini-identity">
+            <img id="edit-photo" class="mini-avatar" src="" alt="">
+            <div>
+              <div class="mini-name" id="edit-name"></div>
+              <div class="mini-role" id="edit-role">Officer</div>
+            </div>
+          </div>
+          <div class="mini-balance">
+            <div class="mini-balance-label">Balance<span class="sub">ยอดคงเหลือ</span></div>
+            <div class="balance-pill-lg" id="edit-balance">100</div>
+          </div>
+        </div>
+        <div class="fade-panel scroll" style="max-height:520px;">
+          <h2 style="margin:0 0 18px;font-size:20px;">Edit <span style="font-weight:400;color:#20232c;">แก้ไขประวัติ</span></h2>
+          <div id="edit-entries">
+              <!-- โค้ดที่เรนเดอร์ตารางแก้ไขจะมาอยู่ตรงนี้ -->
+          </div>
+        </div>
+        <button class="fab" onclick="showContent('team-performance')">กลับ</button>
+      </div>
+
+    </main>
+    <nav class="tabbar-mobile" id="tabbar-mobile"></nav>
+  </section>
+</div>
+
+<!-- toast / tooltip / modal -->
+<div class="toast" id="toast"></div>
+<div class="entry-tooltip" id="entry-tooltip"></div>
+<div class="modal-overlay" id="modal">
+  <div class="modal-card" id="modal-body"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc, runTransaction } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-storage.js";
+
+/* =========================================================================
+   FIREBASE CONFIGURATION
+   ========================================================================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyBM-mbbvUJO9iOKmIcqD2zAIulnWfmUfZU",
+  authDomain: "gap-learning-plan.firebaseapp.com",
+  projectId: "gap-learning-plan",
+  storageBucket: "gap-learning-plan.firebasestorage.app",
+  messagingSenderId: "1068192174083",
+  appId: "1:1068192174083:web:cec4e9a90e0621b4f7fe36",
+  measurementId: "G-Q4CXEL7C17"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+const provider = new GoogleAuthProvider();
+
+/* =========================================================================
+   LOGO CONFIG
+   ========================================================================= */
+let LOGO_URL = ''; 
+const LOGO_SVG_SMALL = `<svg width="26" height="17" viewBox="0 0 66 42"><defs><radialGradient id="g1s" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1s)"/><circle cx="48" cy="21" r="18" fill="url(#g1s)"/></svg>`;
+const LOGO_SVG_BIG = `<svg width="60" height="38" viewBox="0 0 66 42"><defs><radialGradient id="g1b" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1b)"/><circle cx="48" cy="21" r="18" fill="url(#g1b)"/></svg>`;
+
+function renderLogos(){
+  document.querySelectorAll('.logo-slot').forEach(el=>{
+    const size = el.dataset.size;
+    const markOnly = size==='mark';
+    const mark = LOGO_URL ? `<img src="${LOGO_URL}" alt="StarMeter logo" class="logo-img">` : (size==='big' ? LOGO_SVG_BIG : LOGO_SVG_SMALL);
+    el.innerHTML = mark + (markOnly ? '' : `<span class="wordmark">StarMeter</span>`);
+  });
+}
+function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&gt;'); }
+function avatarUrl(seed){ return `https://api.dicebear.com/10.x/avataaars/svg?seed=${seed}&clothing=blazerAndShirt,blazerAndSweater,collarAndSweater&clothingColor=262e33,3c4f5c,65c9ff,929598,e6e6e6&accessoriesProbability=15&backgroundColor=eaf6fc,d7edf9,ffe3e1,fdeecb&radius=8`; }
+
+/* =========================================================================
+   VARIABLES & DATA 
+   ========================================================================= */
+// Competencies ยังเก็บไว้เป็น UI Static ก่อน (จนกว่าจะดึงจาก Firestore IDP ได้เต็มระบบ)
+let COMPETENCIES = [
+  {key:'c1', tag:'Competency 1', th:'ทักษะการแก้ปัญหาอย่างเป็นระบบและการตัดสินใจ', en:'Problem Solving & Decision Making', desc:'ความสามารถในการทำความเข้าใจปัญหาและหาทางแก้ไขอย่างเป็นขั้นตอน...', activities:[['Effective Problem-Solving and Decision-Making','Coursera'],['การแก้ปัญหาอย่างเป็นระบบ','CMU MOOC']], type:'selective'},
+  {key:'c2', tag:'Competency 2', th:'การประยุกต์ใช้เทคโนโลยีและดิจิทัล', en:'Tech & Digital Utilization', desc:'ความสามารถในการเรียนรู้และนำเทคโนโลยี โปรแกรม หรือเครื่องมือดิจิทัลใหม่ๆ มาประยุกต์ใช้...', activities:[['AI for Everyone','TDGA']], type:'selective'},
+  {key:'p1', tag:'Plus One', th:'การทำงานและประสานความร่วมมือข้ามสายงาน', en:'Cross-Functional Collaboration', desc:'ความสามารถในการประสานงาน แลกเปลี่ยนข้อมูล และทำงานร่วมกับแผนกอื่น...', activities:[['Cross-Team Collaboration Essentials','AirAsia NEXT']], type:'mandatory'},
+];
+
+let TEAM = []; 
+let MY_ENTRIES = [];
+let CURRENT_MEMBER_ENTRIES = []; 
+let session = { loggedIn:false, role:'', empId:'', name:'', position: '', seed:'me', balance: 100, selections:{}, outcomeNotes:{} };
+let profileImages = { me:null };
+let currentTabId = 'my-performance';
+
+const TABS = {
+  manager: [
+    {id:'my-performance', en:'My Performance', th:'ผลงานของฉัน', ic:'★'},
+    {id:'my-learning',    en:'My Learning',    th:'การเรียนรู้ของฉัน', ic:'🎓'},
+    {id:'team-performance', en:"Team's Performance", th:'ผลงานทีม', ic:'👥'},
+    {id:'team-learning',    en:"Team's Learning",    th:'การเรียนรู้ทีม', ic:'📘'},
+    {id:'contact', en:'Contact', th:'ติดต่อ', ic:'✉️'},
+  ],
+  staff: [
+    {id:'my-performance', en:'My Performance', th:'ผลงานของฉัน', ic:'★'},
+    {id:'my-learning',    en:'My Learning',    th:'การเรียนรู้ของฉัน', ic:'🎓'},
+    {id:'contact', en:'Contact', th:'ติดต่อ', ic:'✉️'},
+  ]
+};
+
+/* =========================================================================
+   FIREBASE AUTHENTICATION & DATA FETCHING
+   ========================================================================= */
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        try {
+            const empRef = collection(db, "employees");
+            const q = query(empRef, where("email", "==", user.email.toLowerCase()));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.empty) {
+                alert("ไม่พบข้อมูลพนักงาน (Email: " + user.email + ") ในระบบ กรุณาติดต่อ HR");
+                await signOut(auth);
+                return;
+            }
+
+            const empData = querySnapshot.docs[0].data();
+            
+            // 🌟 1. ดึงข้อมูลลูกน้อง (Team Members) พร้อมประวัติล่าสุดของแต่ละคน
+            TEAM = [];
+            const teamQ = query(empRef, where("managerId", "==", empData.empId));
+            const teamSnap = await getDocs(teamQ);
+            const isManager = !teamSnap.empty;
+
+            if (isManager) {
+                for (const docSnap of teamSnap.docs) {
+                    let tData = docSnap.data();
+                    let member = {
+                        empId: tData.empId,
+                        name: tData.name,
+                        position: tData.position || 'Officer',
+                        balance: tData.pointBalance !== undefined ? tData.pointBalance : 100,
+                        seed: tData.empId, 
+                        photoURL: tData.photoURL || null,
+                        selections: {}, outcomeNotes: {},
+                        recentLogs: []
+                    };
+                    
+                    // ดึงประวัติของลูกน้องแต่ละคนมาแสดงเป็น Tooltip หน้าการ์ด
+                    const logQ = query(collection(db, "performance_logs"), where("empId", "==", tData.empId));
+                    const logSnap = await getDocs(logQ);
+                    logSnap.forEach(l => {
+                        let lData = l.data();
+                        member.recentLogs.push({ topic: lData.topic, points: lData.point, desc: lData.desc, timestamp: lData.timestamp });
+                    });
+                    
+                    // เรียงตามเวลาใหม่สุดโชว์ก่อน (จำกัดแค่ 3 รายการล่าสุดเพื่อไม่ให้ล้นการ์ด)
+                    member.recentLogs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+                    member.recentLogs = member.recentLogs.slice(0, 3);
+                    
+                    TEAM.push(member);
+                }
+            }
+
+            // 🌟 2. ดึงประวัติคะแนนของตัวเอง (My Entries)
+            MY_ENTRIES = [];
+            const myLogQ = query(collection(db, "performance_logs"), where("empId", "==", empData.empId)); 
+            const myLogSnap = await getDocs(myLogQ);
+            
+            myLogSnap.forEach(lSnap => {
+                let lData = lSnap.data();
+                MY_ENTRIES.push({ logId: lSnap.id, topic: lData.topic, point: lData.point, desc: lData.desc, timestamp: lData.timestamp });
+            });
+            MY_ENTRIES.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            if(MY_ENTRIES.length === 0) {
+                MY_ENTRIES.push({topic:'ยังไม่มีประวัติคะแนน', point:0, desc:'เมื่อคุณได้รับคะแนนหรือถูกหักคะแนน ประวัติจะแสดงที่นี่'});
+            }
+
+            // 🌟 3. เซ็ต Session 
+            session.loggedIn = true;
+            session.role = isManager ? 'manager' : 'staff';
+            session.empId = empData.empId;
+            session.name = empData.name || user.displayName;
+            session.position = empData.position || (isManager ? 'Manager' : 'Officer');
+            session.balance = empData.pointBalance !== undefined ? empData.pointBalance : 100;
+            session.seed = empData.empId;
+            profileImages.me = empData.photoURL || null;
+
+            // อัปเดต UI 
+            document.getElementById('header-name').textContent = session.name;
+            document.getElementById('header-role').textContent = isManager ? 'Line Manager' : 'AllStar';
+            document.getElementById('header-avatar').src = profileImages.me || avatarUrl(session.seed);
+
+            buildTabBars();
+            document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+            document.getElementById('scr-app').classList.add('active');
+            window.scrollTo(0,0);
+            window.switchTab('my-performance', true);
+            
+        } catch (error) {
+            console.error(error);
+            alert("เกิดข้อผิดพลาดในการดึงข้อมูล: " + error.message);
+        }
+    } else {
+        session.loggedIn = false;
+        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+        document.getElementById('scr-login').classList.add('active');
+    }
+});
+
+window.handleGoogleSignIn = async () => {
+    try { await signInWithPopup(auth, provider); } 
+    catch (err) { console.error(err); alert("Login failed: " + err.message); }
+};
+
+window.handleLogout = async () => {
+    try { await signOut(auth); } catch (err) { console.error(err); }
+};
+
+/* =========================================================================
+   UI FUNCTIONS (Bound to Window)
+   ========================================================================= */
+
+function buildTabBars(){
+  const tabs = TABS[session.role];
+  const desktop = document.getElementById('tabbar-desktop');
+  const mobile = document.getElementById('tabbar-mobile');
+  
+  desktop.innerHTML = '<span class="tab-indicator" id="tab-indicator"></span>' + tabs.map(t=>`
+    <button class="tab-btn" data-tab="${t.id}" onclick="switchTab('${t.id}')">
+      <span>${t.en}</span><span class="th-sub">${t.th}</span>
+    </button>`).join('');
+    
+  mobile.innerHTML = tabs.map(t=>`
+    <button class="tab-btn" data-tab="${t.id}" onclick="switchTab('${t.id}')">
+      <span class="ic">${t.ic}</span><span>${t.en}</span>
+    </button>`).join('');
+}
+
+window.switchTab = function(id, skipValidation){
+  if(!skipValidation && currentTabId==='my-learning' && id!=='my-learning'){
+    if(!window.validateLearningSelection()) return;
+  }
+  currentTabId = id;
+  const isTab = TABS[session.role].some(t=>t.id===id);
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    b.classList.toggle('active', isTab && b.dataset.tab===id);
+  });
+  
+  const indicator = document.getElementById('tab-indicator');
+  const activeBtn = document.querySelector('.tabbar-desktop .tab-btn.active');
+  if(indicator && activeBtn) {
+    indicator.style.left = activeBtn.offsetLeft + 'px';
+    indicator.style.width = activeBtn.offsetWidth + 'px';
+  }
+  window.showContent(id);
+};
+
+window.addEventListener('resize', () => {
+  const indicator = document.getElementById('tab-indicator');
+  const activeBtn = document.querySelector('.tabbar-desktop .tab-btn.active');
+  if(indicator && activeBtn) {
+    indicator.style.left = activeBtn.offsetLeft + 'px';
+    indicator.style.width = activeBtn.offsetWidth + 'px';
+  }
+});
+
+window.showContent = function(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active','entering'));
+  const next = document.getElementById('panel-'+id);
+  if(!next) return;
+  next.classList.add('active','entering');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>next.classList.remove('entering')));
+  window.closeModal();
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  if(id==='my-performance') window.renderMyPerformance();
+  if(id==='my-learning') window.renderMyLearning();
+  if(id==='team-performance') window.renderPerfGrid(1);
+  if(id==='team-learning') window.renderLearnRows();
+};
+
+let toastTimer = null;
+window.showToast = function(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3400);
+};
+
+window.validateLearningSelection = function(){
+  const selectiveKeys = COMPETENCIES.filter(c=>c.type==='selective').map(c=>c.key);
+  const anySelected = selectiveKeys.some(k=>session.selections[k]);
+  if(!anySelected && selectiveKeys.length > 0){
+    window.showToast('Select at least 1 competency (selective) to continue · กรุณาเลือกอย่างน้อย 1 สมรรถนะ (Selective)');
+    return false;
+  }
+  return true;
+};
+
+// 🌟 MY PERFORMANCE
+window.renderMyPerformance = function(){
+  document.getElementById('me-photo').src = profileImages.me || avatarUrl(session.seed);
+  document.getElementById('me-name').textContent = session.name;
+  document.getElementById('me-role').textContent = session.position;
+  document.getElementById('me-balance').textContent = session.balance;
+  document.getElementById('my-perf-list').innerHTML = MY_ENTRIES.map(e=>`
+    <div class="entry-card">
+      <div class="fade-entry-top">
+        <div class="col"><div class="fade-colname">Topic | หัวเรื่อง</div><div class="fade-topic ${e.point>=0?'g':'r'}">${escapeHtml(e.topic)}</div></div>
+        <div class="fade-point ${e.point>=0?'g':'r'}">${e.point>=0?'+':''}${e.point}</div>
+      </div>
+      <div class="fade-desc"><div class="fade-colname">Description | คำอธิบาย</div>${escapeHtml(e.desc)}</div>
+    </div>`).join('');
+};
+
+// 🌟 UPLOAD PROFILE PICTURE 
+window.handleProfileUpload = async function(evt){
+  const f = evt.target.files[0];
+  if(!f) return;
+  
+  const avatarImg = document.getElementById('me-photo');
+  avatarImg.style.opacity = '0.5';
+  window.showToast("กำลังอัปโหลดรูปภาพ... รอสักครู่");
+
+  try {
+      const storageRef = ref(storage, `profile_images/${session.empId}`);
+      await uploadBytes(storageRef, f);
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      await updateDoc(doc(db, "employees", session.empId), { photoURL: downloadURL });
+
+      profileImages.me = downloadURL;
+      avatarImg.src = downloadURL;
+      const topAvatar = document.getElementById('header-avatar');
+      if(topAvatar) topAvatar.src = downloadURL;
+      
+      window.showToast("อัปเดตรูปโปรไฟล์สำเร็จ!");
+  } catch (error) {
+      console.error(error);
+      alert("อัปโหลดไม่สำเร็จ: " + error.message);
+  } finally {
+      avatarImg.style.opacity = '1';
+  }
+};
+
+// 🌟 MY LEARNING
+window.renderMyLearning = function(){
+  const sel = COMPETENCIES.filter(c=>c.type==='selective');
+  const man = COMPETENCIES.filter(c=>c.type==='mandatory');
+  document.getElementById('mylearn-selective').innerHTML = sel.map(c=>{
+    const active = !!session.selections[c.key];
+    return `<button class="goal-card green ${active?'selected':''}" onclick="openCompetency('${c.key}', true, 'me')">
+      <div class="tag">${c.tag}</div><div class="th-name">${c.th}</div><div class="en-name">${c.en}</div>
+      <div class="desc">${c.desc.slice(0,90)}…</div><div class="arrow">↘</div>
+    </button>`;
+  }).join('');
+  document.getElementById('mylearn-mandatory').innerHTML = man.map(c=>`
+    <button class="goal-card blue" onclick="openCompetency('${c.key}', true, 'me')">
+      <div class="tag">${c.tag}</div><div class="th-name">${c.th}</div><div class="en-name">${c.en}</div>
+      <div class="desc">${c.desc.slice(0,90)}…</div><div class="arrow">↘</div>
+    </button>`).join('');
+};
+
+// 🌟 TEAM PERFORMANCE (Manager)
+window.renderPerfGrid = function(page){
+  document.querySelectorAll('#panel-team-performance .pager button').forEach((b,i)=>b.classList.toggle('active', i===page-1));
+  const grid = document.getElementById('perf-grid');
+  
+  if (TEAM.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#9aa0ae;padding:60px 0;">ไม่มีลูกน้องในทีม · No team members found</div>';
+      return;
+  }
+  if(page===2){ grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#9aa0ae;padding:60px 0;">ไม่มีสมาชิกเพิ่มเติม · No more team members</div>'; return; }
+  
+  grid.innerHTML = TEAM.map((m,i)=>{
+    // ใช้ m.recentLogs ของจริง แทนที่ ENTRY_META จำลอง
+    let logsHtml = m.recentLogs.length > 0 
+        ? m.recentLogs.map(e=>`<span class="entry-item ${e.points>=0?'g':'r'}" data-desc="${escapeAttr(e.desc)}" data-points="${e.points}">${escapeHtml(e.topic)}</span>`).join('') 
+        : '<span style="color:#9aa0ae; font-size:11px;">ยังไม่มีประวัติ</span>';
+
+    return `
+    <div class="member-card">
+      <div class="member-top">
+        <img class="member-photo" src="${m.photoURL || avatarUrl(m.seed)}" alt="">
+        <div class="member-name">${m.name}</div>
+      </div>
+      <div class="member-stats">
+        <div class="stat"><div class="balance-pill">${m.balance}</div><div class="label-en">Balance</div><div class="label-th">ยอดคงเหลือ</div></div>
+        <div class="stat"><button class="round-btn blue" onclick="openJustification(${i})">★</button><div class="label-en">Point</div><div class="label-th">ให้คะแนน</div></div>
+        <div class="stat"><button class="round-btn blue-lt" onclick="openEdit(${i})">✎</button><div class="label-en">Edit</div><div class="label-th">แก้ไข</div></div>
+      </div>
+      <div class="entry-list">
+        ${logsHtml}
+      </div>
+    </div>`;
+  }).join('');
+};
+
+let currentMemberIdx = 0;
+window.openJustification = function(i){
+  currentMemberIdx = i;
+  const m = TEAM[i];
+  document.getElementById('just-photo').src = m.photoURL || avatarUrl(m.seed);
+  document.getElementById('just-name').textContent = m.name;
+  document.getElementById('just-role').textContent = m.position;
+  document.getElementById('just-balance').textContent = m.balance;
+  document.getElementById('just-topic-input').value = '';
+  document.getElementById('just-desc-input').value = '';
+  document.getElementById('just-point-input').value = 10;
+  window.updatePointBox(document.getElementById('just-point-input'));
+  window.showContent('justification');
+};
+
+window.updatePointBox = function(input){
+  const val = parseInt(input.value||'0',10);
+  input.classList.toggle('pos', val>=0);
+  input.classList.toggle('neg', val<0);
+};
+
+// 🌟 FIREBASE TRANSACTION: BIND POINT CHANGES
+window.submitJustification = async function(adjustBalance){
+  const m = TEAM[currentMemberIdx];
+  const topic = document.getElementById('just-topic-input').value.trim();
+  const desc = document.getElementById('just-desc-input').value.trim();
+  const val = parseInt(document.getElementById('just-point-input').value || '0', 10);
+  
+  if (!topic) { alert("กรุณากรอกหัวเรื่อง (Topic)"); return; }
+  if (val === 0) { alert("กรุณาใส่คะแนนที่ไม่ใช่ 0"); return; }
+
+  window.showToast("กำลังประมวลผล...");
+
+  try {
+      const empRef = doc(db, "employees", m.empId);
+      const logRef = doc(collection(db, "performance_logs")); 
+
+      await runTransaction(db, async (transaction) => {
+          const empDoc = await transaction.get(empRef);
+          if (!empDoc.exists()) throw "ไม่พบข้อมูลพนักงานท่านนี้ในระบบ!";
+
+          let currentBalance = empDoc.data().pointBalance;
+          if (currentBalance === undefined) currentBalance = 100;
+          let newBalance = currentBalance;
+          
+          if (adjustBalance) {
+              newBalance = currentBalance + val;
+              transaction.update(empRef, { pointBalance: newBalance });
+          }
+
+          transaction.set(logRef, {
+              empId: m.empId,
+              managerId: session.empId,
+              topic: topic,
+              desc: desc,
+              point: val,
+              timestamp: new Date().toISOString()
+          });
+
+          m.balance = newBalance; 
+          // อัปเดต log ใน RAM ด้วย เพื่อให้ Tooltip หน้าการ์ดเปลี่ยนตามทันที
+          m.recentLogs.unshift({ topic: topic, points: val, desc: desc, timestamp: new Date().toISOString() });
+          m.recentLogs = m.recentLogs.slice(0, 3);
+      });
+
+      window.showToast(adjustBalance ? `ปรับคะแนนลูกน้องสำเร็จ! ยอดใหม่: ${m.balance}` : 'บันทึกประวัติเรียบร้อยแล้ว');
+      window.renderPerfGrid(1); 
+      window.showContent('team-performance'); 
+
+  } catch (error) {
+      console.error("Transaction failed: ", error);
+      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล: " + error);
+  }
+};
+
+// ==========================================
+// 🌟 ระบบแก้ไขประวัติ (EDIT) เชื่อม Firebase
+// ==========================================
+window.editingIdx = null;
+
+window.openEdit = async function(i){
+  currentMemberIdx = i;
+  const m = TEAM[i];
+  
+  document.getElementById('edit-photo').src = m.photoURL || avatarUrl(m.seed);
+  document.getElementById('edit-name').textContent = m.name;
+  document.getElementById('edit-role').textContent = m.position;
+  document.getElementById('edit-balance').textContent = m.balance;
+  
+  const wrap = document.getElementById('edit-entries');
+  wrap.innerHTML = `<div style="text-align:center; padding: 40px; color:#9aa0ae;"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br>กำลังโหลดประวัติของ ${m.name}...</div>`;
+  window.showContent('edit');
+
+  try {
+      CURRENT_MEMBER_ENTRIES = [];
+      const logRef = collection(db, "performance_logs");
+      const logQ = query(logRef, where("empId", "==", m.empId)); 
+      const logSnap = await getDocs(logQ);
+      
+      logSnap.forEach(lSnap => {
+          let lData = lSnap.data();
+          CURRENT_MEMBER_ENTRIES.push({ 
+              logId: lSnap.id, 
+              topic: lData.topic, 
+              point: lData.point, 
+              sign: lData.point >= 0 ? 'g' : 'r',
+              desc: lData.desc,
+              timestamp: lData.timestamp
+          });
+      });
+      CURRENT_MEMBER_ENTRIES.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+      window.renderEditEntries();
+
+  } catch (error) {
+      wrap.innerHTML = `<div style="text-align:center; color:#e0281e; padding:40px;">ดึงข้อมูลผิดพลาด: ${error.message}</div>`;
+  }
+};
+
+window.renderEditEntries = function(){
+  const wrap = document.getElementById('edit-entries');
+  
+  if (CURRENT_MEMBER_ENTRIES.length === 0) {
+      wrap.innerHTML = `<div style="text-align:center; color:#9aa0ae; padding:40px;">ลูกน้องคนนี้ยังไม่มีประวัติให้แก้ไข</div>`;
+      return;
+  }
+
+  wrap.innerHTML = `<div class="edit-table-head"><div>Topic</div><div>Description</div><div>Point</div></div>` +
+    CURRENT_MEMBER_ENTRIES.map((e,idx)=>{
+    const editing = window.editingIdx===idx;
+    return `
+    <div class="edit-table-row" id="edit-entry-${idx}">
+      ${editing ? `
+        <div class="edit-table-editrow" style="grid-column:1/-1;">
+          <div class="fade-entry-top">
+            <div class="col"><div class="fade-colname">Topic | หัวเรื่อง</div>
+              <input class="edit-input-topic" id="edit-topic-input-${idx}" type="text" value="${escapeAttr(e.topic)}" style="width:100%;border:1px solid rgba(20,22,30,.2);border-radius:8px;padding:7px 10px;font-size:14px;font-weight:700;"></div>
+            <div><div class="fade-colname" style="text-align:right;">Point | คะแนน (ห้ามแก้)</div>
+              <input class="edit-input-point" id="edit-point-input-${idx}" type="number" value="${e.point}" disabled style="width:100px;border:1px solid rgba(20,22,30,.2);border-radius:8px;padding:7px 10px;font-size:15px;font-weight:800;text-align:right; background:#e3e6ec; color:#8b90a0; cursor:not-allowed;"></div>
+          </div>
+          <div class="fade-desc"><div class="fade-colname">Description | คำอธิบาย</div>
+            <textarea id="edit-desc-input-${idx}" rows="3" style="width:100%;border:1px solid rgba(20,22,30,.2);border-radius:8px;padding:8px 10px;font-size:13px;line-height:1.6;">${escapeHtml(e.desc)}</textarea></div>
+          <div class="edit-actions" style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+            <button class="btn-chip gray" onclick="editingIdx=null;renderEditEntries();">ยกเลิก</button>
+            <button class="btn-chip blue" onclick="saveEditFull(${idx})">✎ บันทึกการแก้ไข</button>
+          </div>
+        </div>
+      ` : `
+        <button class="edit-table-topic ${e.sign}" onclick="editingIdx=${idx};renderEditEntries();">${escapeHtml(e.topic)}</button>
+        <div class="edit-table-desc">${escapeHtml(e.desc)}</div>
+        <div class="edit-table-point">${e.point>=0?'+':''}${e.point}</div>
+      `}
+    </div>`;
+  }).join('');
+};
+
+window.saveEditFull = async function(idx){
+  const newTopic = document.getElementById(`edit-topic-input-${idx}`).value.trim();
+  const newDesc = document.getElementById(`edit-desc-input-${idx}`).value.trim();
+  const targetLog = CURRENT_MEMBER_ENTRIES[idx];
+
+  try {
+      window.showToast("กำลังบันทึกข้อมูล...");
+      const logDocRef = doc(db, "performance_logs", targetLog.logId);
+      await updateDoc(logDocRef, { topic: newTopic, desc: newDesc });
+      
+      CURRENT_MEMBER_ENTRIES[idx].topic = newTopic;
+      CURRENT_MEMBER_ENTRIES[idx].desc = newDesc;
+      window.editingIdx = null;
+      window.renderEditEntries();
+      
+      // Update local team cache for Tooltip
+      const m = TEAM[currentMemberIdx];
+      let logIndex = m.recentLogs.findIndex(l => l.timestamp === targetLog.timestamp);
+      if(logIndex !== -1){
+          m.recentLogs[logIndex].topic = newTopic;
+          m.recentLogs[logIndex].desc = newDesc;
+          window.renderPerfGrid(1); 
+      }
+      
+      window.showToast("บันทึกการแก้ไขเรียบร้อยแล้ว");
+
+  } catch (error) {
+      console.error(error);
+      alert("บันทึกผิดพลาด: " + error.message);
+  }
+};
+
+// 🌟 TEAM LEARNING
+window.renderLearnRows = function(){
+  const wrap = document.getElementById('learn-rows');
+  if (TEAM.length === 0) {
+      wrap.innerHTML = '<div style="text-align:center;color:#9aa0ae;padding:60px 0;">ไม่มีลูกน้องในทีม · No team members found</div>';
+      return;
+  }
+  wrap.innerHTML = TEAM.map(m=>{
+    const chips = COMPETENCIES.map(c=>{
+      const isMandatory = c.type==='mandatory';
+      const active = isMandatory || !!m.selections[c.key];
+      const cls = isMandatory ? 'plus' : (active ? 'on' : 'off');
+      return `<button class="comp-chip ${cls}" onclick="openCompetency('${c.key}', false, '${m.seed}')">
+        <span class="en">${c.tag}</span>${c.th.slice(0,26)}…<span class="arrow">↘</span>
+      </button>`;
+    }).join('');
+    return `<div class="lteam-block">
+      <div class="lteam-row">
+        <div class="lteam-head"><img src="${m.photoURL || avatarUrl(m.seed)}" alt=""><div class="lteam-name">${m.name}</div></div>
+        <div class="comp-chips">${chips}</div>
+      </div>
+    </div>`;
+  }).join('');
+};
+
+let modalCtx = null;
+let expandedActivity = null; 
+const fileState = {};
+
+window.openCompetency = function(key, interactive, scope){
+  modalCtx = {key, interactive, scope};
+  expandedActivity = null;
+  window.renderModalBody();
+  document.getElementById('modal').classList.add('active');
+};
+
+window.toggleActivity = function(i){
+  expandedActivity = (expandedActivity===i) ? null : i;
+  window.renderModalBody();
+};
+
+window.handleUpload = function(evt, i){
+  const f = evt.target.files[0];
+  if(!f) return;
+  if(!fileState[modalCtx.scope]) fileState[modalCtx.scope] = {};
+  if(!fileState[modalCtx.scope][modalCtx.key]) fileState[modalCtx.scope][modalCtx.key] = [null,null,null];
+  fileState[modalCtx.scope][modalCtx.key][i] = f.name;
+  window.renderModalBody();
+};
+
+window.setOutcomeFor = function(scope, key, text){
+  if(scope==='me'){ session.outcomeNotes[key] = text; return; }
+  const m = TEAM.find(t=>t.seed===scope);
+  if(m) m.outcomeNotes[key] = text;
+};
+
+window.renderModalBody = function(){
+  const {key, interactive, scope} = modalCtx;
+  const c = COMPETENCIES.find(x=>x.key===key);
+  const isMandatory = c.type==='mandatory';
+  const isSelected = isMandatory || (scope==='me' ? !!session.selections[key] : (TEAM.find(t=>t.seed===scope)?.selections[key]));
+  const progressState = isSelected ? 'progress' : 'not';
+  const files = fileState[scope]?.[key] || [null,null,null];
+
+  const body = document.getElementById('modal-body');
+  body.classList.toggle('blue', c.type==='mandatory');
+  body.innerHTML = `
+    <div class="tag">${c.tag}</div><h2>${c.th}</h2><h3>${c.en}</h3><div class="desc">${c.desc}</div>
+    <div class="section-label">Activity | ช่องทางการเรียนรู้</div>
+    ${c.activities.map((a,i)=>{
+      const expanded = expandedActivity===i;
+      const fname = files[i];
+      return `
+      <div class="activity-item">
+        <div class="activity-row" onclick="toggleActivity(${i})">
+          <div class="title">🖥️ ${a[0]}</div>
+          <div class="activity-provider">โดย ${a[1]} <span class="chevron">${expanded?'▲':'▾'}</span></div>
+        </div>
+        ${expanded ? `
+          <div class="activity-detail">
+            <div class="detail-label">สถานะใบรับรอง | Certificate status</div>
+            <div class="file-status ${fname?'uploaded':''}">${fname ? '📄 '+escapeHtml(fname) : 'No File Uploaded'}</div>
+            ${interactive ? `
+              <label class="cert-upload">⭱ Upload certificate
+                <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, ${i})">
+              </label>
+            ` : ''}
+          </div>` : ''}
+      </div>`;
+    }).join('')}
+    <div class="progress-row" style="margin-top:20px;">
+      <div>
+        <div class="section-label" style="margin:0 0 8px;">Progress | การดำเนินการ</div>
+        <button class="pill-status ${progressState}">${progressState==='progress' ? 'In Progress กำลังเรียนรู้ ▶' : 'Not Selected'}</button>
+      </div>
+      ${interactive
+        ? (isMandatory ? `<button class="btn-select" disabled style="opacity:.6;">🔒 Locked</button>` : `<button class="btn-select ${isSelected?'selected':''}" onclick="toggleSelection('${key}')">${isSelected ? '✓ Selected (แตะเพื่อยกเลิก)' : 'Select'}</button>`)
+        : `<button class="btn-back-dark" onclick="closeModal()">Back</button>`
+      }
+    </div>
+  `;
+};
+
+window.toggleSelection = function(key){
+  const c = COMPETENCIES.find(x=>x.key===key);
+  if(c.type==='mandatory') return;
+  session.selections[key] = !session.selections[key];
+  window.renderModalBody();
+  window.renderMyLearning();
+};
+
+window.closeModal = function(){ document.getElementById('modal').classList.remove('active'); modalCtx=null; };
+document.getElementById('modal').addEventListener('click', (e)=>{ if(e.target.id==='modal') window.closeModal(); });
+
+const entryTip = document.getElementById('entry-tooltip');
+function positionEntryTip(clientX, clientY){
+  let x = clientX + 14, y = clientY + 14;
+  if(x + 200 > window.innerWidth - 10) x = clientX - 200 - 14;
+  if(y + 50 > window.innerHeight - 10) y = clientY - 50 - 14;
+  entryTip.style.left = Math.max(x, 8) + 'px';
+  entryTip.style.top = y + 'px';
+}
+document.addEventListener('mouseover', (e)=>{
+  const el = e.target.closest('.entry-item');
+  if(!el) return;
+  const pts = parseInt(el.dataset.points, 10);
+  entryTip.innerHTML = `<div class="tip-desc">${escapeHtml(el.dataset.desc)}</div><div class="tip-points ${pts>=0?'g':'r'}">${pts>0?'+':''}${pts} pts</div>`;
+  entryTip.classList.add('show');
+  positionEntryTip(e.clientX, e.clientY);
+});
+document.addEventListener('mousemove', (e)=>{ if(entryTip.classList.contains('show')) positionEntryTip(e.clientX, e.clientY); });
+document.addEventListener('mouseout', (e)=>{ if(e.target.closest('.entry-item')) entryTip.classList.remove('show'); });
+
+renderLogos();
+</script>
+</body>
+</html>
