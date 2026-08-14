@@ -68,6 +68,10 @@
   .google-btn:hover{box-shadow:0 4px 14px rgba(60,64,67,.18);transform:translateY(-1px);}
   .login-hint{margin-top:10px;font-size:12px;color:#9aa0ae;}
 
+  .demo-toggle{margin-top:30px;display:flex;gap:8px;align-items:center;font-size:12px;color:#9aa0ae; display:none;}
+  .demo-toggle button{border:1px solid var(--gray-line);background:#fff;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:600;color:#6a6f7c;}
+  .demo-toggle button.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+
   /* ===== app shell / tab navigation ===== */
   .app-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 40px;border-bottom:1px solid var(--gray-line);position:sticky;top:0;background:#fff;z-index:40;}
   .tabbar-desktop{position:relative;display:flex;gap:4px;}
@@ -233,13 +237,35 @@
   .goal-card .desc{font-size:10.5px;color:#6b7280;margin-top:8px;line-height:1.5;}
   .goal-card .arrow{position:absolute;bottom:14px;right:16px;color:var(--blue);font-size:15px;}
 
-  /* modal */
-  .modal-overlay{position:fixed;inset:0;background:rgba(20,25,40,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
+  /* modal - Updated for Mobile scroll and centering */
+  .modal-overlay{position:fixed;inset:0;background:rgba(20,25,40,.45);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;} /* z-index up to 500 to cover mobile menu */
   .modal-overlay.active{display:flex;}
-  .modal-card{background:var(--green-tint);border-radius:26px;padding:34px 38px;max-width:640px;width:100%;max-height:88vh;overflow:auto;}
+  .modal-card{background:var(--green-tint);border-radius:26px;padding:34px 38px;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;overflow-x:hidden; position:relative;}
+  
+  /* Close Button */
+  .modal-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0,0,0,0.06);
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #5a5f6c;
+    cursor: pointer;
+    transition: background 0.2s;
+    z-index: 10;
+  }
+  .modal-close-btn:hover { background: rgba(0,0,0,0.12); color: #1c2130; }
+
   .modal-card.blue{background:var(--blue-tint);}
-  .modal-card .tag{font-size:13px;color:#5a5f6c;}
-  .modal-card h2{font-size:19px;margin:6px 0 0;color:#1c2130;}
+  .modal-card .tag{font-size:13px;color:#5a5f6c; padding-right: 30px;} /* Prevent tag from hiding under close button */
+  .modal-card h2{font-size:19px;margin:6px 0 0;color:#1c2130; padding-right: 20px;}
   .modal-card h3{font-size:19px;margin:2px 0 14px;color:#1c2130;}
   .modal-card .desc{font-size:12.5px;color:#4a4f5c;line-height:1.7;}
   .modal-card .section-label{font-size:14px;font-weight:700;margin:18px 0 10px;color:#1c2130;}
@@ -297,8 +323,10 @@
     .edit-table-row{grid-template-columns:1fr;}
     .lteam-row{flex-direction:column;align-items:stretch;}
     .comp-chips{display:grid;grid-template-columns:1fr 1fr;}
-    .modal-overlay{padding:12px;align-items:flex-end;}
-    .modal-card{padding:22px 18px;border-radius:22px 22px 0 0;max-height:92vh;}
+    
+    /* Modal mobile fixes */
+    .modal-overlay{padding:16px;align-items:center;} /* Changed from flex-end to center */
+    .modal-card{padding:34px 20px 24px;border-radius:22px;max-height:85vh;width:100%;max-width:100%;} /* Restored border radius, constrained height for scrolling */
   }
 </style>
 </head>
@@ -468,9 +496,7 @@
         </div>
         <div class="fade-panel scroll" style="max-height:520px;">
           <h2 style="margin:0 0 18px;font-size:20px;">Edit <span style="font-weight:400;color:#20232c;">แก้ไขประวัติ</span></h2>
-          <div id="edit-entries">
-              <!-- โค้ดที่เรนเดอร์ตารางแก้ไขจะมาอยู่ตรงนี้ -->
-          </div>
+          <div id="edit-entries"></div>
         </div>
         <button class="fab" onclick="showContent('team-performance')">กลับ</button>
       </div>
@@ -493,9 +519,6 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signO
 import { getFirestore, collection, query, where, getDocs, doc, updateDoc, runTransaction } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-storage.js";
 
-/* =========================================================================
-   FIREBASE CONFIGURATION
-   ========================================================================= */
 const firebaseConfig = {
   apiKey: "AIzaSyBM-mbbvUJO9iOKmIcqD2zAIulnWfmUfZU",
   authDomain: "gap-learning-plan.firebaseapp.com",
@@ -512,9 +535,6 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const provider = new GoogleAuthProvider();
 
-/* =========================================================================
-   LOGO CONFIG
-   ========================================================================= */
 let LOGO_URL = ''; 
 const LOGO_SVG_SMALL = `<svg width="26" height="17" viewBox="0 0 66 42"><defs><radialGradient id="g1s" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1s)"/><circle cx="48" cy="21" r="18" fill="url(#g1s)"/></svg>`;
 const LOGO_SVG_BIG = `<svg width="60" height="38" viewBox="0 0 66 42"><defs><radialGradient id="g1b" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1b)"/><circle cx="48" cy="21" r="18" fill="url(#g1b)"/></svg>`;
@@ -531,14 +551,11 @@ function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&gt;'); }
 function avatarUrl(seed){ return `https://api.dicebear.com/10.x/avataaars/svg?seed=${seed}&clothing=blazerAndShirt,blazerAndSweater,collarAndSweater&clothingColor=262e33,3c4f5c,65c9ff,929598,e6e6e6&accessoriesProbability=15&backgroundColor=eaf6fc,d7edf9,ffe3e1,fdeecb&radius=8`; }
 
-/* =========================================================================
-   VARIABLES & DATA 
-   ========================================================================= */
-// Competencies ยังเก็บไว้เป็น UI Static ก่อน (จนกว่าจะดึงจาก Firestore IDP ได้เต็มระบบ)
 let COMPETENCIES = [
-  {key:'c1', tag:'Competency 1', th:'ทักษะการแก้ปัญหาอย่างเป็นระบบและการตัดสินใจ', en:'Problem Solving & Decision Making', desc:'ความสามารถในการทำความเข้าใจปัญหาและหาทางแก้ไขอย่างเป็นขั้นตอน...', activities:[['Effective Problem-Solving and Decision-Making','Coursera'],['การแก้ปัญหาอย่างเป็นระบบ','CMU MOOC']], type:'selective'},
-  {key:'c2', tag:'Competency 2', th:'การประยุกต์ใช้เทคโนโลยีและดิจิทัล', en:'Tech & Digital Utilization', desc:'ความสามารถในการเรียนรู้และนำเทคโนโลยี โปรแกรม หรือเครื่องมือดิจิทัลใหม่ๆ มาประยุกต์ใช้...', activities:[['AI for Everyone','TDGA']], type:'selective'},
-  {key:'p1', tag:'Plus One', th:'การทำงานและประสานความร่วมมือข้ามสายงาน', en:'Cross-Functional Collaboration', desc:'ความสามารถในการประสานงาน แลกเปลี่ยนข้อมูล และทำงานร่วมกับแผนกอื่น...', activities:[['Cross-Team Collaboration Essentials','AirAsia NEXT']], type:'mandatory'},
+  {key:'c1', tag:'Competency 1', th:'ทักษะการแก้ปัญหาอย่างเป็นระบบและการตัดสินใจ', en:'Problem Solving & Decision Making', desc:'ความสามารถในการทำความเข้าใจปัญหาและหาทางแก้ไขอย่างเป็นขั้นตอน โดยเริ่มจากการค้นหาสาเหตุที่แท้จริง รวบรวมข้อมูล วิเคราะห์ทางเลือก และตัดสินใจเลือกวิธีจัดการที่ดีที่สุด', activities:[['Effective Problem-Solving and Decision-Making','Coursera'],['การแก้ปัญหาอย่างเป็นระบบ (Structured problem solving)','CMU MOOC']], type:'selective'},
+  {key:'c2', tag:'Competency 2', th:'การประยุกต์ใช้เทคโนโลยีและดิจิทัล', en:'Tech & Digital Utilization', desc:'ความสามารถในการเรียนรู้และนำเทคโนโลยี โปรแกรม หรือเครื่องมือดิจิทัลใหม่ๆ มาประยุกต์ใช้ในการทำงานได้อย่างคล่องแคล่ว', activities:[['AI for Everyone','TDGA']], type:'selective'},
+  {key:'c3', tag:'Competency 3', th:'ความยืดหยุ่นและการปรับตัวในการทำงาน', en:'Workplace Adaptability & Flexibility', desc:'ความสามารถในการเปิดรับและปรับตัวให้เข้ากับสไตล์การทำงานของเพื่อนร่วมงาน...', activities:[['Adaptability and Flexibility','AirAsia NEXT']], type:'selective'},
+  {key:'p1', tag:'Plus One', th:'การทำงานและประสานความร่วมมือข้ามสายงาน', en:'Cross-Functional Collaboration', desc:'ความสามารถในการประสานงาน แลกเปลี่ยนข้อมูล และทำงานร่วมกับแผนกอื่นได้อย่างไร้รอยต่อ', activities:[['Cross-Team Collaboration Essentials','AirAsia NEXT']], type:'mandatory'},
 ];
 
 let TEAM = []; 
@@ -563,10 +580,6 @@ const TABS = {
   ]
 };
 
-/* =========================================================================
-   FIREBASE AUTHENTICATION & DATA FETCHING
-   ========================================================================= */
-
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         try {
@@ -582,7 +595,6 @@ onAuthStateChanged(auth, async (user) => {
 
             const empData = querySnapshot.docs[0].data();
             
-            // 🌟 1. ดึงข้อมูลลูกน้อง (Team Members) พร้อมประวัติล่าสุดของแต่ละคน
             TEAM = [];
             const teamQ = query(empRef, where("managerId", "==", empData.empId));
             const teamSnap = await getDocs(teamQ);
@@ -602,7 +614,6 @@ onAuthStateChanged(auth, async (user) => {
                         recentLogs: []
                     };
                     
-                    // ดึงประวัติของลูกน้องแต่ละคนมาแสดงเป็น Tooltip หน้าการ์ด
                     const logQ = query(collection(db, "performance_logs"), where("empId", "==", tData.empId));
                     const logSnap = await getDocs(logQ);
                     logSnap.forEach(l => {
@@ -610,7 +621,6 @@ onAuthStateChanged(auth, async (user) => {
                         member.recentLogs.push({ topic: lData.topic, points: lData.point, desc: lData.desc, timestamp: lData.timestamp });
                     });
                     
-                    // เรียงตามเวลาใหม่สุดโชว์ก่อน (จำกัดแค่ 3 รายการล่าสุดเพื่อไม่ให้ล้นการ์ด)
                     member.recentLogs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
                     member.recentLogs = member.recentLogs.slice(0, 3);
                     
@@ -618,7 +628,6 @@ onAuthStateChanged(auth, async (user) => {
                 }
             }
 
-            // 🌟 2. ดึงประวัติคะแนนของตัวเอง (My Entries)
             MY_ENTRIES = [];
             const myLogQ = query(collection(db, "performance_logs"), where("empId", "==", empData.empId)); 
             const myLogSnap = await getDocs(myLogQ);
@@ -633,7 +642,6 @@ onAuthStateChanged(auth, async (user) => {
                 MY_ENTRIES.push({topic:'ยังไม่มีประวัติคะแนน', point:0, desc:'เมื่อคุณได้รับคะแนนหรือถูกหักคะแนน ประวัติจะแสดงที่นี่'});
             }
 
-            // 🌟 3. เซ็ต Session 
             session.loggedIn = true;
             session.role = isManager ? 'manager' : 'staff';
             session.empId = empData.empId;
@@ -643,7 +651,6 @@ onAuthStateChanged(auth, async (user) => {
             session.seed = empData.empId;
             profileImages.me = empData.photoURL || null;
 
-            // อัปเดต UI 
             document.getElementById('header-name').textContent = session.name;
             document.getElementById('header-role').textContent = isManager ? 'Line Manager' : 'AllStar';
             document.getElementById('header-avatar').src = profileImages.me || avatarUrl(session.seed);
@@ -673,10 +680,6 @@ window.handleGoogleSignIn = async () => {
 window.handleLogout = async () => {
     try { await signOut(auth); } catch (err) { console.error(err); }
 };
-
-/* =========================================================================
-   UI FUNCTIONS (Bound to Window)
-   ========================================================================= */
 
 function buildTabBars(){
   const tabs = TABS[session.role];
@@ -756,7 +759,6 @@ window.validateLearningSelection = function(){
   return true;
 };
 
-// 🌟 MY PERFORMANCE
 window.renderMyPerformance = function(){
   document.getElementById('me-photo').src = profileImages.me || avatarUrl(session.seed);
   document.getElementById('me-name').textContent = session.name;
@@ -772,7 +774,6 @@ window.renderMyPerformance = function(){
     </div>`).join('');
 };
 
-// 🌟 UPLOAD PROFILE PICTURE 
 window.handleProfileUpload = async function(evt){
   const f = evt.target.files[0];
   if(!f) return;
@@ -802,7 +803,6 @@ window.handleProfileUpload = async function(evt){
   }
 };
 
-// 🌟 MY LEARNING
 window.renderMyLearning = function(){
   const sel = COMPETENCIES.filter(c=>c.type==='selective');
   const man = COMPETENCIES.filter(c=>c.type==='mandatory');
@@ -820,7 +820,6 @@ window.renderMyLearning = function(){
     </button>`).join('');
 };
 
-// 🌟 TEAM PERFORMANCE (Manager)
 window.renderPerfGrid = function(page){
   document.querySelectorAll('#panel-team-performance .pager button').forEach((b,i)=>b.classList.toggle('active', i===page-1));
   const grid = document.getElementById('perf-grid');
@@ -832,7 +831,6 @@ window.renderPerfGrid = function(page){
   if(page===2){ grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#9aa0ae;padding:60px 0;">ไม่มีสมาชิกเพิ่มเติม · No more team members</div>'; return; }
   
   grid.innerHTML = TEAM.map((m,i)=>{
-    // ใช้ m.recentLogs ของจริง แทนที่ ENTRY_META จำลอง
     let logsHtml = m.recentLogs.length > 0 
         ? m.recentLogs.map(e=>`<span class="entry-item ${e.points>=0?'g':'r'}" data-desc="${escapeAttr(e.desc)}" data-points="${e.points}">${escapeHtml(e.topic)}</span>`).join('') 
         : '<span style="color:#9aa0ae; font-size:11px;">ยังไม่มีประวัติ</span>';
@@ -876,7 +874,6 @@ window.updatePointBox = function(input){
   input.classList.toggle('neg', val<0);
 };
 
-// 🌟 FIREBASE TRANSACTION: BIND POINT CHANGES
 window.submitJustification = async function(adjustBalance){
   const m = TEAM[currentMemberIdx];
   const topic = document.getElementById('just-topic-input').value.trim();
@@ -915,7 +912,6 @@ window.submitJustification = async function(adjustBalance){
           });
 
           m.balance = newBalance; 
-          // อัปเดต log ใน RAM ด้วย เพื่อให้ Tooltip หน้าการ์ดเปลี่ยนตามทันที
           m.recentLogs.unshift({ topic: topic, points: val, desc: desc, timestamp: new Date().toISOString() });
           m.recentLogs = m.recentLogs.slice(0, 3);
       });
@@ -930,9 +926,6 @@ window.submitJustification = async function(adjustBalance){
   }
 };
 
-// ==========================================
-// 🌟 ระบบแก้ไขประวัติ (EDIT) เชื่อม Firebase
-// ==========================================
 window.editingIdx = null;
 
 window.openEdit = async function(i){
@@ -1025,7 +1018,6 @@ window.saveEditFull = async function(idx){
       window.editingIdx = null;
       window.renderEditEntries();
       
-      // Update local team cache for Tooltip
       const m = TEAM[currentMemberIdx];
       let logIndex = m.recentLogs.findIndex(l => l.timestamp === targetLog.timestamp);
       if(logIndex !== -1){
@@ -1042,7 +1034,6 @@ window.saveEditFull = async function(idx){
   }
 };
 
-// 🌟 TEAM LEARNING
 window.renderLearnRows = function(){
   const wrap = document.getElementById('learn-rows');
   if (TEAM.length === 0) {
@@ -1109,6 +1100,7 @@ window.renderModalBody = function(){
   const body = document.getElementById('modal-body');
   body.classList.toggle('blue', c.type==='mandatory');
   body.innerHTML = `
+    <button class="modal-close-btn" onclick="window.closeModal()"><i class="fa-solid fa-xmark"></i></button>
     <div class="tag">${c.tag}</div><h2>${c.th}</h2><h3>${c.en}</h3><div class="desc">${c.desc}</div>
     <div class="section-label">Activity | ช่องทางการเรียนรู้</div>
     ${c.activities.map((a,i)=>{
@@ -1139,7 +1131,7 @@ window.renderModalBody = function(){
       </div>
       ${interactive
         ? (isMandatory ? `<button class="btn-select" disabled style="opacity:.6;">🔒 Locked</button>` : `<button class="btn-select ${isSelected?'selected':''}" onclick="toggleSelection('${key}')">${isSelected ? '✓ Selected (แตะเพื่อยกเลิก)' : 'Select'}</button>`)
-        : `<button class="btn-back-dark" onclick="closeModal()">Back</button>`
+        : `<button class="btn-back-dark" onclick="window.closeModal()">Back</button>`
       }
     </div>
   `;
