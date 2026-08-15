@@ -45,6 +45,17 @@
   .screen.center{display:none;}
   .screen.center.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
 
+  /* ===== Proxy Banner ===== */
+  .proxy-banner {
+    position: fixed; top: 0; left: 0; width: 100%; height: 40px; background: var(--red-dark); color: #fff;
+    display: none; align-items: center; justify-content: center; gap: 15px; font-size: 13px; font-weight: 700; z-index: 99999;
+    box-shadow: 0 4px 10px rgba(224,40,30,0.25);
+  }
+  .proxy-banner.active { display: flex; }
+  .proxy-btn-exit { background: #fff; color: var(--red-dark); border: none; padding: 4px 14px; border-radius: 12px; font-weight: 800; font-size: 12px; cursor: pointer; transition: transform 0.1s; }
+  .proxy-btn-exit:hover { transform: scale(1.05); }
+  body.has-proxy .app-header { top: 40px; }
+  
   /* ===== Loading Spinner ===== */
   .loader-container { text-align: center; }
   .spinner { 
@@ -76,12 +87,10 @@
   .field-input{width:100%;height:46px;border-radius:10px;border:none;background:var(--gray-input);}
   .btn-navy{background:var(--navy);color:#fff;border:none;border-radius:22px;padding:13px 40px;font-weight:700;font-size:15px;}
   .btn-navy:hover{background:var(--navy-dark);}
-  .login-cta{margin-top:30px;}
 
   .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:min(320px,100%);background:#fff;border:1px solid #dadce0;border-radius:24px;padding:12px 20px;font-weight:600;font-size:15px;color:#3c4043;margin-top:26px;transition:box-shadow .15s ease,transform .15s ease;}
   .google-btn:hover{box-shadow:0 4px 14px rgba(60,64,67,.18);transform:translateY(-1px);}
   
-  /* คำแนะนำหน้า Login */
   .login-warning {
     background: #fff8e1;
     border: 1px solid #ffe082;
@@ -98,7 +107,7 @@
   .login-warning li { margin-bottom: 6px; }
 
   /* ===== app shell ===== */
-  .app-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 40px;border-bottom:1px solid var(--gray-line);position:sticky;top:0;background:#fff;z-index:40;}
+  .app-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 40px;border-bottom:1px solid var(--gray-line);position:sticky;top:0;background:#fff;z-index:40; transition: top 0.2s;}
   .tabbar-desktop{position:relative;display:flex;gap:4px;}
   .tabbar-desktop .tab-btn{background:none;border:none;padding:10px 18px;font-weight:600;font-size:13.5px;color:#6a6f7c;border-radius:10px;position:relative;z-index:1;transition:color .2s ease,background .2s ease;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.3;}
   .tabbar-desktop .tab-btn:hover{background:#f4f5f7;}
@@ -119,18 +128,15 @@
   .tab-panel.active.entering{opacity:0;transform:translateY(8px);}
   .subscreen{padding:32px 56px 110px;position:relative;}
 
-  /* toast */
   .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-14px);background:var(--navy-dark);color:#fff;font-size:13.5px;font-weight:600;padding:13px 22px;border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.25);z-index:9999;opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;max-width:90vw;text-align:center;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
   .toast.error{background:var(--red-dark);}
   .toast.success{background:var(--green-dark);}
 
-  /* fab */
   .fab{position:fixed;bottom:30px;right:calc(50% - 624px);background:var(--blue);color:#fff;border:none;padding:11px 26px;border-radius:24px;font-weight:700;font-size:14px;box-shadow:0 6px 16px rgba(0,145,255,.35);transition:transform .15s ease;}
   .fab:hover{transform:translateY(-2px);}
   @media (max-width:1360px){.fab{right:30px;}}
 
-  /* section header */
   .page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-top:6px;margin-bottom:8px;}
   .page-title-en{font-size:15px;color:#9aa0ae;text-align:right;}
   .page-title-th{font-size:13px;color:#b7bbc6;text-align:right;}
@@ -162,8 +168,10 @@
   .entry-tooltip .tip-points{margin-top:6px;font-weight:800;font-size:13px;}
   .entry-tooltip .tip-points.g{color:#6fe39a;}
   .entry-tooltip .tip-points.r{color:#ff8f88;}
-  .pager{display:flex;justify-content:center;gap:0;margin-top:34px;}
-  .pager button{border:1px solid var(--gray-line);background:#fff;padding:9px 26px;font-weight:600;font-size:13px;color:#666;}
+  
+  /* Pagination Pager */
+  .pager{display:flex;justify-content:center;gap:0;margin-top:34px; flex-wrap: wrap;}
+  .pager button{border:1px solid var(--gray-line);background:#fff;padding:9px 26px;font-weight:600;font-size:13px;color:#666; margin-left:-1px;}
   .pager button:first-child{border-radius:20px 0 0 20px;}
   .pager button:last-child{border-radius:0 20px 20px 0;}
   .pager button.active{background:#fff;border-color:var(--blue);color:var(--blue);position:relative;z-index:1;}
@@ -215,6 +223,9 @@
   .btn-pill.red{background:var(--red);}
   .btn-pill.green{background:var(--green);}
   .btn-pill.blue{background:var(--blue);}
+
+  .btn-primary-blue{background:var(--blue);color:#fff;border:none;border-radius:20px;padding:11px 24px;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:6px;}
+  .btn-primary-blue:hover{background:var(--blue-dark);}
 
   .edit-table-head{display:grid;grid-template-columns:1fr 2fr 110px;gap:20px;font-weight:700;font-size:14px;color:#1c2130;padding-bottom:10px;border-bottom:1px solid var(--gray-line);}
   .edit-table-row{display:grid;grid-template-columns:1fr 2fr 110px;gap:20px;padding:18px 0;border-bottom:1px solid var(--gray-line);align-items:start;}
@@ -360,6 +371,13 @@
 </style>
 </head>
 <body>
+
+<!-- PROXY BANNER -->
+<div id="proxy-banner" class="proxy-banner">
+  <div>🔴 <b>PROXY MODE:</b> คุณกำลังสวมรอยเป็น <span id="proxy-target-name"></span></div>
+  <button class="proxy-btn-exit" onclick="exitProxy()">ออกจากการสวมรอย (Exit)</button>
+</div>
+
 <div id="app">
 
   <!-- LOADING SCREEN -->
@@ -403,12 +421,40 @@
           <div class="header-name" id="header-name"></div>
           <div class="header-role" id="header-role"></div>
         </div>
-        <img id="header-avatar" class="header-avatar" src="" alt="" onerror="this.onerror=null; this.src=avatarUrl();">
+        <img id="header-avatar" class="header-avatar" src="" alt="" onerror="this.onerror=null; this.src=window.avatarUrl();">
         <button class="logout-link" onclick="handleLogout()">ออกจากระบบ</button>
       </div>
     </header>
 
     <main id="tab-content">
+
+      <!-- ADMIN CONTROL -->
+      <div id="panel-admin" class="tab-panel">
+        <div class="page-header">
+          <div></div>
+          <div><div class="page-title-en">Admin Control Panel</div><div class="page-title-th">จัดการระบบ</div></div>
+        </div>
+        <div class="fade-panel" style="max-width: 600px; margin: 26px auto 0;">
+            <div style="display:flex; align-items:center; gap: 14px; margin-bottom:20px;">
+                <div style="background:var(--blue-tint-2); color:var(--blue-dark); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;">
+                    <i class="fa-solid fa-user-secret"></i>
+                </div>
+                <div>
+                    <h3 style="margin:0; font-size:18px;">Proxy User Mode</h3>
+                    <div style="font-size:12.5px; color:#5a5f6c; margin-top:2px;">ระบบสวมรอยหน้าจอ (เฉพาะผู้ดูแลระบบ)</div>
+                </div>
+            </div>
+            
+            <div class="field-group" style="width:100%; margin-top:0;">
+                <label>รหัสพนักงาน (Employee ID)</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="proxy-empid-input" class="field-input" placeholder="ระบุรหัส 7 หลัก..." style="background:#fff; border:1px solid var(--gray-line); padding:0 15px;">
+                    <button class="btn-primary-blue" onclick="startProxy()">👁️ สวมรอย (View)</button>
+                </div>
+                <div class="field-hint" style="margin-top:10px;">* เมื่อเข้าสู่โหมดสวมรอย หน้าจอของคุณจะเปลี่ยนเป็นของพนักงานคนนั้น 100% คุณสามารถทำรายการแทนได้ โดยระบบจะแอบบันทึก Log ในชื่อของคุณเสมอ</div>
+            </div>
+        </div>
+      </div>
 
       <!-- INFO -->
       <div id="panel-info" class="tab-panel">
@@ -441,7 +487,7 @@
         <div class="mini-header">
           <div class="mini-identity">
             <div class="mini-avatar-wrap">
-              <img id="me-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=avatarUrl();">
+              <img id="me-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=window.avatarUrl();">
               <label class="mini-photo-edit-btn" title="Edit photo · แก้ไขรูปภาพ">
                 <i class="fa-solid fa-camera"></i>
                 <input type="file" accept="image/png, image/jpeg, image/jpg" style="display:none" onchange="handleProfileUpload(event)">
@@ -476,7 +522,7 @@
           <div><div class="page-title-en">Your Team Members</div><div class="page-title-th">สมาชิกทีมของท่าน</div></div>
         </div>
         <div class="team-grid-wrap"><div class="members-grid" id="perf-grid"></div></div>
-        <div class="pager"><button class="active" onclick="renderPerfGrid(1)">Page 1</button><button onclick="renderPerfGrid(2)">Page 2</button></div>
+        <div class="pager" id="perf-pager"></div>
       </div>
 
       <!-- TEAM LEARNING -->
@@ -486,14 +532,14 @@
           <div><div class="page-title-en">Your Team Members</div><div class="page-title-th">สมาชิกทีมของท่าน</div></div>
         </div>
         <div id="learn-rows" style="margin-top:26px;"></div>
-        <div class="pager"><button class="active">Page 1</button><button>Page 2</button></div>
+        <div class="pager" id="learn-pager"></div>
       </div>
 
       <!-- JUSTIFICATION -->
       <div id="panel-justification" class="tab-panel subscreen" style="padding-left:0;padding-right:0;">
         <div class="mini-header" style="margin-top:0;">
           <div class="mini-identity">
-            <img id="just-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=avatarUrl();">
+            <img id="just-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=window.avatarUrl();">
             <div>
               <div class="mini-name" id="just-name"></div>
               <div class="mini-role" id="just-role">Officer</div>
@@ -538,7 +584,7 @@
       <div id="panel-edit" class="tab-panel subscreen" style="padding-left:0;padding-right:0;">
         <div class="mini-header" style="margin-top:0;">
           <div class="mini-identity">
-            <img id="edit-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=avatarUrl();">
+            <img id="edit-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=window.avatarUrl();">
             <div>
               <div class="mini-name" id="edit-name"></div>
               <div class="mini-role" id="edit-role">Officer</div>
@@ -570,10 +616,10 @@
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, doc, updateDoc, runTransaction, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-storage.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc, runTransaction, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBM-mbbvUJO9iOKmIcqD2zAIulnWfmUfZU",
@@ -591,13 +637,19 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const provider = new GoogleAuthProvider();
 
+// วาด Logo หน้า Loading & Login ทันที
+window.onload = () => {
+    renderLogos();
+    renderInfo();
+};
+
 let LOGO_URL = ''; 
 let INFO_IMAGE_URL = ''; 
 
-const LOGO_SVG_SMALL = `<svg width="26" height="17" viewBox="0 0 66 42"><defs><radialGradient id="g1s" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1s)"/><circle cx="48" cy="21" r="18" fill="url(#g1s)"/></svg>`;
-const LOGO_SVG_BIG = `<svg width="60" height="38" viewBox="0 0 66 42"><defs><radialGradient id="g1b" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1b)"/><circle cx="48" cy="21" r="18" fill="url(#g1b)"/></svg>`;
-
 function renderLogos(){
+  const LOGO_SVG_SMALL = `<svg class="logo-img" xmlns="http://www.w3.org/2000/svg" width="26" height="17" viewBox="0 0 66 42"><defs><radialGradient id="g1s" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1s)"/><circle cx="48" cy="21" r="18" fill="url(#g1s)"/></svg>`;
+  const LOGO_SVG_BIG = `<svg class="logo-img" xmlns="http://www.w3.org/2000/svg" width="60" height="38" viewBox="0 0 66 42"><defs><radialGradient id="g1b" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1b)"/><circle cx="48" cy="21" r="18" fill="url(#g1b)"/></svg>`;
+
   document.querySelectorAll('.logo-slot').forEach(el=>{
     const size = el.dataset.size;
     const markOnly = size==='mark';
@@ -609,6 +661,7 @@ function renderLogos(){
 function renderInfo(){
   const img = document.getElementById('info-image');
   const placeholder = document.getElementById('info-image-placeholder');
+  if(!img || !placeholder) return;
   if(INFO_IMAGE_URL){
     img.src = INFO_IMAGE_URL;
     img.style.display = 'block';
@@ -623,10 +676,10 @@ function renderInfo(){
 function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&gt;'); }
 
-// Base64 encoded generic user silhouette (100% reliable across browsers)
-window.avatarUrl = function(){ 
-  return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNFM0U2RUMiLz48cGF0aCBkPSJNNTAgNDlDNTYuNjI3NCA0OSA2MiA0My42Mjc0IDYyIDM3QzYyIDMwLjM3MjYgNTYuNjI3NCAyNSA1MCAyNUM0My4zNzI2IDI1ICgzOCAzMC4zNzI2IDM4IDM3QzM4IDQzLjYyNzQgNDMuMzcyNiA0OSA1MCA0OVoiIGZpbGw9IiM4QjkwQTAiLz48cGF0aCBkPSJNNTAgNTZDMzYuNzQ1MiA1NiAyNiA2Ni43NDUyIDI2IDgwVjgzSDc0VjgwQzc0IDY2Ljc0NTIgNjMuMjU0OCA1NiA1MCA1NloiIGZpbGw9IiM4QjkwQTAiLz48L3N2Zz4="; 
+function avatarUrl() {
+  return "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2Y4ZjlmYiIgLz4KICA8cGF0aCBkPSJNNzIgMzJoLTcuM2wtMy41LTUuM0M2MC40IDI1LjUgNTkuMSAyNC43IDU3LjUgMjQuN0g0Mi41Yy0xLjYgMC0yLjkuOC0zLjcgMkwzNS4zIDMySDI4Yy0zLjMgMC02IDIuNy02IDZ2MzJjMCAzLjMgMi43IDYgNiA2aDQ0YzMuMyAwIDYtMi43IDYtNlYzOGMwLTMuMy0yLjctNi02LTZ6bS0yMiAzNmMtOC4zIDAtMTUtNi43LTE1LTE1czYuNy0xNSAxNS0xNSAxNSA2LjcgMTUgMTUtNi43IDE1LTE1IDE1em0wLTI1Yy01LjUgMC0xMCA0LjUtMTAgMTBzNC41IDEwIDEwIDEwIDEwLTQuNSAxMC0xMC00LjUtMTAtMTAtMTB6IiBmaWxsPSIjYjdiYmM2Ii8+Cjwvc3ZnPg==";
 }
+window.avatarUrl = avatarUrl; 
 
 function compressImage(file, maxWidth, maxHeight, quality) {
   return new Promise((resolve, reject) => {
@@ -659,16 +712,38 @@ function compressImage(file, maxWidth, maxHeight, quality) {
   });
 }
 
-let COMPETENCIES = []; 
+function generatePagerHtml(totalItems, itemsPerPage, currentPage, renderFnName) {
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    if (totalPages <= 1) return ''; 
+    
+    let html = '';
+    for (let i = 1; i <= totalPages; i++) {
+        const activeClass = i === currentPage ? 'active' : '';
+        html += `<button class="${activeClass}" onclick="${renderFnName}(${i})">Page ${i}</button>`;
+    }
+    return html;
+}
+
+// 🌟 ตัวแปร Global ใหม่
+let ALL_COMPETENCIES = []; 
+let MATRIX_MAP = {}; 
 let TEAM = []; 
 let MY_ENTRIES = [];
 let CURRENT_MEMBER_ENTRIES = []; 
 
-let session = { loggedIn:false, role:'', empId:'', name:'', position: '', seed:'me', balance: 100, selections:{}, idpDetails:{}, outcomeNotes:{} };
+let session = { loggedIn:false, role:'', empId:'', name:'', position: '', seed:'me', balance: 100, selections:{}, idpDetails:{}, outcomeNotes:{}, realUser: null, jobCode: '' };
 let profileImages = { me:null };
 let currentTabId = 'info';
 
 const TABS = {
+  superadmin: [
+    {id:'admin',            en:'Admin Control',     th:'จัดการระบบ',        ic:'⚙️'},
+    {id:'info',            en:'Info',              th:'ข้อมูล',            ic:'ℹ️'},
+    {id:'my-performance', en:'My Performance', th:'ผลงานของฉัน', ic:'★'},
+    {id:'my-learning',    en:'My Learning',    th:'การเรียนรู้ของฉัน', ic:'🎓'},
+    {id:'team-performance', en:"Team's Performance", th:'ผลงานทีม', ic:'👥'},
+    {id:'team-learning',    en:"Team's Learning",    th:'การเรียนรู้ทีม', ic:'📘'},
+  ],
   manager: [
     {id:'info',            en:'Info',              th:'ข้อมูล',            ic:'ℹ️'},
     {id:'my-performance', en:'My Performance', th:'ผลงานของฉัน', ic:'★'},
@@ -683,6 +758,213 @@ const TABS = {
   ]
 };
 
+// 🌟 ฟังก์ชันจัดการคลังวิชารายบุคคล
+window.getCompetenciesForUser = function(jobCode, selections) {
+    let userMandatory = [];
+    let userElectives = [];
+    if (jobCode) {
+        let safeJobCode = jobCode.replace(/\//g, '_');
+        let mData = MATRIX_MAP[safeJobCode];
+        if (mData) {
+            if (Array.isArray(mData.mandatory)) userMandatory = mData.mandatory;
+            else if (mData.mandatory) userMandatory = [mData.mandatory];
+            userElectives = mData.electives || [];
+        }
+    }
+
+    const cleanStr = (s) => s ? s.toString().toLowerCase().replace(/\s+/g, '') : '';
+    const mandatoryClean = userMandatory.map(cleanStr);
+    const electivesClean = userElectives.map(cleanStr);
+
+    let userComps = [];
+    let addedComps = new Set();
+
+    ALL_COMPETENCIES.forEach(c => {
+        let isMandatory = mandatoryClean.some(m => m !== "" && c.rawName.includes(m));
+        let isElective = electivesClean.some(el => el !== "" && c.rawName.includes(el));
+        let wasPreviouslySelected = !!selections[c.key];
+
+        if (!isMandatory && !isElective && !wasPreviouslySelected) return;
+
+        let uniqueKey = cleanStr(c.en);
+        if (addedComps.has(uniqueKey)) return;
+        addedComps.add(uniqueKey);
+
+        userComps.push({
+            ...c,
+            type: isMandatory ? 'mandatory' : 'selective',
+            tag: isMandatory ? 'Mandatory (วิชาบังคับ)' : 'Selective (วิชาเลือก)'
+        });
+    });
+    return userComps;
+};
+
+window.initializeUser = async function(targetEmpId, isProxy = false) {
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('scr-loading').classList.add('active');
+
+    try {
+        // ดึงคลังข้อมูลรวมแค่รอบเดียว
+        if (ALL_COMPETENCIES.length === 0) {
+            const compSnap = await getDocs(collection(db, "competencies"));
+            compSnap.forEach(c => {
+                let data = c.data();
+                let originalName = data.competencyName || "";
+                let cleanStr = (s) => s ? s.toString().toLowerCase().replace(/\s+/g, '') : '';
+                let compClean = cleanStr(originalName);
+                let th = originalName;
+                let en = originalName;
+                if (originalName.includes('\n')) {
+                    let parts = originalName.split('\n');
+                    th = parts[0].trim();
+                    en = parts[1].trim();
+                }
+                let activities = [];
+                if (data.courses && Array.isArray(data.courses)) {
+                    activities = data.courses.map(course => [course.name, course.institute, course.link || '']);
+                }
+                ALL_COMPETENCIES.push({
+                    key: c.id, th: th, en: en, desc: data.description || '', activities: activities, rawName: compClean
+                });
+            });
+        }
+
+        if (Object.keys(MATRIX_MAP).length === 0) {
+            const matrixSnap = await getDocs(collection(db, "training_matrices"));
+            matrixSnap.forEach(d => {
+                MATRIX_MAP[d.id] = d.data();
+            });
+        }
+
+        const empDoc = await getDoc(doc(db, "employees", targetEmpId));
+        if (!empDoc.exists()) {
+            alert("ไม่พบข้อมูลพนักงานรหัส: " + targetEmpId);
+            if(isProxy) await window.initializeUser(session.realUser.empId, false);
+            else { await signOut(auth); document.getElementById('scr-login').classList.add('active'); }
+            return;
+        }
+        const empData = empDoc.data();
+
+        TEAM = [];
+        const teamQ = query(collection(db, "employees"), where("managerId", "==", targetEmpId));
+        const teamSnap = await getDocs(teamQ);
+        const isManager = !teamSnap.empty;
+
+        if (isManager) {
+            for (const docSnap of teamSnap.docs) {
+                let tData = docSnap.data();
+                let member = {
+                    empId: tData.empId,
+                    name: tData.name,
+                    position: tData.position || 'Officer',
+                    jobCode: tData.jobCode || '', // เก็บ jobCode ไว้ดึงวิชา
+                    balance: tData.pointBalance !== undefined ? tData.pointBalance : 100,
+                    seed: tData.empId, 
+                    photoURL: tData.photoURL || null,
+                    selections: {}, idpDetails: {}, outcomeNotes: {},
+                    recentLogs: []
+                };
+                
+                const logQ = query(collection(db, "performance_logs"), where("empId", "==", tData.empId));
+                const logSnap = await getDocs(logQ);
+                logSnap.forEach(l => {
+                    let lData = l.data();
+                    member.recentLogs.push({ topic: lData.topic, points: lData.point, desc: lData.desc, timestamp: lData.timestamp });
+                });
+                member.recentLogs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+                member.recentLogs = member.recentLogs.slice(0, 3);
+                
+                const teamIdpQ = query(collection(db, "idp_records"), where("empId", "==", tData.empId));
+                const teamIdpSnap = await getDocs(teamIdpQ);
+                teamIdpSnap.forEach(d => {
+                    member.selections[d.data().compKey] = true;
+                    member.idpDetails[d.data().compKey] = {
+                        status: d.data().status || 'In Progress',
+                        certs: d.data().certificates || {}
+                    };
+                });
+                TEAM.push(member);
+            }
+            // เรียงชื่อลูกน้อง ก-ฮ
+            TEAM.sort((a, b) => a.name.localeCompare(b.name, 'th'));
+        }
+        
+        MY_ENTRIES = [];
+        const myLogQ = query(collection(db, "performance_logs"), where("empId", "==", targetEmpId)); 
+        const myLogSnap = await getDocs(myLogQ);
+        myLogSnap.forEach(lSnap => {
+            let lData = lSnap.data();
+            MY_ENTRIES.push({ logId: lSnap.id, topic: lData.topic, point: lData.point, desc: lData.desc, timestamp: lData.timestamp });
+        });
+        MY_ENTRIES.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+        if(MY_ENTRIES.length === 0) {
+            MY_ENTRIES.push({topic:'ยังไม่มีประวัติคะแนน', point:0, desc:'เมื่อคุณได้รับคะแนนหรือถูกหักคะแนน ประวัติจะแสดงที่นี่'});
+        }
+
+        const myIdpQ = query(collection(db, "idp_records"), where("empId", "==", targetEmpId));
+        const myIdpSnap = await getDocs(myIdpQ);
+        let mySelections = {};
+        let myIdpDetails = {};
+        myIdpSnap.forEach(d => {
+            mySelections[d.data().compKey] = true;
+            myIdpDetails[d.data().compKey] = {
+                status: d.data().status || 'In Progress',
+                certs: d.data().certificates || {}
+            };
+        });
+
+        let realRole = empData.role || (isManager ? 'manager' : 'staff');
+        let effectiveRole = isProxy ? (isManager ? 'manager' : 'staff') : realRole;
+
+        if (!isProxy) {
+            session.realUser = { empId: empData.empId, role: realRole };
+        }
+
+        session.loggedIn = true;
+        session.role = effectiveRole;
+        session.empId = empData.empId;
+        session.name = empData.name || "Unknown User";
+        session.position = empData.position || (isManager ? 'Manager' : 'Officer');
+        session.jobCode = empData.jobCode || ''; // เก็บ jobCode ไว้ดึงวิชาตัวเอง
+        session.balance = empData.pointBalance !== undefined ? empData.pointBalance : 100;
+        session.seed = empData.empId;
+        session.selections = mySelections; 
+        session.idpDetails = myIdpDetails;
+        profileImages.me = empData.photoURL || null;
+
+        document.getElementById('header-name').textContent = session.name;
+        document.getElementById('header-role').textContent = isManager ? 'Line Manager' : 'AllStar';
+        document.getElementById('header-avatar').src = profileImages.me || avatarUrl();
+
+        const proxyBanner = document.getElementById('proxy-banner');
+        if(isProxy) {
+            document.getElementById('proxy-target-name').textContent = `${session.name} (${session.empId})`;
+            proxyBanner.classList.add('active');
+            document.body.classList.add('has-proxy');
+        } else {
+            proxyBanner.classList.remove('active');
+            document.body.classList.remove('has-proxy');
+        }
+
+        buildTabBars();
+        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+        document.getElementById('scr-app').classList.add('active');
+        window.scrollTo(0,0);
+        
+        if (isProxy) {
+            window.switchTab('my-performance', true);
+        } else {
+            window.switchTab(realRole === 'superadmin' ? 'admin' : 'info', true);
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("เกิดข้อผิดพลาดในการโหลดข้อมูล: " + error.message);
+        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+        document.getElementById('scr-login').classList.add('active');
+    }
+};
+
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         try {
@@ -691,7 +973,7 @@ onAuthStateChanged(auth, async (user) => {
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
-                alert("ไม่พบข้อมูลพนักงาน (Email: " + user.email + ") ในระบบ กรุณาติดต่อ HR");
+                alert("ไม่พบข้อมูลพนักงานในระบบ กรุณาติดต่อ HR");
                 await signOut(auth);
                 document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
                 document.getElementById('scr-login').classList.add('active');
@@ -699,156 +981,10 @@ onAuthStateChanged(auth, async (user) => {
             }
 
             const empData = querySnapshot.docs[0].data();
-            
-            TEAM = [];
-            const teamQ = query(empRef, where("managerId", "==", empData.empId));
-            const teamSnap = await getDocs(teamQ);
-            const isManager = !teamSnap.empty;
-
-            if (isManager) {
-                for (const docSnap of teamSnap.docs) {
-                    let tData = docSnap.data();
-                    let member = {
-                        empId: tData.empId,
-                        name: tData.name,
-                        position: tData.position || 'Officer',
-                        balance: tData.pointBalance !== undefined ? tData.pointBalance : 100,
-                        seed: tData.empId, 
-                        photoURL: tData.photoURL || null,
-                        selections: {}, idpDetails: {}, outcomeNotes: {},
-                        recentLogs: []
-                    };
-                    
-                    const logQ = query(collection(db, "performance_logs"), where("empId", "==", tData.empId));
-                    const logSnap = await getDocs(logQ);
-                    logSnap.forEach(l => {
-                        let lData = l.data();
-                        member.recentLogs.push({ topic: lData.topic, points: lData.point, desc: lData.desc, timestamp: lData.timestamp });
-                    });
-                    member.recentLogs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-                    member.recentLogs = member.recentLogs.slice(0, 3);
-                    
-                    const teamIdpQ = query(collection(db, "idp_records"), where("empId", "==", tData.empId));
-                    const teamIdpSnap = await getDocs(teamIdpQ);
-                    teamIdpSnap.forEach(d => {
-                        member.selections[d.data().compKey] = true;
-                        member.idpDetails[d.data().compKey] = {
-                            status: d.data().status || 'In Progress',
-                            certs: d.data().certificates || {}
-                        };
-                    });
-
-                    TEAM.push(member);
-                }
-            }
-
-            MY_ENTRIES = [];
-            const myLogQ = query(collection(db, "performance_logs"), where("empId", "==", empData.empId)); 
-            const myLogSnap = await getDocs(myLogQ);
-            myLogSnap.forEach(lSnap => {
-                let lData = lSnap.data();
-                MY_ENTRIES.push({ logId: lSnap.id, topic: lData.topic, point: lData.point, desc: lData.desc, timestamp: lData.timestamp });
-            });
-            MY_ENTRIES.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-            if(MY_ENTRIES.length === 0) {
-                MY_ENTRIES.push({topic:'ยังไม่มีประวัติคะแนน', point:0, desc:'เมื่อคุณได้รับคะแนนหรือถูกหักคะแนน ประวัติจะแสดงที่นี่'});
-            }
-
-            const myIdpQ = query(collection(db, "idp_records"), where("empId", "==", empData.empId));
-            const myIdpSnap = await getDocs(myIdpQ);
-            let mySelections = {};
-            let myIdpDetails = {};
-            myIdpSnap.forEach(d => {
-                mySelections[d.data().compKey] = true;
-                myIdpDetails[d.data().compKey] = {
-                    status: d.data().status || 'In Progress',
-                    certs: d.data().certificates || {}
-                };
-            });
-
-            let userMandatory = "";
-            let userElectives = [];
-            if (empData.jobCode) {
-                const safeJobCode = empData.jobCode.replace(/\//g, '_');
-                const matrixDocRef = doc(db, "training_matrices", safeJobCode);
-                const matrixDocSnap = await getDoc(matrixDocRef);
-                if (matrixDocSnap.exists()) {
-                    let mData = matrixDocSnap.data();
-                    userMandatory = mData.mandatory || "";
-                    userElectives = mData.electives || [];
-                }
-            }
-
-            const compSnap = await getDocs(collection(db, "competencies"));
-            if (!compSnap.empty) {
-                COMPETENCIES = [];
-                const cleanStr = (s) => s ? s.toString().toLowerCase().replace(/\s+/g, '') : '';
-                const cleanUserMandatory = cleanStr(userMandatory);
-                const addedComps = new Set(); 
-
-                compSnap.forEach(c => {
-                    let data = c.data();
-                    let originalName = data.competencyName || "";
-                    let compClean = cleanStr(originalName);
-                    
-                    let isMandatory = cleanUserMandatory !== "" && compClean.includes(cleanUserMandatory);
-                    let isElective = userElectives.some(el => compClean.includes(cleanStr(el)));
-
-                    if (!isMandatory && !isElective) return;
-
-                    let th = originalName;
-                    let en = originalName;
-                    if (originalName.includes('\n')) {
-                        let parts = originalName.split('\n');
-                        th = parts[0].trim();
-                        en = parts[1].trim();
-                    }
-                    
-                    let uniqueKey = cleanStr(en);
-                    if (addedComps.has(uniqueKey)) return;
-                    addedComps.add(uniqueKey);
-
-                    let activities = [];
-                    if (data.courses && Array.isArray(data.courses)) {
-                        activities = data.courses.map(course => [course.name, course.institute, course.link || '']);
-                    }
-                    
-                    COMPETENCIES.push({
-                        key: c.id, 
-                        tag: isMandatory ? 'Mandatory (วิชาบังคับ)' : 'Selective (วิชาเลือก)', 
-                        th: th, 
-                        en: en, 
-                        desc: data.description || '', 
-                        activities: activities, 
-                        type: isMandatory ? 'mandatory' : 'selective' 
-                    });
-                });
-            }
-
-            session.loggedIn = true;
-            session.role = isManager ? 'manager' : 'staff';
-            session.empId = empData.empId;
-            session.name = empData.name || user.displayName;
-            session.position = empData.position || (isManager ? 'Manager' : 'Officer');
-            session.balance = empData.pointBalance !== undefined ? empData.pointBalance : 100;
-            session.seed = empData.empId;
-            session.selections = mySelections; 
-            session.idpDetails = myIdpDetails;
-            profileImages.me = empData.photoURL || null;
-
-            document.getElementById('header-name').textContent = session.name;
-            document.getElementById('header-role').textContent = isManager ? 'Line Manager' : 'AllStar';
-            document.getElementById('header-avatar').src = profileImages.me || avatarUrl();
-
-            buildTabBars();
-            document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-            document.getElementById('scr-app').classList.add('active');
-            window.scrollTo(0,0);
-            window.switchTab('info', true);
+            await window.initializeUser(empData.empId, false);
             
         } catch (error) {
             console.error(error);
-            alert("เกิดข้อผิดพลาดในการดึงข้อมูล: " + error.message);
             document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
             document.getElementById('scr-login').classList.add('active');
         }
@@ -863,10 +999,10 @@ window.handleGoogleSignIn = async () => {
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     document.getElementById('scr-loading').classList.add('active');
     try { 
-        await signInWithRedirect(auth, provider); 
+        await signInWithPopup(auth, provider); 
     } catch (err) { 
         console.error(err); 
-        alert("Login failed: " + err.message); 
+        alert("การเข้าสู่ระบบถูกยกเลิก หรือเกิดข้อผิดพลาด: " + err.message); 
         document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
         document.getElementById('scr-login').classList.add('active');
     }
@@ -874,6 +1010,19 @@ window.handleGoogleSignIn = async () => {
 
 window.handleLogout = async () => {
     try { await signOut(auth); } catch (err) { console.error(err); }
+};
+
+window.startProxy = async function() {
+    const empId = document.getElementById('proxy-empid-input').value.trim();
+    if(!empId) return alert('กรุณาระบุรหัสพนักงานที่ต้องการดูข้อมูล');
+    if(empId === session.realUser.empId) return alert('นี่คือรหัสของคุณเองอยู่แล้ว!');
+    await window.initializeUser(empId, true);
+};
+
+window.exitProxy = async function() {
+    if(!session.realUser) return;
+    document.getElementById('proxy-empid-input').value = '';
+    await window.initializeUser(session.realUser.empId, false);
 };
 
 function buildTabBars(){
@@ -932,8 +1081,8 @@ window.showContent = function(id){
   if(id==='info') renderInfo();
   if(id==='my-performance') window.renderMyPerformance();
   if(id==='my-learning') window.renderMyLearning();
-  if(id==='team-performance') window.renderPerfGrid(1);
-  if(id==='team-learning') window.renderLearnRows();
+  if(id==='team-performance') window.renderPerfGrid(1); 
+  if(id==='team-learning') window.renderLearnRows(1); 
 };
 
 let toastTimer = null;
@@ -950,7 +1099,8 @@ window.showToast = function(msg, isError=false){
 };
 
 window.validateLearningSelection = function(){
-  const selectiveKeys = COMPETENCIES.filter(c=>c.type==='selective').map(c=>c.key);
+  const myComps = window.getCompetenciesForUser(session.jobCode, session.selections);
+  const selectiveKeys = myComps.filter(c=>c.type==='selective').map(c=>c.key);
   const anySelected = selectiveKeys.some(k=>session.selections[k]);
   if(!anySelected && selectiveKeys.length > 0){
     window.showToast('Select at least 1 competency (selective) to continue · กรุณาเลือกอย่างน้อย 1 สมรรถนะ (Selective)', true);
@@ -1005,8 +1155,9 @@ window.handleProfileUpload = async function(evt){
 };
 
 window.renderMyLearning = function(){
-  const sel = COMPETENCIES.filter(c=>c.type==='selective');
-  const man = COMPETENCIES.filter(c=>c.type==='mandatory');
+  const myComps = window.getCompetenciesForUser(session.jobCode, session.selections);
+  const sel = myComps.filter(c=>c.type==='selective');
+  const man = myComps.filter(c=>c.type==='mandatory');
   
   document.getElementById('mylearn-selective').innerHTML = sel.length > 0 ? sel.map(c=>{
     const active = !!session.selections[c.key];
@@ -1023,17 +1174,22 @@ window.renderMyLearning = function(){
     </button>`).join('') : '<div style="color:#8b90a0; font-size:14px;">ยังไม่มีวิชาบังคับสำหรับตำแหน่งของคุณ</div>';
 };
 
-window.renderPerfGrid = function(page){
-  document.querySelectorAll('#panel-team-performance .pager button').forEach((b,i)=>b.classList.toggle('active', i===page-1));
+window.renderPerfGrid = function(page = 1){
+  const ITEMS_PER_PAGE = 9;
   const grid = document.getElementById('perf-grid');
+  const pager = document.getElementById('perf-pager');
   
   if (TEAM.length === 0) {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#9aa0ae;padding:60px 0;">ไม่มีลูกน้องในทีม · No team members found</div>';
+      if(pager) pager.innerHTML = '';
       return;
   }
-  if(page===2){ grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#9aa0ae;padding:60px 0;">ไม่มีสมาชิกเพิ่มเติม · No more team members</div>'; return; }
   
-  grid.innerHTML = TEAM.map((m,i)=>{
+  const startIndex = (page - 1) * ITEMS_PER_PAGE;
+  const currentMembers = TEAM.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  grid.innerHTML = currentMembers.map(m => {
+    const originalIndex = TEAM.indexOf(m); 
     let logsHtml = m.recentLogs.length > 0 
         ? m.recentLogs.map(e=>`<span class="entry-item ${e.points>=0?'g':'r'}" data-desc="${escapeAttr(e.desc)}" data-points="${e.points}">${escapeHtml(e.topic)}</span>`).join('') 
         : '<span style="color:#9aa0ae; font-size:11px;">ยังไม่มีประวัติ</span>';
@@ -1046,14 +1202,16 @@ window.renderPerfGrid = function(page){
       </div>
       <div class="member-stats">
         <div class="stat"><div class="balance-pill">${m.balance}</div><div class="label-en">Balance</div><div class="label-th">ยอดคงเหลือ</div></div>
-        <div class="stat"><button class="round-btn blue" onclick="openJustification(${i})">★</button><div class="label-en">Point</div><div class="label-th">ให้คะแนน</div></div>
-        <div class="stat"><button class="round-btn blue-lt" onclick="openEdit(${i})">✎</button><div class="label-en">Edit</div><div class="label-th">แก้ไข</div></div>
+        <div class="stat"><button class="round-btn blue" onclick="openJustification(${originalIndex})">★</button><div class="label-en">Point</div><div class="label-th">ให้คะแนน</div></div>
+        <div class="stat"><button class="round-btn blue-lt" onclick="openEdit(${originalIndex})">✎</button><div class="label-en">Edit</div><div class="label-th">แก้ไข</div></div>
       </div>
       <div class="entry-list">
         ${logsHtml}
       </div>
     </div>`;
   }).join('');
+
+  if(pager) pager.innerHTML = generatePagerHtml(TEAM.length, ITEMS_PER_PAGE, page, 'renderPerfGrid');
 };
 
 let currentMemberIdx = 0;
@@ -1111,7 +1269,8 @@ window.submitJustification = async function(adjustBalance){
               topic: topic,
               desc: desc,
               point: val,
-              timestamp: new Date().toISOString()
+              timestamp: new Date().toISOString(),
+              actedBy: session.realUser.empId 
           });
 
           m.balance = newBalance; 
@@ -1237,21 +1396,41 @@ window.saveEditFull = async function(idx){
   }
 };
 
-window.renderLearnRows = function(){
+window.renderLearnRows = function(page = 1){
+  const ITEMS_PER_PAGE = 10;
   const wrap = document.getElementById('learn-rows');
+  const pager = document.getElementById('learn-pager');
+  
   if (TEAM.length === 0) {
       wrap.innerHTML = '<div style="text-align:center;color:#9aa0ae;padding:60px 0;">ไม่มีลูกน้องในทีม · No team members found</div>';
+      if(pager) pager.innerHTML = '';
       return;
   }
-  wrap.innerHTML = TEAM.map(m=>{
-    const chips = COMPETENCIES.map(c=>{
-      const isMandatory = c.type==='mandatory';
+
+  const startIndex = (page - 1) * ITEMS_PER_PAGE;
+  const currentMembers = TEAM.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  wrap.innerHTML = currentMembers.map(m => {
+    let mandatoryChips = [];
+    let selectiveChips = [];
+
+    const mComps = window.getCompetenciesForUser(m.jobCode, m.selections);
+
+    mComps.forEach(c => {
+      const isMandatory = c.type === 'mandatory';
       const active = isMandatory || !!m.selections[c.key];
       const cls = isMandatory ? 'plus' : (active ? 'on' : 'off');
-      return `<button class="comp-chip ${cls}" onclick="openCompetency('${c.key}', false, '${m.seed}')">
+      
+      const chipHtml = `<button class="comp-chip ${cls}" onclick="openCompetency('${c.key}', false, '${m.seed}')">
         <span class="en">${c.tag}</span>${c.th.slice(0,26)}…<span class="arrow">↘</span>
       </button>`;
-    }).join('');
+
+      if(isMandatory) mandatoryChips.push(chipHtml);
+      else selectiveChips.push(chipHtml);
+    });
+
+    const chips = [...mandatoryChips, ...selectiveChips].join('');
+
     return `<div class="lteam-block">
       <div class="lteam-row">
         <div class="lteam-head"><img src="${m.photoURL || avatarUrl()}" onerror="this.onerror=null; this.src=window.avatarUrl();" alt=""><div class="lteam-name">${m.name}</div></div>
@@ -1259,6 +1438,8 @@ window.renderLearnRows = function(){
       </div>
     </div>`;
   }).join('');
+
+  if(pager) pager.innerHTML = generatePagerHtml(TEAM.length, ITEMS_PER_PAGE, page, 'renderLearnRows');
 };
 
 let modalCtx = null;
@@ -1316,7 +1497,8 @@ window.handleUpload = async function(evt, i){
           certificates: {
               [i]: { url: downloadURL, name: f.name, institute: instituteName }
           },
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          actedBy: session.realUser.empId 
       }, { merge: true });
 
       if(!session.idpDetails[key]) session.idpDetails[key] = { status: 'In Progress', certs: {} };
@@ -1333,7 +1515,8 @@ window.handleUpload = async function(evt, i){
 };
 
 window.toggleSelection = async function(key){
-  const c = COMPETENCIES.find(x=>x.key===key);
+  const myComps = window.getCompetenciesForUser(session.jobCode, session.selections);
+  const c = myComps.find(x=>x.key===key);
   if(c.type==='mandatory') return; 
 
   const isCurrentlySelected = !!session.selections[key];
@@ -1361,7 +1544,8 @@ window.toggleSelection = async function(key){
               type: c.type,
               status: 'In Progress',
               certificates: {},
-              timestamp: new Date().toISOString()
+              timestamp: new Date().toISOString(),
+              actedBy: session.realUser.empId 
           });
           session.selections[key] = true;
           session.idpDetails[key] = { status: 'In Progress', certs: {} };
@@ -1378,11 +1562,24 @@ window.toggleSelection = async function(key){
 
 window.renderModalBody = function(){
   const {key, interactive, scope} = modalCtx;
-  const c = COMPETENCIES.find(x=>x.key===key);
-  const isMandatory = c.type==='mandatory';
-  const isSelected = isMandatory || (scope==='me' ? !!session.selections[key] : (TEAM.find(t=>t.seed===scope)?.selections[key]));
   
-  const details = scope === 'me' ? session.idpDetails[key] : (TEAM.find(t=>t.seed===scope)?.idpDetails[key]);
+  let mComps;
+  let details;
+  let isSelected;
+
+  if (scope === 'me') {
+      mComps = window.getCompetenciesForUser(session.jobCode, session.selections);
+      details = session.idpDetails[key];
+      isSelected = mComps.find(x=>x.key===key).type === 'mandatory' || !!session.selections[key];
+  } else {
+      const m = TEAM.find(t=>t.seed===scope);
+      mComps = window.getCompetenciesForUser(m.jobCode, m.selections);
+      details = m.idpDetails[key];
+      isSelected = mComps.find(x=>x.key===key).type === 'mandatory' || !!m.selections[key];
+  }
+
+  const c = mComps.find(x=>x.key===key);
+  const isMandatory = c.type==='mandatory';
   
   let progressState = 'not';
   let statusText = 'Not Selected';
@@ -1522,8 +1719,6 @@ document.addEventListener('mouseover', (e)=>{
 document.addEventListener('mousemove', (e)=>{ if(entryTip.classList.contains('show')) positionEntryTip(e.clientX, e.clientY); });
 document.addEventListener('mouseout', (e)=>{ if(e.target.closest('.entry-item')) entryTip.classList.remove('show'); });
 
-renderLogos();
-renderInfo();
 </script>
 </body>
 </html>
