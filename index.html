@@ -637,7 +637,6 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const provider = new GoogleAuthProvider();
 
-// วาด Logo หน้า Loading & Login ทันที
 window.onload = () => {
     renderLogos();
     renderInfo();
@@ -730,6 +729,7 @@ let MATRIX_MAP = {};
 let TEAM = []; 
 let MY_ENTRIES = [];
 let CURRENT_MEMBER_ENTRIES = []; 
+let isTeamLoaded = false; // 🌟 1. เพิ่ม Flag สำหรับการทำ Lazy Loading
 
 let session = { loggedIn:false, role:'', empId:'', name:'', position: '', seed:'me', balance: 100, selections:{}, idpDetails:{}, outcomeNotes:{}, realUser: null, jobCode: '' };
 let profileImages = { me:null };
@@ -758,7 +758,6 @@ const TABS = {
   ]
 };
 
-// 🌟 ฟังก์ชันจัดการคลังวิชารายบุคคล
 window.getCompetenciesForUser = function(jobCode, selections) {
     let userMandatory = [];
     let userElectives = [];
@@ -768,7 +767,9 @@ window.getCompetenciesForUser = function(jobCode, selections) {
         if (mData) {
             if (Array.isArray(mData.mandatory)) userMandatory = mData.mandatory;
             else if (mData.mandatory) userMandatory = [mData.mandatory];
-            userElectives = mData.electives || [];
+            
+            if (Array.isArray(mData.electives)) userElectives = mData.electives;
+            else if (mData.electives) userElectives = [mData.electives];
         }
     }
 
@@ -781,7 +782,8 @@ window.getCompetenciesForUser = function(jobCode, selections) {
 
     ALL_COMPETENCIES.forEach(c => {
         let isMandatory = mandatoryClean.some(m => m !== "" && c.rawName.includes(m));
-        let isElective = electivesClean.some(el => el !== "" && c.rawName.includes(el));
+        // ถ้าเป็น Mandatory แล้ว ไม่ต้องนำมาคิดเป็น Selective อีก แม้จะมีข้อมูลซ้ำใน Sheet
+        let isElective = !isMandatory && electivesClean.some(el => el !== "" && c.rawName.includes(el));
         let wasPreviouslySelected = !!selections[c.key];
 
         if (!isMandatory && !isElective && !wasPreviouslySelected) return;
@@ -799,13 +801,76 @@ window.getCompetenciesForUser = function(jobCode, selections) {
     return userComps;
 };
 
+// 🌟 ฟังก์ชันใหม่สำหรับการทำ Lazy Loading (โหลดข้อมูลทีมแยกออกมา)
+window.loadTeamData = async function() {
+    try {
+        TEAM = [];
+        const teamQ = query(collection(db, "employees"), where("managerId", "==", session.empId));
+        const teamSnap = await getDocs(teamQ);
+        
+        if (!teamSnap.empty) {
+            // ใช้ Promise.all เพื่อดึงข้อมูลลูกน้องทุกคนพร้อมกัน ลดเวลาโหลด
+            const teamPromises = teamSnap.docs.map(async (docSnap) => {
+                let tData = docSnap.data();
+                let member = {
+                    empId: tData.empId,
+                    name: tData.name,
+                    position: tData.position || 'Officer',
+                    jobCode: tData.jobCode || '',
+                    balance: tData.pointBalance !== undefined ? tData.pointBalance : 100,
+                    seed: tData.empId, 
+                    photoURL: tData.photoURL || null,
+                    selections: {}, idpDetails: {}, outcomeNotes: {},
+                    recentLogs: []
+                };
+                
+                const logQ = query(collection(db, "performance_logs"), where("empId", "==", tData.empId));
+                const teamIdpQ = query(collection(db, "idp_records"), where("empId", "==", tData.empId));
+                
+                const [logSnap, teamIdpSnap] = await Promise.all([getDocs(logQ), getDocs(teamIdpQ)]);
+                
+                logSnap.forEach(l => {
+                    let lData = l.data();
+                    member.recentLogs.push({ topic: lData.topic, points: lData.point, desc: lData.desc, timestamp: lData.timestamp });
+                });
+                member.recentLogs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+                member.recentLogs = member.recentLogs.slice(0, 3);
+                
+                teamIdpSnap.forEach(d => {
+                    member.selections[d.data().compKey] = true;
+                    member.idpDetails[d.data().compKey] = {
+                        status: d.data().status || 'In Progress',
+                        certs: d.data().certificates || {}
+                    };
+                });
+                return member;
+            });
+            
+            TEAM = await Promise.all(teamPromises);
+            TEAM.sort((a, b) => a.name.localeCompare(b.name, 'th'));
+        }
+        isTeamLoaded = true;
+    } catch(e) {
+        console.error("Error loading team data:", e);
+        alert("โหลดข้อมูลทีมไม่สำเร็จ: " + e.message);
+    }
+};
+
 window.initializeUser = async function(targetEmpId, isProxy = false) {
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     document.getElementById('scr-loading').classList.add('active');
+    
+    // รีเซ็ตสถานะการโหลดทีมทุกครั้งที่มีการเข้าสู่ระบบ หรือ Proxy ใหม่
+    isTeamLoaded = false;
+    TEAM = []; 
 
     try {
-        // ดึงคลังข้อมูลรวมแค่รอบเดียว
-        if (ALL_COMPETENCIES.length === 0) {
+        // 🛡️ 1. Caching: ตรวจสอบ Competencies ใน SessionStorage
+        const cachedComps = sessionStorage.getItem('star_competencies');
+        if (cachedComps) {
+            ALL_COMPETENCIES = JSON.parse(cachedComps);
+        } else {
+            ALL_COMPETENCIES = [];
             const compSnap = await getDocs(collection(db, "competencies"));
             compSnap.forEach(c => {
                 let data = c.data();
@@ -827,13 +892,20 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
                     key: c.id, th: th, en: en, desc: data.description || '', activities: activities, rawName: compClean
                 });
             });
+            sessionStorage.setItem('star_competencies', JSON.stringify(ALL_COMPETENCIES));
         }
 
-        if (Object.keys(MATRIX_MAP).length === 0) {
+        // 🛡️ 2. Caching: ตรวจสอบ Training Matrices ใน SessionStorage
+        const cachedMatrix = sessionStorage.getItem('star_matrices');
+        if (cachedMatrix) {
+            MATRIX_MAP = JSON.parse(cachedMatrix);
+        } else {
+            MATRIX_MAP = {};
             const matrixSnap = await getDocs(collection(db, "training_matrices"));
             matrixSnap.forEach(d => {
                 MATRIX_MAP[d.id] = d.data();
             });
+            sessionStorage.setItem('star_matrices', JSON.stringify(MATRIX_MAP));
         }
 
         const empDoc = await getDoc(doc(db, "employees", targetEmpId));
@@ -845,50 +917,8 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
         }
         const empData = empDoc.data();
 
-        TEAM = [];
-        const teamQ = query(collection(db, "employees"), where("managerId", "==", targetEmpId));
-        const teamSnap = await getDocs(teamQ);
-        const isManager = !teamSnap.empty;
+        // 🚀 เอาการโหลด TEAM ตรงนี้ออกไปแล้ว เพื่อทำ Lazy Loading 
 
-        if (isManager) {
-            for (const docSnap of teamSnap.docs) {
-                let tData = docSnap.data();
-                let member = {
-                    empId: tData.empId,
-                    name: tData.name,
-                    position: tData.position || 'Officer',
-                    jobCode: tData.jobCode || '', // เก็บ jobCode ไว้ดึงวิชา
-                    balance: tData.pointBalance !== undefined ? tData.pointBalance : 100,
-                    seed: tData.empId, 
-                    photoURL: tData.photoURL || null,
-                    selections: {}, idpDetails: {}, outcomeNotes: {},
-                    recentLogs: []
-                };
-                
-                const logQ = query(collection(db, "performance_logs"), where("empId", "==", tData.empId));
-                const logSnap = await getDocs(logQ);
-                logSnap.forEach(l => {
-                    let lData = l.data();
-                    member.recentLogs.push({ topic: lData.topic, points: lData.point, desc: lData.desc, timestamp: lData.timestamp });
-                });
-                member.recentLogs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-                member.recentLogs = member.recentLogs.slice(0, 3);
-                
-                const teamIdpQ = query(collection(db, "idp_records"), where("empId", "==", tData.empId));
-                const teamIdpSnap = await getDocs(teamIdpQ);
-                teamIdpSnap.forEach(d => {
-                    member.selections[d.data().compKey] = true;
-                    member.idpDetails[d.data().compKey] = {
-                        status: d.data().status || 'In Progress',
-                        certs: d.data().certificates || {}
-                    };
-                });
-                TEAM.push(member);
-            }
-            // เรียงชื่อลูกน้อง ก-ฮ
-            TEAM.sort((a, b) => a.name.localeCompare(b.name, 'th'));
-        }
-        
         MY_ENTRIES = [];
         const myLogQ = query(collection(db, "performance_logs"), where("empId", "==", targetEmpId)); 
         const myLogSnap = await getDocs(myLogQ);
@@ -913,6 +943,11 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
             };
         });
 
+        // 🌟 ตรวจสอบว่าพนักงานคนนี้เป็น Manager หรือไม่โดยค้นหาว่ามีใครผูก managerId เป็นเขาไหม (ทำแค่ 1 Query เบาๆ)
+        const checkManagerQ = query(collection(db, "employees"), where("managerId", "==", targetEmpId));
+        const checkManagerSnap = await getDocs(checkManagerQ);
+        const isManager = !checkManagerSnap.empty;
+
         let realRole = empData.role || (isManager ? 'manager' : 'staff');
         let effectiveRole = isProxy ? (isManager ? 'manager' : 'staff') : realRole;
 
@@ -925,7 +960,7 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
         session.empId = empData.empId;
         session.name = empData.name || "Unknown User";
         session.position = empData.position || (isManager ? 'Manager' : 'Officer');
-        session.jobCode = empData.jobCode || ''; // เก็บ jobCode ไว้ดึงวิชาตัวเอง
+        session.jobCode = empData.jobCode || '';
         session.balance = empData.pointBalance !== undefined ? empData.pointBalance : 100;
         session.seed = empData.empId;
         session.selections = mySelections; 
@@ -1042,9 +1077,11 @@ function buildTabBars(){
 }
 
 window.switchTab = function(id, skipValidation){
+  // 🌟 3. เรียกใช้ฟังก์ชันตรวจสอบเพื่อโชว์แจ้งเตือน แต่เอา return false ออกไป (ไม่บล็อกหน้าจอ)
   if(!skipValidation && currentTabId==='my-learning' && id!=='my-learning'){
-    if(!window.validateLearningSelection()) return;
+    window.validateLearningSelection(); 
   }
+  
   currentTabId = id;
   const isTab = TABS[session.role].some(t=>t.id===id);
   document.querySelectorAll('.tab-btn').forEach(b=>{
@@ -1069,7 +1106,22 @@ window.addEventListener('resize', () => {
   }
 });
 
-window.showContent = function(id){
+// 🌟 เปลี่ยนโฉม showContent ให้เป็น Async เพื่อรองรับ Loading Screen ของหน้าทีม
+window.showContent = async function(id){
+  
+  // เช็กว่ากดเข้าหน้าทีม และข้อมูลทีมยังไม่ได้โหลดใช่ไหม?
+  if ((id === 'team-performance' || id === 'team-learning') && !isTeamLoaded) {
+      document.getElementById('scr-loading').classList.add('active');
+      document.querySelector('.loading-text').textContent = "กำลังโหลดข้อมูลลูกน้อง...";
+      document.querySelector('.loading-subtext').textContent = "Fetching team members...";
+      
+      await window.loadTeamData();
+      
+      document.getElementById('scr-loading').classList.remove('active');
+      document.querySelector('.loading-text').textContent = "กำลังเข้าสู่ระบบและเตรียมข้อมูล...";
+      document.querySelector('.loading-subtext').textContent = "Preparing your dashboard";
+  }
+
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active','entering'));
   const next = document.getElementById('panel-'+id);
   if(!next) return;
@@ -1103,10 +1155,9 @@ window.validateLearningSelection = function(){
   const selectiveKeys = myComps.filter(c=>c.type==='selective').map(c=>c.key);
   const anySelected = selectiveKeys.some(k=>session.selections[k]);
   if(!anySelected && selectiveKeys.length > 0){
+    // แค่โชว์แจ้งเตือน แต่ไม่ return false
     window.showToast('Select at least 1 competency (selective) to continue · กรุณาเลือกอย่างน้อย 1 สมรรถนะ (Selective)', true);
-    return false;
   }
-  return true;
 };
 
 window.renderMyPerformance = function(){
@@ -1270,7 +1321,7 @@ window.submitJustification = async function(adjustBalance){
               desc: desc,
               point: val,
               timestamp: new Date().toISOString(),
-              actedBy: session.realUser.empId 
+              actedBy: session.realUser.empId // 🛡️ บันทึกตัวตนแอดมิน 
           });
 
           m.balance = newBalance; 
@@ -1373,7 +1424,13 @@ window.saveEditFull = async function(idx){
   try {
       window.showToast("กำลังบันทึกข้อมูล...");
       const logDocRef = doc(db, "performance_logs", targetLog.logId);
-      await updateDoc(logDocRef, { topic: newTopic, desc: newDesc });
+      // 🛡️ 2. บันทึกข้อมูลแอดมินที่เข้ามาแก้ (Audit)
+      await updateDoc(logDocRef, { 
+          topic: newTopic, 
+          desc: newDesc,
+          editedBy: session.realUser.empId,
+          editTimestamp: new Date().toISOString()
+      });
       
       CURRENT_MEMBER_ENTRIES[idx].topic = newTopic;
       CURRENT_MEMBER_ENTRIES[idx].desc = newDesc;
