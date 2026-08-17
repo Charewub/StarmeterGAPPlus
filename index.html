@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>StarMeter — Prototype</title>
+
+<!-- ชื่อเว็บไซต์ที่จะโชว์บนแท็บเบราว์เซอร์ -->
+<title>StarMeter</title>
+
+<!-- กำหนดข้อความเวลาแชร์ลิงก์ (Link Preview) สำหรับ LINE, Facebook, ฯลฯ -->
+<meta name="description" content="StarMeter - Training Management Center จัดการแผนพัฒนาศักยภาพรายบุคคล (IDP) ประจำปี 2026">
+<meta property="og:title" content="StarMeter">
+<meta property="og:description" content="Training Management Center ระบบจัดการแผนพัฒนาศักยภาพรายบุคคล (IDP) ประจำปี 2026 สำหรับพนักงาน">
+<meta property="og:type" content="website">
+<!-- รูปภาพเวลาแชร์ลิงก์ -->
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/gap-learning-plan.firebasestorage.app/o/logo.png?alt=media&token=0c6d0ed6-c5ea-46f2-b31a-3698d915ad56">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -663,9 +674,6 @@ window.onload = () => {
     renderInfo();
 };
 
-// ==========================================
-// 💡 ให้เอา URL โลโก้จาก Firebase มาใส่ในตัวแปร LOGO_URL ด้านล่างนี้นะครับ
-// ==========================================
 let LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/gap-learning-plan.firebasestorage.app/o/logo.png?alt=media&token=0c6d0ed6-c5ea-46f2-b31a-3698d915ad56'; 
 let INFO_IMAGE_URL = 'https://firebasestorage.googleapis.com/v0/b/gap-learning-plan.firebasestorage.app/o/logo.png?alt=media&token=0c6d0ed6-c5ea-46f2-b31a-3698d915ad56'; 
 
@@ -677,10 +685,8 @@ function renderLogos(){
     const size = el.dataset.size;
     const markOnly = size==='mark';
     
-    // ถ้าระบุ LOGO_URL มา จะใช้รูปภาพแทน SVG
     const mark = LOGO_URL ? `<img src="${LOGO_URL}" alt="StarMeter logo" class="logo-img">` : (size === 'big' ? LOGO_SVG_BIG : LOGO_SVG_SMALL);
     
-    // ซ่อน Text อัตโนมัติ ถ้าโลโก้มี Text อยู่แล้ว (มี LOGO_URL) 
     el.innerHTML = mark + (markOnly || LOGO_URL ? '' : `<span class="wordmark">StarMeter</span>`);
   });
 }
@@ -761,7 +767,7 @@ let isTransitioning = false;
 
 let session = { loggedIn:false, role:'', empId:'', name:'', position: '', seed:'me', balance: 100, selections:{}, idpDetails:{}, outcomeNotes:{}, realUser: null, jobCode: '' };
 let profileImages = { me:null };
-let currentTabId = null; // แก้ตรงนี้ให้เป็น null ครับ
+let currentTabId = null; 
 
 const TABS = {
   superadmin: [
