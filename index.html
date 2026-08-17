@@ -490,7 +490,7 @@
               </ul>
               
               <p><strong>ช่องทางการติดต่อ (How to Reach Us)</strong><br>
-              หากท่านพบปัญหาตามข้างต้น หรือมีข้อสงสัยทั่วไปเกี่ยวกับการเรียนรู้และการประเมินผลงานบนแพลตฟอร์ม สามารถส่งอีเมลถึงศูนย์บริหารการจัดการการฝึกอบรม (TMC) ได้ที่: <b>taa_learning@airasia.com</b> </p>
+              หากท่านพบปัญหาตามข้างต้น หรือมีข้อสงสัยทั่วไปเกี่ยวกับการเรียนรู้และการประเมินผลงานบนแพลตฟอร์ม สามารถส่งอีเมลถึงศูนย์บริหารการจัดการการฝึกอบรม (TMC) ได้ที่: taa_learning@airasia.com </p>
               
               <p><strong>ข้อแนะนำสำหรับการติดต่อ:</strong> เพื่อความรวดเร็วในการประสานงานและแก้ไขปัญหา กรุณาระบุข้อมูลต่อไปนี้ในอีเมลของท่าน:</p>
               <ul style="margin-top:-10px; margin-bottom:16px; padding-left:24px;">
@@ -757,11 +757,11 @@ let TEAM = [];
 let MY_ENTRIES = [];
 let CURRENT_MEMBER_ENTRIES = []; 
 let isTeamLoaded = false; 
-let isTransitioning = false; // <-- ADDED THIS
+let isTransitioning = false; 
 
 let session = { loggedIn:false, role:'', empId:'', name:'', position: '', seed:'me', balance: 100, selections:{}, idpDetails:{}, outcomeNotes:{}, realUser: null, jobCode: '' };
 let profileImages = { me:null };
-let currentTabId = 'info';
+let currentTabId = null; // แก้ตรงนี้ให้เป็น null ครับ
 
 const TABS = {
   superadmin: [
@@ -1096,7 +1096,6 @@ function buildTabBars(){
 }
 
 window.switchTab = function(id, skipValidation){
-  // 🛡️ ถ้ากำลังโหลดแอนิเมชันอยู่ หรือกดแท็บเดิมซ้ำ ให้ข้ามการทำงานไปเลย
   if(isTransitioning || currentTabId === id) return; 
 
   if(!skipValidation && currentTabId==='my-learning' && id!=='my-learning'){
@@ -1128,7 +1127,7 @@ window.addEventListener('resize', () => {
 });
 
 window.showContent = async function(id){
-  isTransitioning = true; // 🔒 ล็อกไม่ให้กดปุ่มอื่นแทรก
+  isTransitioning = true; 
 
   if ((id === 'team-performance' || id === 'team-learning') && !isTeamLoaded) {
       document.getElementById('scr-loading').classList.add('active');
@@ -1146,16 +1145,15 @@ window.showContent = async function(id){
   const next = document.getElementById('panel-'+id);
   
   if(!next) {
-      isTransitioning = false; // ปลดล็อก
+      isTransitioning = false; 
       return;
   }
   
   next.classList.add('active','entering');
   
-  // ให้เวลาเบราว์เซอร์วาดหน้าจอให้เสร็จก่อนปลดล็อก (ป้องกัน Crash)
   requestAnimationFrame(() => requestAnimationFrame(() => {
       next.classList.remove('entering');
-      setTimeout(() => { isTransitioning = false; }, 250); // 🔓 ปลดล็อกหลังจากผ่านไป 0.25 วินาที
+      setTimeout(() => { isTransitioning = false; }, 250); 
   }));
 
   window.closeModal();
