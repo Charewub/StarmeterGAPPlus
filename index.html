@@ -14,6 +14,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- 🌟 เพิ่ม SweetAlert2 Library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
   :root{
     --navy:#28344c;
@@ -303,49 +306,65 @@
   .section-label{font-size:13px; color:#1c2130; display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 8px; margin-bottom: 12px;}
   .section-label span.right { font-size:10px; color:#7a8090; font-weight: normal; }
   
-  /* Top Right Selection Button */
-  .top-right-action { position:absolute; top: 30px; right: 60px; }
-  .btn-sel-toggle { border: none; border-radius: 20px; padding: 6px 16px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-  .btn-sel-toggle.unselected { background: #d7dade; color: #fff; }
-  .btn-sel-toggle.selected { background: var(--green-select); color: #fff; }
+  /* 🌟 Top Right Selection Button (Tick box logic) */
+  .top-right-status { position:absolute; top: 30px; right: 60px; border-radius: 20px; padding: 6px 14px; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+  button.top-right-status { border: none; cursor: pointer; }
+  .top-right-status.mandatory { background: #0088FF; color: #fff; cursor: default; }
+  .top-right-status.selective-selected { background: #e6faec; color: #159440; }
+  .top-right-status.selective-unselected { background: #fdeecb; color: #c98a1f; }
+  .top-right-status.completed { background: var(--green-dark); color: #fff; } /* Override if fully complete */
 
-  /* Activity Rows */
-  .activity-item{ margin-bottom: 16px; }
-  .activity-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;cursor:pointer; background:rgba(255,255,255,0.4); padding: 12px 14px; border-radius: 12px; transition: background 0.2s;}
-  .activity-row:hover { background:rgba(255,255,255,0.7); }
+  /* 🌟 Activity Box Frame */
+  .activity-box { border: 1px solid var(--gray-line); border-radius: 12px; margin-bottom: 16px; background: #fff; overflow: hidden; transition: border-color 0.2s;}
+  .modal-card.mandatory .activity-box { border-color: #bfe0f5; }
+  .modal-card.selective .activity-box { border-color: #c8f0d2; }
+  
+  .activity-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;cursor:pointer; padding: 14px 16px; transition: background 0.2s;}
+  .activity-row:hover { background:rgba(0,0,0,0.02); }
   .activity-row .title{color:#1c2130;font-size:13px;line-height:1.4; font-weight: 600;}
   .activity-provider{font-size:12px;color:#4a4f5c;white-space:nowrap;display:flex;align-items:center;gap:6px; margin-top:4px;}
   
   /* Accordion Detail */
-  .activity-detail{padding:14px 14px 20px 30px;}
-  .cert-upload{background:none;color:#5a5f6c;border:none;padding:0;font-size:11.5px;font-weight:400;display:inline-flex;align-items:center;gap:8px;cursor:pointer;}
+  .activity-detail{padding:0 16px 20px 34px;}
+  .cert-upload{background:none;color:#5a5f6c;border:none;padding:0;font-size:11.5px;font-weight:400;display:inline-flex;align-items:center;gap:8px;cursor:pointer; margin-top:6px;}
   .cert-upload i { font-size:14px; }
-  .file-status{font-size:11.5px;font-weight:700;color:var(--blue); display:inline-flex; align-items:center; gap:6px; margin-bottom:12px;}
+  .file-status{font-size:11.5px;font-weight:700;color:var(--blue); display:inline-flex; align-items:center; gap:6px; margin-top:10px; margin-bottom:4px;}
   
   /* Reflection Textarea */
-  .reflection-box { width:100%; border:none; border-radius:12px; background:rgba(255,255,255,0.7); padding:14px; font-size:12.5px; color:#4a4f5c; resize:none; line-height:1.6; margin-top: 10px; }
+  .reflection-box { width:100%; border:1px solid var(--gray-line); border-radius:12px; background:#fafafa; padding:14px; font-size:12.5px; color:#4a4f5c; resize:none; line-height:1.6; margin-top: 14px; }
   .reflection-box:focus { outline: 1px solid var(--green-select); background:#fff; }
-  .reflection-box:disabled { background: rgba(255,255,255,0.4); cursor: not-allowed; }
+  .reflection-box:disabled { background: #f2f3f6; cursor: not-allowed; opacity:0.8;}
   
-  /* Stepper & Action inside accordion */
-  .stepper-row { display:flex; align-items:center; justify-content:space-between; margin-top:16px; flex-wrap:wrap; gap:14px; }
-  .stepper { display:flex; align-items:center; gap: 4px; }
-  .step { display:flex; flex-direction:column; align-items:center; gap:4px; font-size:9px; color:#9aa0ae; width:65px; text-align:center;}
-  .step-dot { width: 30px; height: 4px; border-radius: 2px; background: #d7dade; }
-  .step.active { color: var(--green-dark); font-weight: 600; }
-  .step.active .step-dot { background: var(--green-select); }
-  
-  .btn-acc-action { border:none; border-radius:16px; padding:8px 24px; font-weight:700; font-size:13px; color:#fff;}
+  .btn-acc-action { border:none; border-radius:16px; padding:8px 24px; font-weight:700; font-size:13px; color:#fff; margin-top: 12px; float: right;}
   .btn-acc-action.green { background: var(--green-select); }
+  .btn-acc-action.blue { background: var(--blue); }
   .btn-acc-action.yellow { background: #ffc107; color: #1c2130; }
+  .clear-float { clear: both; }
 
-  /* Mandatory Bottom Elements */
-  .progress-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:16px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 20px;}
-  .pill-status{border-radius:18px;padding:9px 24px;font-size:13px;font-weight:700;border:none;}
-  .pill-status.not{background:#d7dade;color:#8b90a0;}
-  .pill-status.progress{background:var(--blue);color:#fff;}
-  .pill-status.completed{background:var(--green-dark);color:#fff;} 
-  .btn-back-dark{background:#000;color:#fff;border:none;border-radius:20px;padding:10px 32px;font-weight:700;font-size:13px;}
+  /* 🌟 Overall Stepper Progress (Bottom of modal) */
+  .overall-stepper-container { display: flex; justify-content: flex-start; margin-top: 30px; padding-top: 20px; border-top: 1px dashed rgba(0,0,0,0.1); }
+  .stepper-bar { display: flex; gap: 8px; width: 100%; }
+  .step-pill { flex: 1; text-align: center; padding: 8px 0; border-radius: 20px; font-size: 11px; font-weight: 700; color: #8b90a0; background: #d7dade; transition: 0.3s; }
+
+  /* Mandatory Colors */
+  .stepper-bar.mandatory .step-pill.active-1 { background: #0088FF; color: #fff; }
+  .stepper-bar.mandatory .step-pill.active-2 { background: #0088FF; color: #fff; }
+  .stepper-bar.mandatory .step-pill.active-3 { background: #0366d4; color: #fff; }
+
+  /* Selective Colors */
+  .stepper-bar.selective .step-pill.active-1 { background: #e6faec; color: #159440; } 
+  .stepper-bar.selective .step-pill.active-2 { background: #2bb94a; color: #fff; }
+  .stepper-bar.selective .step-pill.active-3 { background: #06821a; color: #fff; }
+
+  /* 🌟 CSS สำหรับ Toggle Switch ในตั้งค่าระบบ */
+  .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #d7dade; transition: .3s; border-radius: 24px; }
+  .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  input:checked + .slider { background-color: var(--green-select); }
+  input:checked + .slider:before { transform: translateX(20px); }
+  .config-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px dashed var(--gray-line); }
+  .config-row:last-child { border-bottom: none; }
 
   .info-layout{display:flex;gap:56px;align-items:flex-start;margin-top:14px;}
   .info-image-col{flex:0 0 auto;width:min(440px, 42%);}
@@ -403,6 +422,7 @@
     .info-layout{flex-direction:column;gap:22px;margin-top:6px;}
     .info-image-col{width:min(320px, 72vw);margin:0 auto;}
     .info-text-col{width:100%;}
+    .top-right-status { right: 16px; top: -14px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
   }
 
   @media (max-width:900px) and (min-width:641px){
@@ -417,6 +437,8 @@
 <div class="modal-overlay" id="admin-modal" style="z-index: 999999;">
   <div class="modal-card" style="background:#fff; max-width:500px; padding:30px;">
     <button class="modal-close-btn" onclick="closeAdminModal()"><i class="fa-solid fa-xmark"></i></button>
+    
+    <!-- ระบบ Proxy เดิม -->
     <div style="display:flex; align-items:center; gap: 14px; margin-bottom:20px;">
         <div style="background:var(--blue-tint-2); color:var(--blue-dark); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;">
             <i class="fa-solid fa-user-secret"></i>
@@ -426,13 +448,27 @@
             <div style="font-size:12.5px; color:#5a5f6c; margin-top:2px;">ระบบ Proxy หน้าจอ (เฉพาะผู้ดูแลระบบ)</div>
         </div>
     </div>
-    <div class="field-group" style="width:100%; margin-top:0;">
+    <div class="field-group" style="width:100%; margin-top:0; margin-bottom:34px;">
         <label>รหัสพนักงาน (Employee ID)</label>
         <div style="display:flex; gap:10px;">
             <input type="text" id="proxy-empid-input" class="field-input" placeholder="ระบุรหัส 7 หลัก..." style="background:#f4f5f7; border:1px solid var(--gray-line); padding:0 15px;">
             <button class="btn-primary-blue" onclick="startProxy()">👁️ Proxy</button>
         </div>
         <div class="field-hint" style="margin-top:10px; line-height: 1.5;">* เมื่อเข้าสู่โหมด Proxy หน้าจอของคุณจะเปลี่ยนเป็นของพนักงานคนนั้น 100% คุณสามารถทำรายการแทนได้ โดยระบบจะแอบบันทึก Log ในชื่อของคุณเสมอ</div>
+    </div>
+
+    <!-- 🌟 ระบบ Config ใหม่ (เปิด/ปิดแท็บ และ สลับลำดับ) -->
+    <div style="display:flex; align-items:center; gap: 14px; margin-bottom:20px; padding-top:24px; border-top:1px solid var(--gray-line);">
+        <div style="background:var(--green-tint-2); color:var(--green-dark); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;">
+            <i class="fa-solid fa-toggle-on"></i>
+        </div>
+        <div>
+            <h3 style="margin:0; font-size:18px;">System Configuration</h3>
+            <div style="font-size:12.5px; color:#5a5f6c; margin-top:2px;">ตั้งค่าการแสดงผลหน้าจอหลัก (Real-time)</div>
+        </div>
+    </div>
+    <div id="admin-config-list" style="background:#f9f9fb; border:1px solid var(--gray-line); border-radius:14px; padding:0 20px;">
+        <!-- JS จะมาเติม Switch เปิด-ปิด ให้ตรงนี้ -->
     </div>
   </div>
 </div>
@@ -566,10 +602,18 @@
       <!-- MY LEARNING -->
       <div id="panel-my-learning" class="tab-panel">
         <h2 style="font-size:22px;margin:0 0 4px;">Learning <span style="font-weight:400;color:#5a5f6c;">| การเรียนรู้</span></h2>
-        <div class="goal-sub"><b>Selective</b> บังคับเลือกอย่างน้อย 1 สมรรถนะ (เลือกได้มากกว่า 1)</div>
-        <div class="goal-grid" id="mylearn-selective"></div>
-        <div class="goal-sub" style="margin-top:26px;"><b>Mandatory</b> บังคับตามตำแหน่งงานของท่าน (เริ่ม "กำลังเรียนรู้" ให้อัตโนมัติ)</div>
-        <div class="goal-grid" id="mylearn-mandatory"></div>
+        
+        <div id="my-learning-container" style="display:flex; flex-direction:column; gap:26px;">
+            <div id="section-mandatory">
+                <div class="goal-sub"><b>Mandatory</b> บังคับตามตำแหน่งงานของท่าน (เริ่ม "กำลังเรียนรู้" ให้อัตโนมัติ)</div>
+                <div class="goal-grid" id="mylearn-mandatory"></div>
+            </div>
+            <div id="section-selective">
+                <div class="goal-sub"><b>Selective</b> บังคับเลือกอย่างน้อย 1 สมรรถนะ (เลือกได้มากกว่า 1)</div>
+                <div class="goal-grid" id="mylearn-selective"></div>
+            </div>
+        </div>
+        
       </div>
 
       <!-- TEAM PERFORMANCE -->
@@ -791,6 +835,17 @@ let session = { loggedIn:false, role:'', empId:'', name:'', position: '', seed:'
 let profileImages = { me:null };
 let currentTabId = null; 
 
+let systemConfig = {
+    mandatoryFirst: true, 
+    tabs: {
+        'info': true,
+        'my-performance': true,
+        'my-learning': true,
+        'team-performance': true,
+        'team-learning': true
+    }
+};
+
 const TABS = {
   superadmin: [
     {id:'info',            en:'Info',              th:'ข้อมูล',            ic:'ℹ️'},
@@ -878,6 +933,67 @@ window.closeAdminModal = function() {
     document.getElementById('admin-modal').classList.remove('active');
 };
 
+window.renderAdminConfig = function() {
+    const list = document.getElementById('admin-config-list');
+    if(!list) return;
+    
+    const isMandatoryFirst = systemConfig.mandatoryFirst !== false; 
+    let html = `
+    <div class="config-row" style="background:#eaf6fc; padding: 14px 16px; border-radius:10px; margin: 10px 0 16px; border:1px solid var(--blue-tint-2);">
+        <div style="font-size:14px; font-weight:700; color:var(--blue-dark);">แสดงวิชาบังคับ (Mandatory) ก่อนวิชาเลือก</div>
+        <label class="switch">
+          <input type="checkbox" ${isMandatoryFirst ? 'checked' : ''} onchange="toggleTabConfig('mandatoryFirst', this.checked)">
+          <span class="slider"></span>
+        </label>
+    </div>
+    <div style="font-size:11px; font-weight:700; color:#8b90a0; margin-bottom:10px;">เปิด/ปิด การแสดงผลเมนูแท็บ</div>
+    `;
+
+    const tabsToConfig = [
+        { id: 'info', name: "Info (หน้าข้อมูล)" },
+        { id: 'my-performance', name: "My Performance (ผลงานของฉัน)" },
+        { id: 'my-learning', name: "My Learning (การเรียนรู้ของฉัน)" },
+        { id: 'team-performance', name: "Team's Performance (ผลงานทีม)" },
+        { id: 'team-learning', name: "Team's Learning (การเรียนรู้ทีม)" }
+    ];
+
+    html += tabsToConfig.map(t => {
+        const isChecked = systemConfig.tabs[t.id] !== false; 
+        return `
+        <div class="config-row">
+            <div style="font-size:14px; font-weight:600; color:#1c2130;">${t.name}</div>
+            <label class="switch">
+              <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTabConfig('${t.id}', this.checked)">
+              <span class="slider"></span>
+            </label>
+        </div>
+        `;
+    }).join('');
+    
+    list.innerHTML = html;
+};
+
+window.toggleTabConfig = async function(key, isEnabled) {
+    try {
+        if(key === 'mandatoryFirst') {
+            systemConfig.mandatoryFirst = isEnabled;
+        } else {
+            systemConfig.tabs[key] = isEnabled;
+        }
+        
+        const configDocRef = doc(db, "system", "config");
+        await setDoc(configDocRef, { tabs: systemConfig.tabs, mandatoryFirst: systemConfig.mandatoryFirst }, { merge: true });
+        
+        buildTabBars();
+        if(currentTabId === 'my-learning') window.renderMyLearning(); 
+        
+        window.showToast("บันทึกการตั้งค่าเรียบร้อย");
+    } catch(e) {
+        console.error(e);
+        Swal.fire('ข้อผิดพลาด', 'ไม่สามารถบันทึกการตั้งค่าได้: ' + e.message, 'error');
+    }
+};
+
 window.loadTeamData = async function() {
     try {
         TEAM = [];
@@ -927,7 +1043,7 @@ window.loadTeamData = async function() {
         isTeamLoaded = true;
     } catch(e) {
         console.error("Error loading team data:", e);
-        alert("โหลดข้อมูลทีมไม่สำเร็จ: " + e.message);
+        Swal.fire('ข้อผิดพลาด', 'โหลดข้อมูลทีมไม่สำเร็จ: ' + e.message, 'error');
     }
 };
 
@@ -939,6 +1055,20 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
     TEAM = []; 
 
     try {
+        try {
+            const configDocRef = doc(db, "system", "config");
+            const configDoc = await getDoc(configDocRef);
+            if (configDoc.exists()) {
+                const loadedConfig = configDoc.data();
+                if(loadedConfig.tabs) systemConfig.tabs = loadedConfig.tabs;
+                if(loadedConfig.mandatoryFirst !== undefined) systemConfig.mandatoryFirst = loadedConfig.mandatoryFirst;
+            } else {
+                await setDoc(configDocRef, systemConfig); 
+            }
+        } catch(e) {
+            console.warn("Could not load config, using defaults.", e);
+        }
+
         const cachedComps = sessionStorage.getItem('star_competencies');
         if (cachedComps) {
             ALL_COMPETENCIES = JSON.parse(cachedComps);
@@ -988,7 +1118,7 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
 
         const empDoc = await getDoc(doc(db, "employees", targetEmpId));
         if (!empDoc.exists()) {
-            alert("ไม่พบข้อมูลพนักงานรหัส: " + targetEmpId);
+            Swal.fire('ไม่พบข้อมูล', 'ไม่พบข้อมูลพนักงานรหัส: ' + targetEmpId, 'error');
             if(isProxy) await window.initializeUser(session.realUser.empId, false);
             else { await signOut(auth); document.getElementById('scr-login').classList.add('active'); }
             return;
@@ -1056,6 +1186,10 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
             document.body.classList.remove('has-proxy');
         }
 
+        if (realRole === 'superadmin' && !isProxy) {
+            window.renderAdminConfig(); 
+        }
+
         buildTabBars();
         document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
         document.getElementById('scr-app').classList.add('active');
@@ -1069,7 +1203,7 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
 
     } catch (error) {
         console.error(error);
-        alert("เกิดข้อผิดพลาดในการโหลดข้อมูล: " + error.message);
+        Swal.fire('ข้อผิดพลาด', 'เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + error.message, 'error');
         document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
         document.getElementById('scr-login').classList.add('active');
     }
@@ -1083,7 +1217,7 @@ onAuthStateChanged(auth, async (user) => {
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
-                alert("ไม่พบข้อมูลพนักงานในระบบ กรุณาติดต่อ HR");
+                Swal.fire('ข้อผิดพลาด', 'ไม่พบข้อมูลพนักงานในระบบ กรุณาติดต่อ HR', 'error');
                 await signOut(auth);
                 document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
                 document.getElementById('scr-login').classList.add('active');
@@ -1112,7 +1246,7 @@ window.handleGoogleSignIn = async () => {
         await signInWithPopup(auth, provider); 
     } catch (err) { 
         console.error(err); 
-        alert("การเข้าสู่ระบบถูกยกเลิก หรือเกิดข้อผิดพลาด: " + err.message); 
+        Swal.fire('ข้อผิดพลาด', 'การเข้าสู่ระบบถูกยกเลิก หรือเกิดข้อผิดพลาด: ' + err.message, 'error'); 
         document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
         document.getElementById('scr-login').classList.add('active');
     }
@@ -1124,8 +1258,8 @@ window.handleLogout = async () => {
 
 window.startProxy = async function() {
     const empId = document.getElementById('proxy-empid-input').value.trim();
-    if(!empId) return alert('กรุณาระบุรหัสพนักงานที่ต้องการดูข้อมูล');
-    if(empId === session.realUser.empId) return alert('นี่คือรหัสของคุณเองอยู่แล้ว!');
+    if(!empId) return Swal.fire('แจ้งเตือน', 'กรุณาระบุรหัสพนักงานที่ต้องการดูข้อมูล', 'warning');
+    if(empId === session.realUser.empId) return Swal.fire('แจ้งเตือน', 'นี่คือรหัสของคุณเองอยู่แล้ว!', 'warning');
     window.closeAdminModal();
     await window.initializeUser(empId, true);
 };
@@ -1137,7 +1271,15 @@ window.exitProxy = async function() {
 };
 
 function buildTabBars(){
-  const tabs = TABS[session.role] || TABS.staff;
+  let tabs = TABS[session.role] || TABS.staff;
+  
+  tabs = tabs.filter(t => systemConfig.tabs[t.id] !== false);
+
+  if (currentTabId && systemConfig.tabs[currentTabId] === false) {
+      if(tabs.length > 0) currentTabId = tabs[0].id;
+      window.showContent(currentTabId);
+  }
+
   const desktop = document.getElementById('tabbar-desktop');
   const mobile = document.getElementById('tabbar-mobile');
   
@@ -1150,6 +1292,15 @@ function buildTabBars(){
     <button class="tab-btn" data-tab="${t.id}" onclick="switchTab('${t.id}')">
       <span class="ic">${t.ic}</span><span>${t.en}</span>
     </button>`).join('');
+    
+  setTimeout(() => {
+      const indicator = document.getElementById('tab-indicator');
+      const activeBtn = document.querySelector(`.tabbar-desktop .tab-btn[data-tab="${currentTabId}"]`);
+      if(indicator && activeBtn) {
+        indicator.style.left = activeBtn.offsetLeft + 'px';
+        indicator.style.width = activeBtn.offsetWidth + 'px';
+      }
+  }, 50);
 }
 
 window.switchTab = function(id, skipValidation){
@@ -1159,20 +1310,27 @@ window.switchTab = function(id, skipValidation){
     window.validateLearningSelection(); 
   }
   
-  currentTabId = id;
-  const tabs = TABS[session.role] || TABS.staff;
-  const isTab = tabs.some(t=>t.id===id);
+  let tabs = TABS[session.role] || TABS.staff;
+  tabs = tabs.filter(t => systemConfig.tabs[t.id] !== false);
+  
+  let targetTab = tabs.find(t => t.id === id);
+  if (!targetTab) {
+      if(tabs.length > 0) targetTab = tabs[0];
+      else return; 
+  }
+  currentTabId = targetTab.id;
+  
   document.querySelectorAll('.tab-btn').forEach(b=>{
-    b.classList.toggle('active', isTab && b.dataset.tab===id);
+    b.classList.toggle('active', b.dataset.tab===currentTabId);
   });
   
   const indicator = document.getElementById('tab-indicator');
-  const activeBtn = document.querySelector('.tabbar-desktop .tab-btn.active');
+  const activeBtn = document.querySelector(`.tabbar-desktop .tab-btn[data-tab="${currentTabId}"]`);
   if(indicator && activeBtn) {
     indicator.style.left = activeBtn.offsetLeft + 'px';
     indicator.style.width = activeBtn.offsetWidth + 'px';
   }
-  window.showContent(id);
+  window.showContent(currentTabId);
 };
 
 window.addEventListener('resize', () => {
@@ -1285,7 +1443,7 @@ window.handleProfileUpload = async function(evt){
       window.showToast("อัปเดตรูปโปรไฟล์สำเร็จ!");
   } catch (error) {
       console.error(error);
-      alert("อัปโหลดไม่สำเร็จ: " + error.message);
+      Swal.fire('ข้อผิดพลาด', 'อัปโหลดไม่สำเร็จ: ' + error.message, 'error');
   } finally {
       avatarImg.style.opacity = '1';
   }
@@ -1295,6 +1453,10 @@ window.renderMyLearning = function(){
   const myComps = window.getCompetenciesForUser(session.jobCode, session.selections);
   const sel = myComps.filter(c=>c.type==='selective');
   const man = myComps.filter(c=>c.type==='mandatory');
+  
+  const isMandatoryFirst = systemConfig.mandatoryFirst !== false;
+  document.getElementById('section-mandatory').style.order = isMandatoryFirst ? "1" : "2";
+  document.getElementById('section-selective').style.order = isMandatoryFirst ? "2" : "1";
   
   document.getElementById('mylearn-selective').innerHTML = sel.length > 0 ? sel.map(c=>{
     const active = !!session.selections[c.key];
@@ -1390,8 +1552,8 @@ window.submitJustification = async function(adjustBalance){
   const desc = document.getElementById('just-desc-input').value.trim();
   const val = parseInt(document.getElementById('just-point-input').value || '0', 10);
   
-  if (!topic) { alert("กรุณากรอกหัวเรื่อง (Topic)"); return; }
-  if (val === 0) { alert("กรุณาใส่คะแนนที่ไม่ใช่ 0"); return; }
+  if (!topic) { Swal.fire('แจ้งเตือน', 'กรุณากรอกหัวเรื่อง (Topic)', 'warning'); return; }
+  if (val === 0) { Swal.fire('แจ้งเตือน', 'กรุณาใส่คะแนนที่ไม่ใช่ 0', 'warning'); return; }
 
   window.showToast("กำลังประมวลผล...");
 
@@ -1433,7 +1595,7 @@ window.submitJustification = async function(adjustBalance){
 
   } catch (error) {
       console.error("Transaction failed: ", error);
-      alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล: " + error);
+      Swal.fire('ข้อผิดพลาด', 'เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error, 'error');
   }
 };
 
@@ -1542,11 +1704,11 @@ window.saveEditFull = async function(idx){
           window.renderPerfGrid(1); 
       }
       
-      window.showToast("บันึกการแก้ไขเรียบร้อยแล้ว");
+      window.showToast("บันทึกการแก้ไขเรียบร้อยแล้ว");
 
   } catch (error) {
       console.error(error);
-      alert("บันทึกผิดพลาด: " + error.message);
+      Swal.fire('ข้อผิดพลาด', 'บันทึกผิดพลาด: ' + error.message, 'error');
   }
 };
 
@@ -1624,7 +1786,7 @@ window.handleUpload = async function(evt, i){
   if(!f) return;
 
   if (!f.type.match(/image.*/) && f.type !== 'application/pdf') {
-      alert('รองรับเฉพาะไฟล์ PDF และรูปภาพ (.png, .jpg, .jpeg) เท่านั้น');
+      Swal.fire('รูปแบบไฟล์ไม่ถูกต้อง', 'รองรับเฉพาะไฟล์ PDF และรูปภาพ (.png, .jpg, .jpeg) เท่านั้น', 'warning');
       return;
   }
 
@@ -1635,7 +1797,7 @@ window.handleUpload = async function(evt, i){
   if (i === 'self') {
       instituteName = document.getElementById('custom-institute-input').value.trim();
       if (!instituteName) {
-          alert('กรุณาระบุชื่อสถาบันให้เรียบร้อยก่อนแนบไฟล์');
+          Swal.fire('แจ้งเตือน', 'กรุณาระบุชื่อสถาบันให้เรียบร้อยก่อนแนบไฟล์', 'warning');
           return;
       }
   }
@@ -1674,7 +1836,7 @@ window.handleUpload = async function(evt, i){
 
   } catch (error) {
       console.error(error);
-      alert("อัปโหลดไม่สำเร็จ: " + error.message);
+      Swal.fire('ข้อผิดพลาด', 'อัปโหลดไม่สำเร็จ: ' + error.message, 'error');
   }
 };
 
@@ -1686,7 +1848,7 @@ window.saveReflectionText = async function(i) {
     if(!textarea) return;
     
     const text = textarea.value.trim();
-    if(!text) { alert("กรุณากรอกคำอธิบายผลลัพธ์ทางการเรียนรู้ก่อนบันทึก"); return; }
+    if(!text) { Swal.fire('แจ้งเตือน', 'กรุณากรอกคำอธิบายผลลัพธ์ทางการเรียนรู้ก่อนบันทึก', 'warning'); return; }
     
     window.showToast("กำลังบันทึกข้อมูล...");
 
@@ -1714,7 +1876,7 @@ window.saveReflectionText = async function(i) {
 
     } catch (error) {
         console.error(error);
-        alert("บันทึกไม่สำเร็จ: " + error.message);
+        Swal.fire('ข้อผิดพลาด', 'บันทึกไม่สำเร็จ: ' + error.message, 'error');
     }
 };
 
@@ -1724,11 +1886,22 @@ window.toggleSelection = async function(key){
   if(c.type==='mandatory') return; 
 
   const isCurrentlySelected = !!session.selections[key];
-  const confirmMsg = isCurrentlySelected 
-      ? "คุณต้องการ 'ยกเลิก' การเลือกสมรรถนะนี้ใช่หรือไม่?" 
-      : "ยืนยัน 'เลือก' สมรรถนะนี้เป็นเป้าหมายการเรียนรู้ของคุณ?";
+  
+  // 🌟 ใช้ SweetAlert แทน confirm() แบบเดิม
+  const result = await Swal.fire({
+      title: isCurrentlySelected ? 'ยกเลิกการเลือก?' : 'ยืนยันการเลือก?',
+      text: isCurrentlySelected 
+          ? "คุณต้องการ 'ยกเลิก' การเลือกสมรรถนะนี้ใช่หรือไม่?" 
+          : "ยืนยัน 'เลือก' สมรรถนะนี้เป็นเป้าหมายการเรียนรู้ของคุณ?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: isCurrentlySelected ? '#e0281e' : '#159440',
+      cancelButtonColor: '#8b90a0',
+      confirmButtonText: isCurrentlySelected ? 'ใช่, ยกเลิก' : 'ใช่, ยืนยัน',
+      cancelButtonText: 'ปิดหน้าต่าง'
+  });
 
-  if(!confirm(confirmMsg)) return;
+  if (!result.isConfirmed) return;
 
   try {
       window.showToast("กำลังบันทึกข้อมูล...");
@@ -1760,7 +1933,7 @@ window.toggleSelection = async function(key){
       window.renderMyLearning();
   } catch (error) {
       console.error(error);
-      alert("เกิดข้อผิดพลาดในการบันทึก: " + error.message);
+      Swal.fire('ข้อผิดพลาด', 'เกิดข้อผิดพลาดในการบันทึก: ' + error.message, 'error');
   }
 };
 
@@ -1843,38 +2016,40 @@ window.renderModalBody = function(){
 
       return `
       <div class="activity-item">
-        <div class="activity-row" onclick="toggleActivity(${i})">
-          <div class="title" style="flex:1; padding-right:10px;">${courseTitleHtml}</div>
-          <div class="activity-provider" style="flex-shrink:0;">โดย ${escapeHtml(provider)} <span class="chevron" style="margin-left:4px;">${expanded?'▲':'▾'}</span></div>
+        <div class="activity-box">
+          <div class="activity-row" onclick="toggleActivity(${i})">
+            <div class="title" style="flex:1; padding-right:10px;">${courseTitleHtml}</div>
+            <div class="activity-provider" style="flex-shrink:0;">โดย ${escapeHtml(provider)} <i class="fa-solid fa-caret-${expanded?'up':'down'} fa-lg" style="margin-left:4px; color:#9aa0ae;"></i></div>
+          </div>
+          ${expanded ? `
+            <div class="activity-detail">
+              ${interactive ? `
+                <label class="cert-upload">
+                   <i class="fa-regular fa-file"></i> Upload Certificate (Maximum 10 MB, PDF, PNG, JPG, JPEG)
+                   <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, ${i})" ${!isSelected ? 'disabled' : ''}>
+                </label>
+              ` : ''}
+              
+              ${fname ? `
+                <div class="file-status" style="margin-top:8px;">
+                  <i class="fa-solid fa-file-contract"></i> 
+                  <a href="${escapeAttr(certInfo.url)}" target="_blank" style="color:var(--blue);text-decoration:underline;">${escapeHtml(fname)}</a>
+                </div>
+              ` : ''}
+
+              ${reflectionHtml}
+              
+              <div class="stepper-row">
+                <div class="stepper">
+                  <div class="step ${step1?'active':''}"><div class="step-dot"></div>เลือกสมรรถนะ</div>
+                  <div class="step ${step2?'active':''}"><div class="step-dot"></div>แนบใบประกาศฯ</div>
+                  <div class="step ${step3?'active':''}"><div class="step-dot"></div>บันทึกผลประเมิน</div>
+                </div>
+                ${actionBtnHtml}
+              </div>
+
+            </div>` : ''}
         </div>
-        ${expanded ? `
-          <div class="activity-detail">
-            ${interactive ? `
-              <label class="cert-upload">
-                 <i class="fa-regular fa-file"></i> Upload Certificate (Maximum 10 MB, PDF, PNG, JPG, JPEG)
-                 <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, ${i})" ${!isSelected ? 'disabled' : ''}>
-              </label>
-            ` : ''}
-            
-            ${fname ? `
-              <div class="file-status" style="margin-top:8px;">
-                <i class="fa-solid fa-file-contract"></i> 
-                <a href="${escapeAttr(certInfo.url)}" target="_blank" style="color:var(--blue);text-decoration:underline;">${escapeHtml(fname)}</a>
-              </div>
-            ` : ''}
-
-            ${reflectionHtml}
-            
-            <div class="stepper-row">
-              <div class="stepper">
-                <div class="step ${step1?'active':''}"><div class="step-dot"></div>เลือกสมรรถนะ</div>
-                <div class="step ${step2?'active':''}"><div class="step-dot"></div>แนบใบประกาศฯ</div>
-                <div class="step ${step3?'active':''}"><div class="step-dot"></div>บันทึกผลประเมิน</div>
-              </div>
-              ${actionBtnHtml}
-            </div>
-
-          </div>` : ''}
       </div>`;
   }).join('');
 
@@ -1901,76 +2076,89 @@ window.renderModalBody = function(){
 
   activitiesHtml += `
   <div class="activity-item">
-    <div class="activity-row" onclick="toggleActivity('self')">
-      <div class="title" style="flex:1; padding-right:10px;">
-        <span style="display:inline-flex; align-items:center; gap:6px;">
-          <i class="fa-solid fa-graduation-cap" style="font-size:12px; color:#1c2130;"></i> เรียนรู้ด้วยตัวเองจากสถาบันอื่น
-        </span>
-      </div>
-      <div class="activity-provider" style="flex-shrink:0;">${selfInst ? `โดย ${escapeHtml(selfInst)}` : ''} <span class="chevron" style="margin-left:4px;">${selfExpanded?'▲':'▾'}</span></div>
-    </div>
-    ${selfExpanded ? `
-      <div class="activity-detail">
-        ${interactive && !selfFname && isSelected ? `
-          <div style="margin-bottom:10px;">
-            <input type="text" id="custom-institute-input" placeholder="ระบุชื่อสถาบัน (เช่น Udemy, SkillLane...)" style="width:100%; border:1px solid var(--gray-line); border-radius:8px; padding:8px 10px; font-size:13px; outline:none;" value="${escapeAttr(selfInst)}">
-          </div>
-        ` : ''}
-        
-        ${interactive ? `
-          <label class="cert-upload">
-             <i class="fa-regular fa-file"></i> Upload Certificate (Maximum 10 MB, PDF, PNG, JPG, JPEG)
-             <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, 'self')" ${!isSelected ? 'disabled' : ''}>
-          </label>
-        ` : ''}
-        
-        ${selfFname ? `
-          <div class="file-status" style="margin-top:8px;">
-            <i class="fa-solid fa-file-contract"></i> 
-            <a href="${escapeAttr(selfCertUrl)}" target="_blank" style="color:var(--blue);text-decoration:underline;">${escapeHtml(selfFname)}</a>
-          </div>
-        ` : ''}
-        
-        ${s_reflectionHtml}
-        
-        <div class="stepper-row">
-          <div class="stepper">
-            <div class="step ${s_step1?'active':''}"><div class="step-dot"></div>เลือกสมรรถนะ</div>
-            <div class="step ${s_step2?'active':''}"><div class="step-dot"></div>แนบใบประกาศฯ</div>
-            <div class="step ${s_step3?'active':''}"><div class="step-dot"></div>บันทึกผลประเมิน</div>
-          </div>
-          ${s_actionBtnHtml}
+    <div class="activity-box">
+      <div class="activity-row" onclick="toggleActivity('self')">
+        <div class="title" style="flex:1; padding-right:10px;">
+          <span style="display:inline-flex; align-items:center; gap:6px;">
+            <i class="fa-solid fa-graduation-cap" style="font-size:12px; color:#1c2130;"></i> เรียนรู้ด้วยตัวเองจากสถาบันอื่น
+          </span>
         </div>
-      </div>` : ''}
+        <div class="activity-provider" style="flex-shrink:0;">${selfInst ? `โดย ${escapeHtml(selfInst)}` : ''} <i class="fa-solid fa-caret-${selfExpanded?'up':'down'} fa-lg" style="margin-left:4px; color:#9aa0ae;"></i></div>
+      </div>
+      ${selfExpanded ? `
+        <div class="activity-detail">
+          ${interactive && !selfFname && isSelected ? `
+            <div style="margin-bottom:10px;">
+              <input type="text" id="custom-institute-input" placeholder="ระบุชื่อสถาบัน (เช่น Udemy, SkillLane...)" style="width:100%; border:1px solid var(--gray-line); border-radius:8px; padding:8px 10px; font-size:13px; outline:none;" value="${escapeAttr(selfInst)}">
+            </div>
+          ` : ''}
+          
+          ${interactive ? `
+            <label class="cert-upload">
+               <i class="fa-regular fa-file"></i> Upload Certificate (Maximum 10 MB, PDF, PNG, JPG, JPEG)
+               <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, 'self')" ${!isSelected ? 'disabled' : ''}>
+            </label>
+          ` : ''}
+          
+          ${selfFname ? `
+            <div class="file-status" style="margin-top:8px;">
+              <i class="fa-solid fa-file-contract"></i> 
+              <a href="${escapeAttr(selfCertUrl)}" target="_blank" style="color:var(--blue);text-decoration:underline;">${escapeHtml(selfFname)}</a>
+            </div>
+          ` : ''}
+          
+          ${s_reflectionHtml}
+          
+          <div class="stepper-row">
+            <div class="stepper">
+              <div class="step ${s_step1?'active':''}"><div class="step-dot"></div>เลือกสมรรถนะ</div>
+              <div class="step ${s_step2?'active':''}"><div class="step-dot"></div>แนบใบประกาศฯ</div>
+              <div class="step ${s_step3?'active':''}"><div class="step-dot"></div>บันทึกผลประเมิน</div>
+            </div>
+            ${s_actionBtnHtml}
+          </div>
+        </div>` : ''}
+    </div>
   </div>
   `;
 
   let topRightToggle = '';
   if (isMandatory) {
       if (isComp) {
-          topRightToggle = `<div class="top-right-action btn-sel-toggle selected" style="cursor:default; background: var(--green-dark);">Complete ✓</div>`;
+          topRightToggle = `<div class="top-right-status completed"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</div>`;
+      } else {
+          topRightToggle = `<div class="top-right-status mandatory"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</div>`;
       }
   } else {
       if (interactive) {
-           topRightToggle = `<button class="top-right-action btn-sel-toggle ${isSelected?(isComp?'selected" style="background:var(--green-dark);"':'selected"'):'unselected"'} onclick="toggleSelection('${key}')">${isSelected ? (isComp ? 'Complete ✓' : 'Selected') : 'Click to Select'}</button>`;
+           if (isComp) {
+               topRightToggle = `<button class="top-right-status completed" onclick="toggleSelection('${key}')"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</button>`;
+           } else if (isSelected) {
+               topRightToggle = `<button class="top-right-status selective-selected" onclick="toggleSelection('${key}')"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</button>`;
+           } else {
+               topRightToggle = `<button class="top-right-status selective-unselected" onclick="toggleSelection('${key}')">คลิกเพื่อเลือกสมรรถนะ</button>`;
+           }
       } else {
-           topRightToggle = `<div class="top-right-action" style="font-size:13px; font-weight:700; color:${isSelected?'var(--green-dark)':'#9aa0ae'};">${isSelected ? (isComp ? '✓ Complete' : '✓ Selected') : 'Not Selected'}</div>`;
+           topRightToggle = `<div class="top-right-status ${isComp?'completed':(isSelected?'selective-selected':'selective-unselected')}" style="cursor:default;">${isSelected ? '<i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย' : 'ยังไม่ได้เลือก'}</div>`;
       }
   }
 
-  // ซ่อน Progress Bar ด้านล่าง ถ้ามันโชว์ Complete ด้านบนแล้ว 
-  let bottomBar = '';
-  if (isMandatory && !isComp) {
-      bottomBar = `
-        <div class="progress-row">
-          <div>
-            <div style="font-size:11px; color:#5a5f6c; margin-bottom:4px; font-weight:600;">Progress | การดำเนินการ</div>
-            <button class="pill-status progress">In Progress กำลังเรียนรู้ ▶</button>
-          </div>
-          <button class="btn-back-dark" onclick="window.closeModal()">Back</button>
-        </div>
-      `;
-  }
+  // 🌟 คำนวณ Overall Progress Stepper
+  const certs = details?.certs || {};
+  const overallStep1 = isSelected;
+  const overallStep2 = Object.values(certs).some(c => c.url);
+  const overallStep3 = Object.values(certs).some(c => c.url && c.reflection && c.reflection.trim() !== '');
+
+  const themeClass = isMandatory ? 'mandatory' : 'selective';
+  const bottomBar = `
+    <div class="overall-stepper-container">
+       <div class="stepper-bar ${themeClass}">
+           <div class="step-pill ${overallStep1 ? 'active-1' : ''}">เลือกสมรรถนะ</div>
+           <div class="step-pill ${overallStep2 ? 'active-2' : ''}">แนบใบประกาศฯ</div>
+           <div class="step-pill ${overallStep3 ? 'active-3' : ''}">บันทึกผลประเมิน</div>
+       </div>
+    </div>
+  `;
 
   body.innerHTML = `
     <button class="modal-close-btn" onclick="window.closeModal()"><i class="fa-solid fa-xmark"></i></button>
