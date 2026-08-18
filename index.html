@@ -4,15 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<!-- ชื่อเว็บไซต์ที่จะโชว์บนแท็บเบราว์เซอร์ -->
 <title>StarMeter</title>
-
-<!-- กำหนดข้อความเวลาแชร์ลิงก์ (Link Preview) สำหรับ LINE, Facebook, ฯลฯ -->
 <meta name="description" content="StarMeter - Training Management Center จัดการแผนพัฒนาศักยภาพรายบุคคล (IDP) ประจำปี 2026">
 <meta property="og:title" content="StarMeter">
 <meta property="og:description" content="Training Management Center ระบบจัดการแผนพัฒนาศักยภาพรายบุคคล (IDP) ประจำปี 2026 สำหรับพนักงาน">
 <meta property="og:type" content="website">
-<!-- รูปภาพเวลาแชร์ลิงก์ -->
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/gap-learning-plan.firebasestorage.app/o/logo.png?alt=media&token=0c6d0ed6-c5ea-46f2-b31a-3698d915ad56">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,16 +29,12 @@
     --green-dark:#159440;
     --green-tint:#e6faec;
     --green-tint-2:#c8f0d2;
-    --green-select:#3fbe5c;
+    --green-select:#2bb94a;
     --cream:#fdeecb;
     --cream-text:#c98a1f;
     --gray-input:#d6d6d6;
     --gray-text:#8b90a0;
     --gray-line:#e3e6ec;
-    --card-shadow: 0 10px 30px rgba(30,40,70,.06);
-    --radius-lg:22px;
-    --radius-md:16px;
-    --radius-sm:10px;
     font-family:'Noto Sans Thai','Inter',sans-serif;
   }
   *{box-sizing:border-box;}
@@ -88,8 +80,8 @@
   .logo-slot[data-size="big"]{flex-direction:column;gap:6px;}
   .logo-slot[data-size="big"] .wordmark{font-size:36px;letter-spacing:-.5px;}
   .logo-img{display:block;object-fit:contain; max-height: 100%;}
-  .logo-slot[data-size="small"] .logo-img{height:56px;width:auto;}
-  .logo-slot[data-size="big"] .logo-img{height:120px;width:auto;}
+  .logo-slot[data-size="small"] .logo-img{height:42px;width:auto;}
+  .logo-slot[data-size="big"] .logo-img{height:100px;width:auto;}
   .subtitle{font-size:18px;color:#333;margin-top:2px;font-weight:500;}
 
   /* login */
@@ -102,7 +94,6 @@
   .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:min(320px,100%);background:#fff;border:1px solid #dadce0;border-radius:24px;padding:12px 20px;font-weight:600;font-size:15px;color:#3c4043;margin-top:26px;transition:box-shadow .15s ease,transform .15s ease;}
   .google-btn:hover{box-shadow:0 4px 14px rgba(60,64,67,.18);transform:translateY(-1px);}
   
-  /* คำแนะนำหน้า Login */
   .login-warning {
     background: #fff8e1;
     border: 1px solid #ffe082;
@@ -159,7 +150,9 @@
   .member-card{background:linear-gradient(180deg,#eaf6fc 0%,#ffffff 100%);border:1px solid var(--blue-tint-2);border-radius:18px;padding:18px;}
   .member-top{display:flex;gap:14px;align-items:center;}
   .member-photo{width:78px;height:78px;border-radius:14px;object-fit:cover;flex-shrink:0;border:1px solid #fff; background:#fff;}
-  .member-name{font-weight:700;font-size:19px;color:#1c2130;flex:1; word-break:break-word;}
+  .member-name-wrap{flex:1; word-break:break-word;}
+  .member-name{font-weight:700;font-size:16.5px;color:#1c2130;line-height:1.2;}
+  .member-role-id{font-size:11.5px;color:#8b90a0;margin-top:4px;font-weight:500;}
   .member-stats{display:flex;gap:10px;margin-top:16px;}
   .stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
   .stat .label-en{font-size:11px;font-weight:700;color:#333;}
@@ -181,7 +174,6 @@
   .entry-tooltip .tip-points.g{color:#6fe39a;}
   .entry-tooltip .tip-points.r{color:#ff8f88;}
   
-  /* Pagination Pager */
   .pager{display:flex;justify-content:center;gap:0;margin-top:34px; flex-wrap: wrap;}
   .pager button{border:1px solid var(--gray-line);background:#fff;padding:9px 26px;font-weight:600;font-size:13px;color:#666; margin-left:-1px;}
   .pager button:first-child{border-radius:20px 0 0 20px;}
@@ -257,7 +249,9 @@
   .lteam-row{background:var(--blue-tint);border:1px solid var(--blue-tint-2);border-radius:18px;padding:16px 20px;display:flex;align-items:center;gap:20px;}
   .lteam-head{display:flex;align-items:center;gap:14px;flex-shrink:0;}
   .lteam-row img{width:44px;height:44px;border-radius:10px;object-fit:cover; background:#fff;}
-  .lteam-name{width:130px;font-weight:700;font-size:15px;flex-shrink:0; word-break:break-word;}
+  .lteam-name-wrap{width:145px; flex-shrink:0; word-break:break-word; padding-right:10px;}
+  .lteam-name{font-weight:700;font-size:14px;color:#1c2130;line-height:1.2;}
+  .lteam-role-id{font-size:11px;color:#8b90a0;margin-top:2px;font-weight:500;}
   .comp-chips{display:flex;gap:10px;flex:1;flex-wrap:wrap;}
   .comp-chip{flex:1;min-width:140px;border:none;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:12px;line-height:1.5;}
   .comp-chip .en{font-weight:700;display:block;margin-bottom:2px;}
@@ -282,41 +276,76 @@
   .goal-card .en-name{font-weight:700;font-size:13.5px;color:#1c2130;}
   .goal-card .desc{font-size:10.5px;color:#6b7280;margin-top:8px;line-height:1.5;}
   .goal-card .arrow{position:absolute;bottom:14px;right:16px;color:var(--blue);font-size:15px;}
+  
+  /* 🌟 Complete Badge on Card */
+  .badge-complete { position:absolute; top:16px; right:16px; background:var(--green-dark); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:12px; box-shadow:0 2px 6px rgba(21,148,64,.2); z-index:2; }
 
-  /* modal */
+  /* ===== MODAL & CARDS NEW DESIGN ===== */
   .modal-overlay{position:fixed;inset:0;background:rgba(20,25,40,.45);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;} 
   .modal-overlay.active{display:flex;}
-  .modal-card{background:var(--green-tint);border-radius:26px;padding:34px 38px;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;overflow-x:hidden; position:relative;}
   
+  .modal-card { border-radius:26px; padding:34px 38px; max-width:640px; width:100%; max-height:88vh; overflow-y:auto; overflow-x:hidden; position:relative; }
   .modal-close-btn { position:absolute; top:16px; right:16px; background:rgba(0,0,0,0.06); border:none; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:#5a5f6c; cursor:pointer; transition:background 0.2s; z-index:10; }
   .modal-close-btn:hover { background:rgba(0,0,0,0.12); color:#1c2130; }
 
-  .modal-card.blue{background:var(--blue-tint);}
-  .modal-card .tag{font-size:13px;color:#5a5f6c; padding-right:30px;} 
-  .modal-card h2{font-size:19px;margin:6px 0 0;color:#1c2130; padding-right:20px;}
-  .modal-card h3{font-size:19px;margin:2px 0 14px;color:#1c2130;}
-  .modal-card .desc{font-size:12.5px;color:#4a4f5c;line-height:1.7;}
-  .modal-card .section-label{font-size:14px;font-weight:700;margin:18px 0 10px;color:#1c2130;}
-  .mandatory-note{font-size:11.5px;color:#5a5f6c;background:rgba(255,255,255,.6);border-radius:10px;padding:9px 12px;margin-top:8px;}
-  .activity-item{border-bottom:1px dashed rgba(0,0,0,.08);}
-  .activity-item:last-child{border-bottom:none;}
-  .activity-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;cursor:pointer;}
-  .activity-row .title{color:#1c2130;font-size:13px;line-height:1.4;}
-  .activity-provider{font-size:12px;color:#4a4f5c;white-space:nowrap;display:flex;align-items:center;gap:6px;}
-  .activity-detail{padding:2px 0 16px 30px;}
-  .detail-label{font-size:11px;color:#7a8090;margin-bottom:5px;font-weight:600;}
-  .file-status{font-size:12.5px;font-weight:700;color:#8b90a0;}
-  .file-status.uploaded{color:var(--green-dark);}
-  .progress-row{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:16px;}
+  /* Theme: Mandatory (Plus One) */
+  .modal-card.mandatory { background: #eaf6fc; border: 1px solid #bfe0f5; }
+  
+  /* Theme: Selective */
+  .modal-card.selective { background: #ffffff; border: 2px solid #3fbe5c; }
+  .modal-card.selective.selected { background: #e6faec; }
+
+  .modal-card .tag{font-size:15px; font-weight:700; color:#1c2130; margin-bottom:12px;} 
+  .modal-card h2{font-size:18px;margin:0 0 6px;color:#1c2130; padding-right:80px; line-height: 1.4;}
+  .modal-card h3{font-size:16px;margin:0 0 14px;color:#1c2130; font-weight: 700;}
+  .modal-card .desc{font-size:11.5px;color:#5a5f6c;line-height:1.6; margin-bottom: 24px;}
+  
+  .section-label{font-size:13px; color:#1c2130; display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 8px; margin-bottom: 12px;}
+  .section-label span.right { font-size:10px; color:#7a8090; font-weight: normal; }
+  
+  /* Top Right Selection Button */
+  .top-right-action { position:absolute; top: 30px; right: 60px; }
+  .btn-sel-toggle { border: none; border-radius: 20px; padding: 6px 16px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+  .btn-sel-toggle.unselected { background: #d7dade; color: #fff; }
+  .btn-sel-toggle.selected { background: var(--green-select); color: #fff; }
+
+  /* Activity Rows */
+  .activity-item{ margin-bottom: 16px; }
+  .activity-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;cursor:pointer; background:rgba(255,255,255,0.4); padding: 12px 14px; border-radius: 12px; transition: background 0.2s;}
+  .activity-row:hover { background:rgba(255,255,255,0.7); }
+  .activity-row .title{color:#1c2130;font-size:13px;line-height:1.4; font-weight: 600;}
+  .activity-provider{font-size:12px;color:#4a4f5c;white-space:nowrap;display:flex;align-items:center;gap:6px; margin-top:4px;}
+  
+  /* Accordion Detail */
+  .activity-detail{padding:14px 14px 20px 30px;}
+  .cert-upload{background:none;color:#5a5f6c;border:none;padding:0;font-size:11.5px;font-weight:400;display:inline-flex;align-items:center;gap:8px;cursor:pointer;}
+  .cert-upload i { font-size:14px; }
+  .file-status{font-size:11.5px;font-weight:700;color:var(--blue); display:inline-flex; align-items:center; gap:6px; margin-bottom:12px;}
+  
+  /* Reflection Textarea */
+  .reflection-box { width:100%; border:none; border-radius:12px; background:rgba(255,255,255,0.7); padding:14px; font-size:12.5px; color:#4a4f5c; resize:none; line-height:1.6; margin-top: 10px; }
+  .reflection-box:focus { outline: 1px solid var(--green-select); background:#fff; }
+  .reflection-box:disabled { background: rgba(255,255,255,0.4); cursor: not-allowed; }
+  
+  /* Stepper & Action inside accordion */
+  .stepper-row { display:flex; align-items:center; justify-content:space-between; margin-top:16px; flex-wrap:wrap; gap:14px; }
+  .stepper { display:flex; align-items:center; gap: 4px; }
+  .step { display:flex; flex-direction:column; align-items:center; gap:4px; font-size:9px; color:#9aa0ae; width:65px; text-align:center;}
+  .step-dot { width: 30px; height: 4px; border-radius: 2px; background: #d7dade; }
+  .step.active { color: var(--green-dark); font-weight: 600; }
+  .step.active .step-dot { background: var(--green-select); }
+  
+  .btn-acc-action { border:none; border-radius:16px; padding:8px 24px; font-weight:700; font-size:13px; color:#fff;}
+  .btn-acc-action.green { background: var(--green-select); }
+  .btn-acc-action.yellow { background: #ffc107; color: #1c2130; }
+
+  /* Mandatory Bottom Elements */
+  .progress-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:16px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 20px;}
   .pill-status{border-radius:18px;padding:9px 24px;font-size:13px;font-weight:700;border:none;}
   .pill-status.not{background:#d7dade;color:#8b90a0;}
   .pill-status.progress{background:var(--blue);color:#fff;}
   .pill-status.completed{background:var(--green-dark);color:#fff;} 
-  .btn-select{background:var(--green);color:#fff;border:none;border-radius:18px;padding:10px 26px;font-weight:700;font-size:13px;}
-  .btn-select.selected{background:#c0392b;}
-  .btn-back-dark{background:#161b26;color:#fff;border:none;border-radius:18px;padding:10px 26px;font-weight:700;font-size:13px;}
-  .cert-upload{background:#161b26;color:#fff;border:none;border-radius:12px;padding:10px 16px;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:8px;margin-top:6px; cursor:pointer;}
-  .cert-hint{font-size:10.5px;color:var(--red-dark);margin-top:6px;font-weight:600;}
+  .btn-back-dark{background:#000;color:#fff;border:none;border-radius:20px;padding:10px 32px;font-weight:700;font-size:13px;}
 
   .info-layout{display:flex;gap:56px;align-items:flex-start;margin-top:14px;}
   .info-image-col{flex:0 0 auto;width:min(440px, 42%);}
@@ -365,12 +394,12 @@
     .comp-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
     .modal-overlay{padding:16px;align-items:center;} 
     .modal-card{padding:34px 20px 24px;border-radius:22px;max-height:85vh;width:100%;max-width:100%;} 
-    .activity-row{flex-wrap:wrap;gap:6px 10px;}
     .progress-row{flex-direction:column-reverse;align-items:stretch;gap:12px;}
     .progress-row > div:first-child{width:100%;}
     .pill-status{width:100%;text-align:center;}
-    .btn-select,.btn-back-dark{width:100%;text-align:center;padding:13px 0;}
-    .cert-upload{width:100%;justify-content:center;padding:12px 0;}
+    .btn-back-dark{width:100%;text-align:center;padding:13px 0;}
+    .stepper-row { flex-direction:column; align-items:stretch; }
+    .btn-acc-action { width: 100%; padding: 12px 0;}
     .info-layout{flex-direction:column;gap:22px;margin-top:6px;}
     .info-image-col{width:min(320px, 72vw);margin:0 auto;}
     .info-text-col{width:100%;}
@@ -383,6 +412,30 @@
 </style>
 </head>
 <body>
+
+<!-- ADMIN MODAL (Hidden by default, triggered by clicking logo 3 times) -->
+<div class="modal-overlay" id="admin-modal" style="z-index: 999999;">
+  <div class="modal-card" style="background:#fff; max-width:500px; padding:30px;">
+    <button class="modal-close-btn" onclick="closeAdminModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div style="display:flex; align-items:center; gap: 14px; margin-bottom:20px;">
+        <div style="background:var(--blue-tint-2); color:var(--blue-dark); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;">
+            <i class="fa-solid fa-user-secret"></i>
+        </div>
+        <div>
+            <h3 style="margin:0; font-size:18px;">Proxy User Mode</h3>
+            <div style="font-size:12.5px; color:#5a5f6c; margin-top:2px;">ระบบ Proxy หน้าจอ (เฉพาะผู้ดูแลระบบ)</div>
+        </div>
+    </div>
+    <div class="field-group" style="width:100%; margin-top:0;">
+        <label>รหัสพนักงาน (Employee ID)</label>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="proxy-empid-input" class="field-input" placeholder="ระบุรหัส 7 หลัก..." style="background:#f4f5f7; border:1px solid var(--gray-line); padding:0 15px;">
+            <button class="btn-primary-blue" onclick="startProxy()">👁️ Proxy</button>
+        </div>
+        <div class="field-hint" style="margin-top:10px; line-height: 1.5;">* เมื่อเข้าสู่โหมด Proxy หน้าจอของคุณจะเปลี่ยนเป็นของพนักงานคนนั้น 100% คุณสามารถทำรายการแทนได้ โดยระบบจะแอบบันทึก Log ในชื่อของคุณเสมอ</div>
+    </div>
+  </div>
+</div>
 
 <!-- PROXY BANNER -->
 <div id="proxy-banner" class="proxy-banner">
@@ -424,7 +477,7 @@
   <!-- POST-LOGIN APP SHELL -->
   <section id="scr-app" class="screen">
     <header class="app-header">
-      <div class="logo-slot" data-size="small"></div>
+      <div class="logo-slot" data-size="small" onclick="handleLogoClick()" style="cursor:pointer;" title="Click 3 times for Admin Menu"></div>
       <nav class="tabbar-desktop" id="tabbar-desktop">
         <span class="tab-indicator" id="tab-indicator"></span>
       </nav>
@@ -439,34 +492,6 @@
     </header>
 
     <main id="tab-content">
-
-      <!-- ADMIN CONTROL -->
-      <div id="panel-admin" class="tab-panel">
-        <div class="page-header">
-          <div></div>
-          <div><div class="page-title-en">Admin Control Panel</div><div class="page-title-th">จัดการระบบ</div></div>
-        </div>
-        <div class="fade-panel" style="max-width: 600px; margin: 26px auto 0;">
-            <div style="display:flex; align-items:center; gap: 14px; margin-bottom:20px;">
-                <div style="background:var(--blue-tint-2); color:var(--blue-dark); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;">
-                    <i class="fa-solid fa-user-secret"></i>
-                </div>
-                <div>
-                    <h3 style="margin:0; font-size:18px;">Proxy User Mode</h3>
-                    <div style="font-size:12.5px; color:#5a5f6c; margin-top:2px;">ระบบ Proxy หน้าจอ (เฉพาะผู้ดูแลระบบ)</div>
-                </div>
-            </div>
-            
-            <div class="field-group" style="width:100%; margin-top:0;">
-                <label>รหัสพนักงาน (Employee ID)</label>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="proxy-empid-input" class="field-input" placeholder="ระบุรหัส 7 หลัก..." style="background:#fff; border:1px solid var(--gray-line); padding:0 15px;">
-                    <button class="btn-primary-blue" onclick="startProxy()">👁️ Proxy (View)</button>
-                </div>
-                <div class="field-hint" style="margin-top:10px;">* เมื่อเข้าสู่โหมด Proxy หน้าจอของคุณจะเปลี่ยนเป็นของพนักงานคนนั้น 100% คุณสามารถทำรายการแทนได้ โดยระบบจะแอบบันทึก Log ในชื่อของคุณเสมอ</div>
-            </div>
-        </div>
-      </div>
 
       <!-- INFO -->
       <div id="panel-info" class="tab-panel">
@@ -684,9 +709,7 @@ function renderLogos(){
   document.querySelectorAll('.logo-slot').forEach(el=>{
     const size = el.dataset.size;
     const markOnly = size==='mark';
-    
     const mark = LOGO_URL ? `<img src="${LOGO_URL}" alt="StarMeter logo" class="logo-img">` : (size === 'big' ? LOGO_SVG_BIG : LOGO_SVG_SMALL);
-    
     el.innerHTML = mark + (markOnly || LOGO_URL ? '' : `<span class="wordmark">StarMeter</span>`);
   });
 }
@@ -748,7 +771,6 @@ function compressImage(file, maxWidth, maxHeight, quality) {
 function generatePagerHtml(totalItems, itemsPerPage, currentPage, renderFnName) {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     if (totalPages <= 1) return ''; 
-    
     let html = '';
     for (let i = 1; i <= totalPages; i++) {
         const activeClass = i === currentPage ? 'active' : '';
@@ -771,7 +793,6 @@ let currentTabId = null;
 
 const TABS = {
   superadmin: [
-    {id:'admin',            en:'Admin Control',     th:'จัดการระบบ',        ic:'⚙️'},
     {id:'info',            en:'Info',              th:'ข้อมูล',            ic:'ℹ️'},
     {id:'my-performance', en:'My Performance', th:'ผลงานของฉัน', ic:'★'},
     {id:'my-learning',    en:'My Learning',    th:'การเรียนรู้ของฉัน', ic:'🎓'},
@@ -832,6 +853,29 @@ window.getCompetenciesForUser = function(jobCode, selections) {
         });
     });
     return userComps;
+};
+
+const checkComplete = (details) => {
+    if(!details || !details.certs) return false;
+    return Object.values(details.certs).some(c => c.url && c.reflection && c.reflection.trim() !== '');
+};
+
+let logoClickCount = 0;
+let logoClickTimeout;
+window.handleLogoClick = function() {
+    if (session.realUser && session.realUser.role !== 'superadmin') return; 
+    logoClickCount++;
+    clearTimeout(logoClickTimeout);
+    if (logoClickCount >= 3) {
+        logoClickCount = 0;
+        document.getElementById('admin-modal').classList.add('active');
+    } else {
+        logoClickTimeout = setTimeout(() => { logoClickCount = 0; }, 600);
+    }
+};
+
+window.closeAdminModal = function() {
+    document.getElementById('admin-modal').classList.remove('active');
 };
 
 window.loadTeamData = async function() {
@@ -915,7 +959,13 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
                 }
                 let activities = [];
                 if (data.courses && Array.isArray(data.courses)) {
-                    activities = data.courses.map(course => [course.name, course.institute, course.link || '']);
+                    activities = data.courses.map(course => {
+                        let instName = course.institute;
+                        if (instName === 'Academy') {
+                            instName = 'Airasia Academy';
+                        }
+                        return [course.name, instName, course.link || ''];
+                    });
                 }
                 ALL_COMPETENCIES.push({
                     key: c.id, th: th, en: en, desc: data.description || '', activities: activities, rawName: compClean
@@ -1014,7 +1064,7 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
         if (isProxy) {
             window.switchTab('my-performance', true);
         } else {
-            window.switchTab(realRole === 'superadmin' ? 'admin' : 'info', true);
+            window.switchTab('info', true);
         }
 
     } catch (error) {
@@ -1076,6 +1126,7 @@ window.startProxy = async function() {
     const empId = document.getElementById('proxy-empid-input').value.trim();
     if(!empId) return alert('กรุณาระบุรหัสพนักงานที่ต้องการดูข้อมูล');
     if(empId === session.realUser.empId) return alert('นี่คือรหัสของคุณเองอยู่แล้ว!');
+    window.closeAdminModal();
     await window.initializeUser(empId, true);
 };
 
@@ -1086,7 +1137,7 @@ window.exitProxy = async function() {
 };
 
 function buildTabBars(){
-  const tabs = TABS[session.role];
+  const tabs = TABS[session.role] || TABS.staff;
   const desktop = document.getElementById('tabbar-desktop');
   const mobile = document.getElementById('tabbar-mobile');
   
@@ -1109,7 +1160,8 @@ window.switchTab = function(id, skipValidation){
   }
   
   currentTabId = id;
-  const isTab = TABS[session.role].some(t=>t.id===id);
+  const tabs = TABS[session.role] || TABS.staff;
+  const isTab = tabs.some(t=>t.id===id);
   document.querySelectorAll('.tab-btn').forEach(b=>{
     b.classList.toggle('active', isTab && b.dataset.tab===id);
   });
@@ -1246,17 +1298,26 @@ window.renderMyLearning = function(){
   
   document.getElementById('mylearn-selective').innerHTML = sel.length > 0 ? sel.map(c=>{
     const active = !!session.selections[c.key];
+    const details = session.idpDetails[c.key];
+    const isComp = checkComplete(details);
     return `<button class="goal-card green ${active?'selected':''}" onclick="openCompetency('${c.key}', true, 'me')">
-      <div class="tag">${c.tag}</div><div class="th-name">${c.th}</div><div class="en-name">${c.en}</div>
+      <div class="tag" style="padding-right:70px;">${c.tag}</div>
+      ${isComp ? `<div class="badge-complete">Complete ✓</div>` : ''}
+      <div class="th-name">${c.th}</div><div class="en-name">${c.en}</div>
       <div class="desc">${c.desc.slice(0,90)}…</div><div class="arrow">↘</div>
     </button>`;
   }).join('') : '<div style="color:#8b90a0; font-size:14px;">ยังไม่มีวิชาเลือกสำหรับตำแหน่งของคุณ</div>';
   
-  document.getElementById('mylearn-mandatory').innerHTML = man.length > 0 ? man.map(c=>`
-    <button class="goal-card blue" onclick="openCompetency('${c.key}', true, 'me')">
-      <div class="tag">${c.tag}</div><div class="th-name">${c.th}</div><div class="en-name">${c.en}</div>
+  document.getElementById('mylearn-mandatory').innerHTML = man.length > 0 ? man.map(c=>{
+    const details = session.idpDetails[c.key];
+    const isComp = checkComplete(details);
+    return `<button class="goal-card blue" onclick="openCompetency('${c.key}', true, 'me')">
+      <div class="tag" style="padding-right:70px;">${c.tag}</div>
+      ${isComp ? `<div class="badge-complete">Complete ✓</div>` : ''}
+      <div class="th-name">${c.th}</div><div class="en-name">${c.en}</div>
       <div class="desc">${c.desc.slice(0,90)}…</div><div class="arrow">↘</div>
-    </button>`).join('') : '<div style="color:#8b90a0; font-size:14px;">ยังไม่มีวิชาบังคับสำหรับตำแหน่งของคุณ</div>';
+    </button>`;
+  }).join('') : '<div style="color:#8b90a0; font-size:14px;">ยังไม่มีวิชาบังคับสำหรับตำแหน่งของคุณ</div>';
 };
 
 window.renderPerfGrid = function(page = 1){
@@ -1283,7 +1344,10 @@ window.renderPerfGrid = function(page = 1){
     <div class="member-card">
       <div class="member-top">
         <img class="member-photo" src="${m.photoURL || avatarUrl()}" onerror="this.onerror=null; this.src=window.avatarUrl();" alt="">
-        <div class="member-name">${m.name}</div>
+        <div class="member-name-wrap">
+          <div class="member-name">${m.name}</div>
+          <div class="member-role-id">${escapeHtml(m.position)} | ${escapeHtml(m.empId)}</div>
+        </div>
       </div>
       <div class="member-stats">
         <div class="stat"><div class="balance-pill">${m.balance}</div><div class="label-en">Balance</div><div class="label-th">ยอดคงเหลือ</div></div>
@@ -1478,7 +1542,7 @@ window.saveEditFull = async function(idx){
           window.renderPerfGrid(1); 
       }
       
-      window.showToast("บันทึกการแก้ไขเรียบร้อยแล้ว");
+      window.showToast("บันึกการแก้ไขเรียบร้อยแล้ว");
 
   } catch (error) {
       console.error(error);
@@ -1510,9 +1574,11 @@ window.renderLearnRows = function(page = 1){
       const isMandatory = c.type === 'mandatory';
       const active = isMandatory || !!m.selections[c.key];
       const cls = isMandatory ? 'plus' : (active ? 'on' : 'off');
+      const isComp = checkComplete(m.idpDetails[c.key]);
+      const compText = isComp ? ' <span style="color:var(--green-dark);">✓</span>' : '';
       
       const chipHtml = `<button class="comp-chip ${cls}" onclick="openCompetency('${c.key}', false, '${m.seed}')">
-        <span class="en">${c.tag}</span>${c.th.slice(0,26)}…<span class="arrow">↘</span>
+        <span class="en">${c.tag}${compText}</span>${c.th.slice(0,26)}…<span class="arrow">↘</span>
       </button>`;
 
       if(isMandatory) mandatoryChips.push(chipHtml);
@@ -1523,7 +1589,13 @@ window.renderLearnRows = function(page = 1){
 
     return `<div class="lteam-block">
       <div class="lteam-row">
-        <div class="lteam-head"><img src="${m.photoURL || avatarUrl()}" onerror="this.onerror=null; this.src=window.avatarUrl();" alt=""><div class="lteam-name">${m.name}</div></div>
+        <div class="lteam-head">
+          <img src="${m.photoURL || avatarUrl()}" onerror="this.onerror=null; this.src=window.avatarUrl();" alt="">
+          <div class="lteam-name-wrap">
+            <div class="lteam-name">${m.name}</div>
+            <div class="lteam-role-id">${escapeHtml(m.position)} | ${escapeHtml(m.empId)}</div>
+          </div>
+        </div>
         <div class="comp-chips">${chips}</div>
       </div>
     </div>`;
@@ -1582,10 +1654,12 @@ window.handleUpload = async function(evt, i){
       const docId = `${session.empId}_${key}`;
       const docRef = doc(db, "idp_records", docId);
       
+      let existingData = session.idpDetails[key]?.certs?.[i] || {};
+      
       await setDoc(docRef, {
           status: 'Completed',
           certificates: {
-              [i]: { url: downloadURL, name: f.name, institute: instituteName }
+              [i]: { url: downloadURL, name: f.name, institute: instituteName, reflection: existingData.reflection || '' }
           },
           timestamp: new Date().toISOString(),
           actedBy: session.realUser.empId 
@@ -1593,15 +1667,55 @@ window.handleUpload = async function(evt, i){
 
       if(!session.idpDetails[key]) session.idpDetails[key] = { status: 'In Progress', certs: {} };
       session.idpDetails[key].status = 'Completed';
-      session.idpDetails[key].certs[i] = { url: downloadURL, name: f.name, institute: instituteName };
+      session.idpDetails[key].certs[i] = { url: downloadURL, name: f.name, institute: instituteName, reflection: existingData.reflection || '' };
 
-      window.showToast("อัปโหลดสำเร็จ! อัปเดตสถานะเป็น Completed แล้ว");
+      window.showToast("อัปโหลดสำเร็จ! ก้าวไปสู่ขั้นตอนถัดไปได้เลย");
       window.renderModalBody();
 
   } catch (error) {
       console.error(error);
       alert("อัปโหลดไม่สำเร็จ: " + error.message);
   }
+};
+
+window.saveReflectionText = async function(i) {
+    const {key, scope} = modalCtx;
+    if(scope !== 'me') return;
+    
+    const textarea = document.getElementById(`reflection-input-${i}`);
+    if(!textarea) return;
+    
+    const text = textarea.value.trim();
+    if(!text) { alert("กรุณากรอกคำอธิบายผลลัพธ์ทางการเรียนรู้ก่อนบันทึก"); return; }
+    
+    window.showToast("กำลังบันทึกข้อมูล...");
+
+    try {
+        const docId = `${session.empId}_${key}`;
+        const docRef = doc(db, "idp_records", docId);
+        
+        let existingData = session.idpDetails[key]?.certs?.[i] || {};
+        
+        await setDoc(docRef, {
+            certificates: {
+                [i]: { ...existingData, reflection: text }
+            },
+            timestamp: new Date().toISOString(),
+            actedBy: session.realUser.empId 
+        }, { merge: true });
+
+        if(!session.idpDetails[key]) session.idpDetails[key] = { status: 'In Progress', certs: {} };
+        if(!session.idpDetails[key].certs[i]) session.idpDetails[key].certs[i] = {};
+        session.idpDetails[key].certs[i].reflection = text;
+
+        window.showToast("บันทึกผลการประเมินเรียบร้อยแล้ว!");
+        window.renderModalBody();
+        window.renderMyLearning();
+
+    } catch (error) {
+        console.error(error);
+        alert("บันทึกไม่สำเร็จ: " + error.message);
+    }
 };
 
 window.toggleSelection = async function(key){
@@ -1670,27 +1784,35 @@ window.renderModalBody = function(){
 
   const c = mComps.find(x=>x.key===key);
   const isMandatory = c.type==='mandatory';
+  const isComp = checkComplete(details);
   
-  let progressState = 'not';
-  let statusText = 'Not Selected';
-  if (isSelected) {
-      if (details && details.status === 'Completed') {
-          progressState = 'completed'; 
-          statusText = 'Completed สำเร็จแล้ว ✔';
-      } else {
-          progressState = 'progress';
-          statusText = 'In Progress กำลังเรียนรู้ ▶';
-      }
+  let topLabel = '';
+  if (isMandatory) {
+      const numberWords = ["Zero", "One", "Two", "Three", "Four", "Five"];
+      const manList = mComps.filter(x => x.type === 'mandatory');
+      const idx = manList.findIndex(x => x.key === key);
+      topLabel = `Plus ${numberWords[idx + 1] || (idx + 1)}`;
+  } else {
+      const selList = mComps.filter(x => x.type === 'selective');
+      const idx = selList.findIndex(x => x.key === key);
+      topLabel = `Competency ${idx + 1}`;
   }
-
+  
   const body = document.getElementById('modal-body');
-  body.classList.toggle('blue', c.type==='mandatory');
+  
+  body.className = 'modal-card';
+  if (isMandatory) {
+      body.classList.add('mandatory');
+  } else {
+      body.classList.add('selective');
+      if(isSelected) body.classList.add('selected');
+  }
   
   let activitiesHtml = c.activities.map((a,i)=>{
       const expanded = expandedActivity===i;
       const certInfo = (details && details.certs && details.certs[i]) ? details.certs[i] : null;
       const fname = certInfo ? certInfo.name : null;
-      const certUrl = certInfo ? certInfo.url : null;
+      const reflectionTxt = certInfo ? certInfo.reflection : '';
       
       const courseName = a[0];
       const provider = a[1];
@@ -1705,26 +1827,53 @@ window.renderModalBody = function(){
                <i class="fa-solid fa-desktop" style="font-size:12px; color:#1c2130;"></i> ${escapeHtml(courseName)}
              </span>`;
 
+      const step1 = isSelected;
+      const step2 = !!fname;
+      const step3 = !!reflectionTxt;
+      
+      let actionBtnHtml = '';
+      let reflectionHtml = `<textarea id="reflection-input-${i}" class="reflection-box" rows="2" placeholder="อธิบายการประเมินผลลัพธ์ทางการเรียนรู้" ${(!interactive || step3) ? 'disabled' : ''}>${escapeHtml(reflectionTxt || '')}</textarea>`;
+      
+      if (interactive && step2 && !step3) {
+          actionBtnHtml = `<button class="btn-acc-action green" onclick="saveReflectionText('${i}')">บันทึก</button>`;
+      } else if (interactive && step3) {
+          actionBtnHtml = `<button class="btn-acc-action yellow" onclick="document.getElementById('reflection-input-${i}').disabled=false; this.style.display='none'; document.getElementById('save-btn-hidden-${i}').style.display='block';">แก้ไข</button>
+                           <button id="save-btn-hidden-${i}" class="btn-acc-action green" style="display:none;" onclick="saveReflectionText('${i}')">บันทึก</button>`;
+      }
+
       return `
       <div class="activity-item">
         <div class="activity-row" onclick="toggleActivity(${i})">
-          <div class="title" style="flex:1; line-height:1.6; padding-right:10px;">${courseTitleHtml}</div>
+          <div class="title" style="flex:1; padding-right:10px;">${courseTitleHtml}</div>
           <div class="activity-provider" style="flex-shrink:0;">โดย ${escapeHtml(provider)} <span class="chevron" style="margin-left:4px;">${expanded?'▲':'▾'}</span></div>
         </div>
         ${expanded ? `
           <div class="activity-detail">
-            <div class="detail-label">สถานะใบรับรอง | Certificate status</div>
-            <div class="file-status ${fname?'uploaded':''}">
-              <i class="fa-solid fa-file-contract"></i> 
-              ${fname ? `<a href="${escapeAttr(certUrl)}" target="_blank" style="color:var(--green-dark);text-decoration:underline;">${escapeHtml(fname)}</a>` : 'No File Uploaded'}
+            ${interactive ? `
+              <label class="cert-upload">
+                 <i class="fa-regular fa-file"></i> Upload Certificate (Maximum 10 MB, PDF, PNG, JPG, JPEG)
+                 <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, ${i})" ${!isSelected ? 'disabled' : ''}>
+              </label>
+            ` : ''}
+            
+            ${fname ? `
+              <div class="file-status" style="margin-top:8px;">
+                <i class="fa-solid fa-file-contract"></i> 
+                <a href="${escapeAttr(certInfo.url)}" target="_blank" style="color:var(--blue);text-decoration:underline;">${escapeHtml(fname)}</a>
+              </div>
+            ` : ''}
+
+            ${reflectionHtml}
+            
+            <div class="stepper-row">
+              <div class="stepper">
+                <div class="step ${step1?'active':''}"><div class="step-dot"></div>เลือกสมรรถนะ</div>
+                <div class="step ${step2?'active':''}"><div class="step-dot"></div>แนบใบประกาศฯ</div>
+                <div class="step ${step3?'active':''}"><div class="step-dot"></div>บันทึกผลประเมิน</div>
+              </div>
+              ${actionBtnHtml}
             </div>
-            ${interactive ? (
-                isSelected 
-                ? `<label class="cert-upload">⭱ Upload certificate
-                     <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, ${i})">
-                   </label>` 
-                : `<div class="cert-hint" style="color:#e0281e;">* กรุณากดเลือก (Select) สมรรถนะนี้ก่อน จึงจะสามารถแนบเอกสารได้</div>`
-            ) : ''}
+
           </div>` : ''}
       </div>`;
   }).join('');
@@ -1733,12 +1882,27 @@ window.renderModalBody = function(){
   const selfFname = selfCertInfo ? selfCertInfo.name : null;
   const selfCertUrl = selfCertInfo ? selfCertInfo.url : null;
   const selfInst = selfCertInfo ? selfCertInfo.institute : '';
+  const selfReflectionTxt = selfCertInfo ? selfCertInfo.reflection : '';
   const selfExpanded = expandedActivity === 'self';
+  
+  const s_step1 = isSelected;
+  const s_step2 = !!selfFname;
+  const s_step3 = !!selfReflectionTxt;
+
+  let s_actionBtnHtml = '';
+  let s_reflectionHtml = `<textarea id="reflection-input-self" class="reflection-box" rows="2" placeholder="อธิบายการประเมินผลลัพธ์ทางการเรียนรู้" ${(!interactive || s_step3) ? 'disabled' : ''}>${escapeHtml(selfReflectionTxt || '')}</textarea>`;
+  
+  if (interactive && s_step2 && !s_step3) {
+      s_actionBtnHtml = `<button class="btn-acc-action green" onclick="saveReflectionText('self')">บันทึก</button>`;
+  } else if (interactive && s_step3) {
+      s_actionBtnHtml = `<button class="btn-acc-action yellow" onclick="document.getElementById('reflection-input-self').disabled=false; this.style.display='none'; document.getElementById('save-btn-hidden-self').style.display='block';">แก้ไข</button>
+                       <button id="save-btn-hidden-self" class="btn-acc-action green" style="display:none;" onclick="saveReflectionText('self')">บันทึก</button>`;
+  }
 
   activitiesHtml += `
   <div class="activity-item">
     <div class="activity-row" onclick="toggleActivity('self')">
-      <div class="title" style="flex:1; line-height:1.6; padding-right:10px;">
+      <div class="title" style="flex:1; padding-right:10px;">
         <span style="display:inline-flex; align-items:center; gap:6px;">
           <i class="fa-solid fa-graduation-cap" style="font-size:12px; color:#1c2130;"></i> เรียนรู้ด้วยตัวเองจากสถาบันอื่น
         </span>
@@ -1752,38 +1916,77 @@ window.renderModalBody = function(){
             <input type="text" id="custom-institute-input" placeholder="ระบุชื่อสถาบัน (เช่น Udemy, SkillLane...)" style="width:100%; border:1px solid var(--gray-line); border-radius:8px; padding:8px 10px; font-size:13px; outline:none;" value="${escapeAttr(selfInst)}">
           </div>
         ` : ''}
-        <div class="detail-label">สถานะใบรับรอง | Certificate status</div>
-        <div class="file-status ${selfFname?'uploaded':''}">
-          <i class="fa-solid fa-file-contract"></i> 
-          ${selfFname ? `<a href="${escapeAttr(selfCertUrl)}" target="_blank" style="color:var(--green-dark);text-decoration:underline;">${escapeHtml(selfFname)}</a>` : 'No File Uploaded'}
+        
+        ${interactive ? `
+          <label class="cert-upload">
+             <i class="fa-regular fa-file"></i> Upload Certificate (Maximum 10 MB, PDF, PNG, JPG, JPEG)
+             <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, 'self')" ${!isSelected ? 'disabled' : ''}>
+          </label>
+        ` : ''}
+        
+        ${selfFname ? `
+          <div class="file-status" style="margin-top:8px;">
+            <i class="fa-solid fa-file-contract"></i> 
+            <a href="${escapeAttr(selfCertUrl)}" target="_blank" style="color:var(--blue);text-decoration:underline;">${escapeHtml(selfFname)}</a>
+          </div>
+        ` : ''}
+        
+        ${s_reflectionHtml}
+        
+        <div class="stepper-row">
+          <div class="stepper">
+            <div class="step ${s_step1?'active':''}"><div class="step-dot"></div>เลือกสมรรถนะ</div>
+            <div class="step ${s_step2?'active':''}"><div class="step-dot"></div>แนบใบประกาศฯ</div>
+            <div class="step ${s_step3?'active':''}"><div class="step-dot"></div>บันทึกผลประเมิน</div>
+          </div>
+          ${s_actionBtnHtml}
         </div>
-        ${interactive ? (
-            isSelected 
-            ? `<label class="cert-upload">⭱ Upload certificate
-                 <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, 'self')">
-               </label>` 
-            : `<div class="cert-hint" style="color:#e0281e;">* กรุณากดเลือก (Select) สมรรถนะนี้ก่อน จึงจะสามารถแนบเอกสารได้</div>`
-        ) : ''}
       </div>` : ''}
   </div>
   `;
 
-  const actionButton = interactive
-        ? (isMandatory ? `<button class="btn-select" disabled style="opacity:.6;">🔒 Locked</button>` : `<button class="btn-select ${isSelected?'selected':''}" onclick="toggleSelection('${key}')">${isSelected ? '✓ Selected (แตะเพื่อยกเลิก)' : 'Select'}</button>`)
-        : `<button class="btn-back-dark" onclick="window.closeModal()">Back</button>`;
+  let topRightToggle = '';
+  if (isMandatory) {
+      if (isComp) {
+          topRightToggle = `<div class="top-right-action btn-sel-toggle selected" style="cursor:default; background: var(--green-dark);">Complete ✓</div>`;
+      }
+  } else {
+      if (interactive) {
+           topRightToggle = `<button class="top-right-action btn-sel-toggle ${isSelected?(isComp?'selected" style="background:var(--green-dark);"':'selected"'):'unselected"'} onclick="toggleSelection('${key}')">${isSelected ? (isComp ? 'Complete ✓' : 'Selected') : 'Click to Select'}</button>`;
+      } else {
+           topRightToggle = `<div class="top-right-action" style="font-size:13px; font-weight:700; color:${isSelected?'var(--green-dark)':'#9aa0ae'};">${isSelected ? (isComp ? '✓ Complete' : '✓ Selected') : 'Not Selected'}</div>`;
+      }
+  }
+
+  // ซ่อน Progress Bar ด้านล่าง ถ้ามันโชว์ Complete ด้านบนแล้ว 
+  let bottomBar = '';
+  if (isMandatory && !isComp) {
+      bottomBar = `
+        <div class="progress-row">
+          <div>
+            <div style="font-size:11px; color:#5a5f6c; margin-bottom:4px; font-weight:600;">Progress | การดำเนินการ</div>
+            <button class="pill-status progress">In Progress กำลังเรียนรู้ ▶</button>
+          </div>
+          <button class="btn-back-dark" onclick="window.closeModal()">Back</button>
+        </div>
+      `;
+  }
 
   body.innerHTML = `
     <button class="modal-close-btn" onclick="window.closeModal()"><i class="fa-solid fa-xmark"></i></button>
-    <div class="tag">${c.tag}</div><h2>${c.th}</h2><h3>${c.en}</h3><div class="desc">${c.desc}</div>
-    <div class="section-label">Activity | ช่องทางการเรียนรู้</div>
-    ${activitiesHtml}
-    <div class="progress-row" style="margin-top:20px;">
-      <div>
-        <div class="section-label" style="margin:0 0 8px;">Progress | การดำเนินการ</div>
-        <button class="pill-status ${progressState}">${statusText}</button>
-      </div>
-      ${actionButton}
+    ${topRightToggle}
+    <div class="tag">${escapeHtml(topLabel)}</div>
+    <h2>${escapeHtml(c.th)}</h2>
+    <h3>${escapeHtml(c.en)}</h3>
+    <div class="desc">${escapeHtml(c.desc)}</div>
+    
+    <div class="section-label">Activity | ช่องทางการเรียนรู้ <span class="right">สามารถเลือกเรียนอย่างน้อย 1 หลักสูตร</span></div>
+    
+    <div style="margin-top:16px;">
+        ${activitiesHtml}
     </div>
+    
+    ${bottomBar}
   `;
 };
 
