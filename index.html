@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<!-- 🌟 เพิ่ม SweetAlert2 Library -->
+<!-- 🌟 SweetAlert2 Library -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
@@ -311,8 +311,8 @@
   button.top-right-status { border: none; cursor: pointer; }
   .top-right-status.mandatory { background: #0088FF; color: #fff; cursor: default; }
   .top-right-status.selective-selected { background: #e6faec; color: #159440; }
-  .top-right-status.selective-unselected { background: #fdeecb; color: #c98a1f; }
-  .top-right-status.completed { background: var(--green-dark); color: #fff; } /* Override if fully complete */
+  .top-right-status.selective-unselected { background: #e6faec; color: #159440; }
+  .top-right-status.completed { background: var(--green-dark); color: #fff; }
 
   /* 🌟 Activity Box Frame */
   .activity-box { border: 1px solid var(--gray-line); border-radius: 12px; margin-bottom: 16px; background: #fff; overflow: hidden; transition: border-color 0.2s;}
@@ -417,7 +417,6 @@
     .progress-row > div:first-child{width:100%;}
     .pill-status{width:100%;text-align:center;}
     .btn-back-dark{width:100%;text-align:center;padding:13px 0;}
-    .stepper-row { flex-direction:column; align-items:stretch; }
     .btn-acc-action { width: 100%; padding: 12px 0;}
     .info-layout{flex-direction:column;gap:22px;margin-top:6px;}
     .info-image-col{width:min(320px, 72vw);margin:0 auto;}
@@ -438,7 +437,6 @@
   <div class="modal-card" style="background:#fff; max-width:500px; padding:30px;">
     <button class="modal-close-btn" onclick="closeAdminModal()"><i class="fa-solid fa-xmark"></i></button>
     
-    <!-- ระบบ Proxy เดิม -->
     <div style="display:flex; align-items:center; gap: 14px; margin-bottom:20px;">
         <div style="background:var(--blue-tint-2); color:var(--blue-dark); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;">
             <i class="fa-solid fa-user-secret"></i>
@@ -603,6 +601,7 @@
       <div id="panel-my-learning" class="tab-panel">
         <h2 style="font-size:22px;margin:0 0 4px;">Learning <span style="font-weight:400;color:#5a5f6c;">| การเรียนรู้</span></h2>
         
+        <!-- 🌟 โครงสร้างแบบ Flexbox เพื่อให้สลับลำดับบน-ล่างได้อิสระผ่าน JS -->
         <div id="my-learning-container" style="display:flex; flex-direction:column; gap:26px;">
             <div id="section-mandatory">
                 <div class="goal-sub"><b>Mandatory</b> บังคับตามตำแหน่งงานของท่าน (เริ่ม "กำลังเรียนรู้" ให้อัตโนมัติ)</div>
@@ -990,7 +989,7 @@ window.toggleTabConfig = async function(key, isEnabled) {
         window.showToast("บันทึกการตั้งค่าเรียบร้อย");
     } catch(e) {
         console.error(e);
-        Swal.fire('ข้อผิดพลาด', 'ไม่สามารถบันทึกการตั้งค่าได้: ' + e.message, 'error');
+        Swal.fire({ text: 'ไม่สามารถบันทึกการตั้งค่าได้: ' + e.message, icon: 'error', confirmButtonColor: '#0091ff' });
     }
 };
 
@@ -1043,7 +1042,7 @@ window.loadTeamData = async function() {
         isTeamLoaded = true;
     } catch(e) {
         console.error("Error loading team data:", e);
-        Swal.fire('ข้อผิดพลาด', 'โหลดข้อมูลทีมไม่สำเร็จ: ' + e.message, 'error');
+        Swal.fire({ text: 'โหลดข้อมูลทีมไม่สำเร็จ: ' + e.message, icon: 'error', confirmButtonColor: '#0091ff' });
     }
 };
 
@@ -1118,7 +1117,7 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
 
         const empDoc = await getDoc(doc(db, "employees", targetEmpId));
         if (!empDoc.exists()) {
-            Swal.fire('ไม่พบข้อมูล', 'ไม่พบข้อมูลพนักงานรหัส: ' + targetEmpId, 'error');
+            Swal.fire({ text: 'ไม่พบข้อมูลพนักงานรหัส: ' + targetEmpId, icon: 'error', confirmButtonColor: '#0091ff' });
             if(isProxy) await window.initializeUser(session.realUser.empId, false);
             else { await signOut(auth); document.getElementById('scr-login').classList.add('active'); }
             return;
@@ -1203,7 +1202,7 @@ window.initializeUser = async function(targetEmpId, isProxy = false) {
 
     } catch (error) {
         console.error(error);
-        Swal.fire('ข้อผิดพลาด', 'เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + error.message, 'error');
+        Swal.fire({ text: 'เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
         document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
         document.getElementById('scr-login').classList.add('active');
     }
@@ -1217,7 +1216,7 @@ onAuthStateChanged(auth, async (user) => {
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
-                Swal.fire('ข้อผิดพลาด', 'ไม่พบข้อมูลพนักงานในระบบ กรุณาติดต่อ HR', 'error');
+                Swal.fire({ text: 'ไม่พบข้อมูลพนักงานในระบบ กรุณาติดต่อ HR', icon: 'error', confirmButtonColor: '#0091ff' });
                 await signOut(auth);
                 document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
                 document.getElementById('scr-login').classList.add('active');
@@ -1246,7 +1245,7 @@ window.handleGoogleSignIn = async () => {
         await signInWithPopup(auth, provider); 
     } catch (err) { 
         console.error(err); 
-        Swal.fire('ข้อผิดพลาด', 'การเข้าสู่ระบบถูกยกเลิก หรือเกิดข้อผิดพลาด: ' + err.message, 'error'); 
+        Swal.fire({ text: 'การเข้าสู่ระบบถูกยกเลิก หรือเกิดข้อผิดพลาด: ' + err.message, icon: 'error', confirmButtonColor: '#0091ff' }); 
         document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
         document.getElementById('scr-login').classList.add('active');
     }
@@ -1258,8 +1257,8 @@ window.handleLogout = async () => {
 
 window.startProxy = async function() {
     const empId = document.getElementById('proxy-empid-input').value.trim();
-    if(!empId) return Swal.fire('แจ้งเตือน', 'กรุณาระบุรหัสพนักงานที่ต้องการดูข้อมูล', 'warning');
-    if(empId === session.realUser.empId) return Swal.fire('แจ้งเตือน', 'นี่คือรหัสของคุณเองอยู่แล้ว!', 'warning');
+    if(!empId) return Swal.fire({ text: 'กรุณาระบุรหัสพนักงานที่ต้องการดูข้อมูล', icon: 'warning', confirmButtonColor: '#0091ff' });
+    if(empId === session.realUser.empId) return Swal.fire({ text: 'นี่คือรหัสของคุณเองอยู่แล้ว!', icon: 'warning', confirmButtonColor: '#0091ff' });
     window.closeAdminModal();
     await window.initializeUser(empId, true);
 };
@@ -1443,7 +1442,7 @@ window.handleProfileUpload = async function(evt){
       window.showToast("อัปเดตรูปโปรไฟล์สำเร็จ!");
   } catch (error) {
       console.error(error);
-      Swal.fire('ข้อผิดพลาด', 'อัปโหลดไม่สำเร็จ: ' + error.message, 'error');
+      Swal.fire({ text: 'อัปโหลดไม่สำเร็จ: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
   } finally {
       avatarImg.style.opacity = '1';
   }
@@ -1552,8 +1551,8 @@ window.submitJustification = async function(adjustBalance){
   const desc = document.getElementById('just-desc-input').value.trim();
   const val = parseInt(document.getElementById('just-point-input').value || '0', 10);
   
-  if (!topic) { Swal.fire('แจ้งเตือน', 'กรุณากรอกหัวเรื่อง (Topic)', 'warning'); return; }
-  if (val === 0) { Swal.fire('แจ้งเตือน', 'กรุณาใส่คะแนนที่ไม่ใช่ 0', 'warning'); return; }
+  if (!topic) { Swal.fire({ text: 'กรุณากรอกหัวเรื่อง (Topic)', icon: 'warning', confirmButtonColor: '#0091ff' }); return; }
+  if (val === 0) { Swal.fire({ text: 'กรุณาใส่คะแนนที่ไม่ใช่ 0', icon: 'warning', confirmButtonColor: '#0091ff' }); return; }
 
   window.showToast("กำลังประมวลผล...");
 
@@ -1595,7 +1594,7 @@ window.submitJustification = async function(adjustBalance){
 
   } catch (error) {
       console.error("Transaction failed: ", error);
-      Swal.fire('ข้อผิดพลาด', 'เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error, 'error');
+      Swal.fire({ text: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error, icon: 'error', confirmButtonColor: '#0091ff' });
   }
 };
 
@@ -1708,7 +1707,7 @@ window.saveEditFull = async function(idx){
 
   } catch (error) {
       console.error(error);
-      Swal.fire('ข้อผิดพลาด', 'บันทึกผิดพลาด: ' + error.message, 'error');
+      Swal.fire({ text: 'บันทึกผิดพลาด: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
   }
 };
 
@@ -1786,7 +1785,7 @@ window.handleUpload = async function(evt, i){
   if(!f) return;
 
   if (!f.type.match(/image.*/) && f.type !== 'application/pdf') {
-      Swal.fire('รูปแบบไฟล์ไม่ถูกต้อง', 'รองรับเฉพาะไฟล์ PDF และรูปภาพ (.png, .jpg, .jpeg) เท่านั้น', 'warning');
+      Swal.fire({ text: 'รองรับเฉพาะไฟล์ PDF และรูปภาพ (.png, .jpg, .jpeg) เท่านั้น', icon: 'warning', confirmButtonColor: '#0091ff' });
       return;
   }
 
@@ -1797,7 +1796,7 @@ window.handleUpload = async function(evt, i){
   if (i === 'self') {
       instituteName = document.getElementById('custom-institute-input').value.trim();
       if (!instituteName) {
-          Swal.fire('แจ้งเตือน', 'กรุณาระบุชื่อสถาบันให้เรียบร้อยก่อนแนบไฟล์', 'warning');
+          Swal.fire({ text: 'กรุณาระบุชื่อสถาบันให้เรียบร้อยก่อนแนบไฟล์', icon: 'warning', confirmButtonColor: '#0091ff' });
           return;
       }
   }
@@ -1836,7 +1835,7 @@ window.handleUpload = async function(evt, i){
 
   } catch (error) {
       console.error(error);
-      Swal.fire('ข้อผิดพลาด', 'อัปโหลดไม่สำเร็จ: ' + error.message, 'error');
+      Swal.fire({ text: 'อัปโหลดไม่สำเร็จ: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
   }
 };
 
@@ -1848,7 +1847,7 @@ window.saveReflectionText = async function(i) {
     if(!textarea) return;
     
     const text = textarea.value.trim();
-    if(!text) { Swal.fire('แจ้งเตือน', 'กรุณากรอกคำอธิบายผลลัพธ์ทางการเรียนรู้ก่อนบันทึก', 'warning'); return; }
+    if(!text) { Swal.fire({ text: 'กรุณากรอกคำอธิบายผลลัพธ์ทางการเรียนรู้ก่อนบันทึก', icon: 'warning', confirmButtonColor: '#0091ff' }); return; }
     
     window.showToast("กำลังบันทึกข้อมูล...");
 
@@ -1876,7 +1875,7 @@ window.saveReflectionText = async function(i) {
 
     } catch (error) {
         console.error(error);
-        Swal.fire('ข้อผิดพลาด', 'บันทึกไม่สำเร็จ: ' + error.message, 'error');
+        Swal.fire({ text: 'บันทึกไม่สำเร็จ: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
     }
 };
 
@@ -1887,12 +1886,11 @@ window.toggleSelection = async function(key){
 
   const isCurrentlySelected = !!session.selections[key];
   
-  // 🌟 ใช้ SweetAlert แทน confirm() แบบเดิม
+  // 🌟 ใช้ SweetAlert2 สำหรับหน้าต่างยืนยัน
   const result = await Swal.fire({
-      title: isCurrentlySelected ? 'ยกเลิกการเลือก?' : 'ยืนยันการเลือก?',
       text: isCurrentlySelected 
-          ? "คุณต้องการ 'ยกเลิก' การเลือกสมรรถนะนี้ใช่หรือไม่?" 
-          : "ยืนยัน 'เลือก' สมรรถนะนี้เป็นเป้าหมายการเรียนรู้ของคุณ?",
+          ? "ยกเลิกการเลือกสมรรถนะนี้ใช่หรือไม่?" 
+          : "ยืนยันการเลือกสมรรถนะนี้เป็นเป้าหมายการเรียนรู้ของคุณ?",
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: isCurrentlySelected ? '#e0281e' : '#159440',
@@ -1933,7 +1931,7 @@ window.toggleSelection = async function(key){
       window.renderMyLearning();
   } catch (error) {
       console.error(error);
-      Swal.fire('ข้อผิดพลาด', 'เกิดข้อผิดพลาดในการบันทึก: ' + error.message, 'error');
+      Swal.fire({ text: 'เกิดข้อผิดพลาดในการบันทึก: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
   }
 };
 
@@ -2000,18 +1998,16 @@ window.renderModalBody = function(){
                <i class="fa-solid fa-desktop" style="font-size:12px; color:#1c2130;"></i> ${escapeHtml(courseName)}
              </span>`;
 
-      const step1 = isSelected;
-      const step2 = !!fname;
       const step3 = !!reflectionTxt;
       
       let actionBtnHtml = '';
-      let reflectionHtml = `<textarea id="reflection-input-${i}" class="reflection-box" rows="2" placeholder="อธิบายการประเมินผลลัพธ์ทางการเรียนรู้" ${(!interactive || step3) ? 'disabled' : ''}>${escapeHtml(reflectionTxt || '')}</textarea>`;
+      let reflectionHtml = `<textarea id="reflection-input-${i}" class="reflection-box" rows="2" placeholder="อธิบายการประเมินผลลัพธ์ทางการเรียนรู้ (สูงสุด 150 คำ)" maxlength="1500" ${(!interactive || step3 || !isSelected) ? 'disabled' : ''}>${escapeHtml(reflectionTxt || '')}</textarea>`;
       
-      if (interactive && step2 && !step3) {
-          actionBtnHtml = `<button class="btn-acc-action green" onclick="saveReflectionText('${i}')">บันทึก</button>`;
+      if (interactive && !!fname && !step3) {
+          actionBtnHtml = `<button class="btn-acc-action green" onclick="saveReflectionText('${i}')">บันทึก</button><div class="clear-float"></div>`;
       } else if (interactive && step3) {
           actionBtnHtml = `<button class="btn-acc-action yellow" onclick="document.getElementById('reflection-input-${i}').disabled=false; this.style.display='none'; document.getElementById('save-btn-hidden-${i}').style.display='block';">แก้ไข</button>
-                           <button id="save-btn-hidden-${i}" class="btn-acc-action green" style="display:none;" onclick="saveReflectionText('${i}')">บันทึก</button>`;
+                           <button id="save-btn-hidden-${i}" class="btn-acc-action green" style="display:none;" onclick="saveReflectionText('${i}')">บันทึก</button><div class="clear-float"></div>`;
       }
 
       return `
@@ -2019,7 +2015,7 @@ window.renderModalBody = function(){
         <div class="activity-box">
           <div class="activity-row" onclick="toggleActivity(${i})">
             <div class="title" style="flex:1; padding-right:10px;">${courseTitleHtml}</div>
-            <div class="activity-provider" style="flex-shrink:0;">โดย ${escapeHtml(provider)} <i class="fa-solid fa-caret-${expanded?'up':'down'} fa-lg" style="margin-left:4px; color:#9aa0ae;"></i></div>
+            <div class="activity-provider" style="flex-shrink:0;">โดย ${escapeHtml(provider)} <i class="fa-solid fa-caret-${expanded?'up':'down'} fa-xl" style="margin-left:4px; color:#1c2130;"></i></div>
           </div>
           ${expanded ? `
             <div class="activity-detail">
@@ -2038,16 +2034,7 @@ window.renderModalBody = function(){
               ` : ''}
 
               ${reflectionHtml}
-              
-              <div class="stepper-row">
-                <div class="stepper">
-                  <div class="step ${step1?'active':''}"><div class="step-dot"></div>เลือกสมรรถนะ</div>
-                  <div class="step ${step2?'active':''}"><div class="step-dot"></div>แนบใบประกาศฯ</div>
-                  <div class="step ${step3?'active':''}"><div class="step-dot"></div>บันทึกผลประเมิน</div>
-                </div>
-                ${actionBtnHtml}
-              </div>
-
+              ${actionBtnHtml}
             </div>` : ''}
         </div>
       </div>`;
@@ -2060,18 +2047,16 @@ window.renderModalBody = function(){
   const selfReflectionTxt = selfCertInfo ? selfCertInfo.reflection : '';
   const selfExpanded = expandedActivity === 'self';
   
-  const s_step1 = isSelected;
-  const s_step2 = !!selfFname;
   const s_step3 = !!selfReflectionTxt;
 
   let s_actionBtnHtml = '';
-  let s_reflectionHtml = `<textarea id="reflection-input-self" class="reflection-box" rows="2" placeholder="อธิบายการประเมินผลลัพธ์ทางการเรียนรู้" ${(!interactive || s_step3) ? 'disabled' : ''}>${escapeHtml(selfReflectionTxt || '')}</textarea>`;
+  let s_reflectionHtml = `<textarea id="reflection-input-self" class="reflection-box" rows="2" placeholder="อธิบายการประเมินผลลัพธ์ทางการเรียนรู้ (สูงสุด 150 คำ)" maxlength="1500" ${(!interactive || s_step3 || !isSelected) ? 'disabled' : ''}>${escapeHtml(selfReflectionTxt || '')}</textarea>`;
   
-  if (interactive && s_step2 && !s_step3) {
-      s_actionBtnHtml = `<button class="btn-acc-action green" onclick="saveReflectionText('self')">บันทึก</button>`;
+  if (interactive && !!selfFname && !s_step3) {
+      s_actionBtnHtml = `<button class="btn-acc-action green" onclick="saveReflectionText('self')">บันทึก</button><div class="clear-float"></div>`;
   } else if (interactive && s_step3) {
       s_actionBtnHtml = `<button class="btn-acc-action yellow" onclick="document.getElementById('reflection-input-self').disabled=false; this.style.display='none'; document.getElementById('save-btn-hidden-self').style.display='block';">แก้ไข</button>
-                       <button id="save-btn-hidden-self" class="btn-acc-action green" style="display:none;" onclick="saveReflectionText('self')">บันทึก</button>`;
+                       <button id="save-btn-hidden-self" class="btn-acc-action green" style="display:none;" onclick="saveReflectionText('self')">บันทึก</button><div class="clear-float"></div>`;
   }
 
   activitiesHtml += `
@@ -2083,7 +2068,7 @@ window.renderModalBody = function(){
             <i class="fa-solid fa-graduation-cap" style="font-size:12px; color:#1c2130;"></i> เรียนรู้ด้วยตัวเองจากสถาบันอื่น
           </span>
         </div>
-        <div class="activity-provider" style="flex-shrink:0;">${selfInst ? `โดย ${escapeHtml(selfInst)}` : ''} <i class="fa-solid fa-caret-${selfExpanded?'up':'down'} fa-lg" style="margin-left:4px; color:#9aa0ae;"></i></div>
+        <div class="activity-provider" style="flex-shrink:0;">${selfInst ? `โดย ${escapeHtml(selfInst)}` : ''} <i class="fa-solid fa-caret-${selfExpanded?'up':'down'} fa-xl" style="margin-left:4px; color:#1c2130;"></i></div>
       </div>
       ${selfExpanded ? `
         <div class="activity-detail">
@@ -2108,20 +2093,13 @@ window.renderModalBody = function(){
           ` : ''}
           
           ${s_reflectionHtml}
-          
-          <div class="stepper-row">
-            <div class="stepper">
-              <div class="step ${s_step1?'active':''}"><div class="step-dot"></div>เลือกสมรรถนะ</div>
-              <div class="step ${s_step2?'active':''}"><div class="step-dot"></div>แนบใบประกาศฯ</div>
-              <div class="step ${s_step3?'active':''}"><div class="step-dot"></div>บันทึกผลประเมิน</div>
-            </div>
-            ${s_actionBtnHtml}
-          </div>
+          ${s_actionBtnHtml}
         </div>` : ''}
     </div>
   </div>
   `;
 
+  // 🌟 ป้ายสถานะมุมขวาบน (Tick box)
   let topRightToggle = '';
   if (isMandatory) {
       if (isComp) {
