@@ -287,74 +287,76 @@
   .modal-overlay{position:fixed;inset:0;background:rgba(20,25,40,.45);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;} 
   .modal-overlay.active{display:flex;}
   
-  .modal-card { border-radius:26px; padding:34px 38px; max-width:640px; width:100%; max-height:88vh; overflow-y:auto; overflow-x:hidden; position:relative; }
-  .modal-close-btn { position:absolute; top:16px; right:16px; background:rgba(0,0,0,0.06); border:none; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:#5a5f6c; cursor:pointer; transition:background 0.2s; z-index:10; }
-  .modal-close-btn:hover { background:rgba(0,0,0,0.12); color:#1c2130; }
-
-  /* Theme: Mandatory (Plus One) */
-  .modal-card.mandatory { background: #eaf6fc; border: 1px solid #bfe0f5; }
+  .modal-card { border-radius:26px; padding:34px 38px; max-width:680px; width:100%; max-height:88vh; overflow-y:auto; overflow-x:hidden; position:relative; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
   
-  /* Theme: Selective */
-  .modal-card.selective { background: #ffffff; border: 2px solid #3fbe5c; }
-  .modal-card.selective.selected { background: #e6faec; }
+  /* Close Button ปรับให้เป็นวงกลมสีเทาแบบใน Ref */
+  .modal-close-btn { position:absolute; top:24px; right:24px; background:#e3e6ec; border:none; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:#5a5f6c; cursor:pointer; transition:background 0.2s; z-index:10; }
+  .modal-close-btn:hover { background:#d1d5db; color:#1c2130; }
 
-  .modal-card .tag{font-size:15px; font-weight:700; color:#1c2130; margin-bottom:12px;} 
-  .modal-card h2{font-size:18px;margin:0 0 6px;color:#1c2130; padding-right:80px; line-height: 1.4;}
+  /* Theme: Mandatory (Plus One) สีฟ้าตาม Ref */
+  .modal-card.mandatory { background: #f0f8ff; border: none; }
+  
+  /* Theme: Selective (Competency 1) สีเขียวตาม Ref */
+  .modal-card.selective { background: #ffffff; border: 2px solid var(--green-select); }
+  .modal-card.selective.selected { background: #f2fcf5; border: none; }
+
+  .modal-card .tag{font-size:16px; font-weight:800; color:#1c2130; margin-bottom:0;} 
+  .modal-card h2{font-size:20px;margin:0 0 6px;color:#1c2130; line-height: 1.4;}
   .modal-card h3{font-size:16px;margin:0 0 14px;color:#1c2130; font-weight: 700;}
-  .modal-card .desc{font-size:11.5px;color:#5a5f6c;line-height:1.6; margin-bottom: 24px;}
+  .modal-card .desc{font-size:12.5px;color:#5a5f6c;line-height:1.6; margin-bottom: 24px;}
   
-  .section-label{font-size:13px; color:#1c2130; display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 8px; margin-bottom: 12px;}
-  .section-label span.right { font-size:10px; color:#7a8090; font-weight: normal; }
+  .section-label{font-size:13px; color:#1c2130; display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 1px dashed #d1d5db; padding-bottom: 12px; margin-bottom: 16px;}
+  .section-label span.right { font-size:11px; color:#7a8090; font-weight: normal; }
   
-  /* 🌟 Top Right Selection Button (Tick box logic) */
-  .top-right-status { position:absolute; top: 30px; right: 60px; border-radius: 20px; padding: 6px 14px; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
-  button.top-right-status { border: none; cursor: pointer; }
-  .top-right-status.mandatory { background: #0088FF; color: #fff; cursor: default; }
-  .top-right-status.selective-selected { background: #e6faec; color: #159440; }
-  .top-right-status.selective-unselected { background: #e6faec; color: #159440; }
-  .top-right-status.completed { background: var(--green-dark); color: #fff; }
+  /* 🌟 Top Right Selection Button ปรับให้อยู่ระนาบเดียวกับ Tag */
+  .top-right-status { border-radius: 20px; padding: 8px 18px; font-weight: 700; font-size: 13.5px; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; border: none; cursor: pointer; }
+  .top-right-status.mandatory { background: var(--blue); color: #fff; cursor: default; }
+  
+  /* ปุ่มเขียวสำหรับ Selective */
+  .modal-card.selective .top-right-status.selective-selected,
+  .modal-card.selective .top-right-status.completed { background: var(--green-select); color: #fff; }
+  .modal-card.selective .top-right-status.selective-unselected { background: #fff; border: 1px solid var(--green-select); color: var(--green-select); }
 
-  /* 🌟 Activity Box Frame */
-  .activity-box { border: 1px solid var(--gray-line); border-radius: 12px; margin-bottom: 16px; background: #fff; overflow: hidden; transition: border-color 0.2s;}
-  .modal-card.mandatory .activity-box { border-color: #bfe0f5; }
-  .modal-card.selective .activity-box { border-color: #c8f0d2; }
+  /* 🌟 Activity Box Frame ปรับเป็นกล่องสีขาว ขอบมนสวยงาม */
+  .activity-box { border: 1px solid #d1d5db; border-radius: 12px; margin-bottom: 16px; background: #fff; overflow: hidden; transition: box-shadow 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.02);}
+  .activity-box:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
   
-  .activity-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;cursor:pointer; padding: 14px 16px; transition: background 0.2s;}
-  .activity-row:hover { background:rgba(0,0,0,0.02); }
-  .activity-row .title{color:#1c2130;font-size:13px;line-height:1.4; font-weight: 600;}
-  .activity-provider{font-size:12px;color:#4a4f5c;white-space:nowrap;display:flex;align-items:center;gap:6px; margin-top:4px;}
+  .activity-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;cursor:pointer; padding: 18px 20px; transition: background 0.2s;}
+  .activity-row:hover { background:rgba(0,0,0,0.01); }
+  
+  /* Provider Dropdown (ขวามือ) */
+  .activity-provider{font-size:13px;color:#4a4f5c;white-space:nowrap;display:flex;align-items:center;gap:6px; margin-top:2px;}
   
   /* Accordion Detail */
-  .activity-detail{padding:0 16px 20px 34px;}
-  .cert-upload{background:none;color:#5a5f6c;border:none;padding:0;font-size:11.5px;font-weight:400;display:inline-flex;align-items:center;gap:8px;cursor:pointer; margin-top:6px;}
-  .cert-upload i { font-size:14px; }
-  .file-status{font-size:11.5px;font-weight:700;color:var(--blue); display:inline-flex; align-items:center; gap:6px; margin-top:10px; margin-bottom:4px;}
+  .activity-detail{padding:0 20px 24px 20px;}
+  .cert-upload{background:none;color:#5a5f6c;border:none;padding:0;font-size:12.5px;font-weight:400;display:inline-flex;align-items:center;gap:8px;cursor:pointer; margin-top:6px;}
+  .cert-upload i { font-size:16px; }
+  .file-status{font-size:12.5px;font-weight:700;color:var(--blue); display:inline-flex; align-items:center; gap:6px; margin-top:10px; margin-bottom:4px;}
   
   /* Reflection Textarea */
-  .reflection-box { width:100%; border:1px solid var(--gray-line); border-radius:12px; background:#fafafa; padding:14px; font-size:12.5px; color:#4a4f5c; resize:none; line-height:1.6; margin-top: 14px; }
-  .reflection-box:focus { outline: 1px solid var(--green-select); background:#fff; }
+  .reflection-box { width:100%; border:1px solid var(--gray-input); border-radius:12px; background:#fafafa; padding:16px; font-size:13px; color:#4a4f5c; resize:none; line-height:1.6; margin-top: 14px; }
+  .reflection-box:focus { outline: 1px solid var(--blue); background:#fff; }
   .reflection-box:disabled { background: #f2f3f6; cursor: not-allowed; opacity:0.8;}
   
-  .btn-acc-action { border:none; border-radius:16px; padding:8px 24px; font-weight:700; font-size:13px; color:#fff; margin-top: 12px; float: right;}
+  .btn-acc-action { border:none; border-radius:16px; padding:10px 26px; font-weight:700; font-size:13px; color:#fff; margin-top: 12px; float: right; cursor: pointer;}
   .btn-acc-action.green { background: var(--green-select); }
   .btn-acc-action.blue { background: var(--blue); }
   .btn-acc-action.yellow { background: #ffc107; color: #1c2130; }
   .clear-float { clear: both; }
 
-  /* 🌟 Overall Stepper Progress (Bottom of modal) */
-  .overall-stepper-container { display: flex; justify-content: flex-start; margin-top: 30px; padding-top: 20px; border-top: 1px dashed rgba(0,0,0,0.1); }
-  .stepper-bar { display: flex; gap: 8px; width: 100%; }
-  .step-pill { flex: 1; text-align: center; padding: 8px 0; border-radius: 20px; font-size: 11px; font-weight: 700; color: #8b90a0; background: #d7dade; transition: 0.3s; }
+  /* 🌟 Overall Stepper Progress ปรับเป็นขีดแถบสี และตัวหนังสือด้านล่าง ตาม Ref */
+  .stepper-wrapper { display: flex; gap: 12px; margin-top: 34px; padding-top: 24px; border-top: 1px dashed #d1d5db; }
+  .step-item { flex: 1; display: flex; flex-direction: column; gap: 8px; text-align: center; align-items: center; }
+  .step-dash { height: 6px; border-radius: 4px; background: #e3e6ec; transition: background 0.3s; width: 100%; }
+  .step-label { font-size: 11.5px; color: #8b90a0; font-weight: 700; transition: color 0.3s; }
 
-  /* Mandatory Colors */
-  .stepper-bar.mandatory .step-pill.active-1 { background: #0088FF; color: #fff; }
-  .stepper-bar.mandatory .step-pill.active-2 { background: #0088FF; color: #fff; }
-  .stepper-bar.mandatory .step-pill.active-3 { background: #0366d4; color: #fff; }
+  /* Blue Theme (Mandatory) */
+  .step-item.blue-active .step-dash { background: var(--blue); }
+  .step-item.blue-active .step-label { color: var(--blue); }
 
-  /* Selective Colors */
-  .stepper-bar.selective .step-pill.active-1 { background: #e6faec; color: #159440; } 
-  .stepper-bar.selective .step-pill.active-2 { background: #2bb94a; color: #fff; }
-  .stepper-bar.selective .step-pill.active-3 { background: #06821a; color: #fff; }
+  /* Green Theme (Selective) */
+  .step-item.green-active .step-dash { background: var(--green-select); }
+  .step-item.green-active .step-label { color: var(--green-select); }
 
   /* 🌟 CSS สำหรับ Toggle Switch ในตั้งค่าระบบ */
   .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
@@ -1283,10 +1285,9 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 window.handleGoogleSignIn = async () => {
-    // 🌟 ดักจับ Checkbox ว่าโดนติ๊กอยู่ไหม
     const privacyCheck = document.getElementById('privacy-check');
     if(privacyCheck && !privacyCheck.checked) {
-        alert('กรุณากดยอมรับ Privacy Statement ก่อนเข้าสู่ระบบ'); // (ถ้าโค้ดเดิมมี Swal.fire ก็เปลี่ยนเป็น Swal.fire ได้เลยครับ)
+        alert('กรุณากดยอมรับ Privacy Statement ก่อนเข้าสู่ระบบ');
         return;
     }
 
@@ -2030,6 +2031,23 @@ window.renderModalBody = function(){
       if(isSelected) body.classList.add('selected');
   }
   
+  // 🌟 ป้ายสถานะมุมขวาบน (ปรับให้อยู่ระนาบเดียวกับ Tag)
+  let topRightToggle = '';
+  if (isMandatory) {
+      topRightToggle = `<div class="top-right-status mandatory"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</div>`;
+  } else {
+      if (interactive) {
+           if (isSelected || isComp) {
+               topRightToggle = `<button class="top-right-status selective-selected" onclick="toggleSelection('${key}')"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</button>`;
+           } else {
+               topRightToggle = `<button class="top-right-status selective-unselected" onclick="toggleSelection('${key}')">คลิกเพื่อเลือกสมรรถนะ</button>`;
+           }
+      } else {
+           topRightToggle = `<div class="top-right-status ${isSelected?'selective-selected':'selective-unselected'}" style="cursor:default;">${isSelected ? '<i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย' : 'ยังไม่ได้เลือก'}</div>`;
+      }
+  }
+
+  // 🌟 ลูปสร้างกล่อง Activity
   let activitiesHtml = c.activities.map((a,i)=>{
       const expanded = expandedActivity===i;
       const certInfo = (details && details.certs && details.certs[i]) ? details.certs[i] : null;
@@ -2040,13 +2058,14 @@ window.renderModalBody = function(){
       const provider = a[1];
       const link = a[2];
 
+      // ปรับ Title ให้เป็นสีฟ้าและมี Icon ตาม Ref
       const courseTitleHtml = link 
-          ? `<a href="${escapeAttr(link)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue); text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-               <i class="fa-solid fa-desktop" style="font-size:12px; color:#1c2130;"></i> ${escapeHtml(courseName)} 
+          ? `<a href="${escapeAttr(link)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue); font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+               <i class="fa-solid fa-desktop" style="color:#1c2130;"></i> <span>${escapeHtml(courseName)}</span> 
                <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px;"></i>
              </a>`
-          : `<span style="display:inline-flex; align-items:center; gap:6px;">
-               <i class="fa-solid fa-desktop" style="font-size:12px; color:#1c2130;"></i> ${escapeHtml(courseName)}
+          : `<span style="color:var(--blue); font-weight:600; display:inline-flex; align-items:center; gap:8px;">
+               <i class="fa-solid fa-desktop" style="color:#1c2130;"></i> <span>${escapeHtml(courseName)}</span>
              </span>`;
 
       const step3 = !!reflectionTxt;
@@ -2055,17 +2074,17 @@ window.renderModalBody = function(){
       let reflectionHtml = `<textarea id="reflection-input-${i}" class="reflection-box" rows="2" placeholder="อธิบายการประเมินผลลัพธ์ทางการเรียนรู้ (สูงสุด 150 คำ)" maxlength="1500" ${(!interactive || step3 || !isSelected) ? 'disabled' : ''}>${escapeHtml(reflectionTxt || '')}</textarea>`;
       
       if (interactive && !!fname && !step3) {
-          actionBtnHtml = `<button class="btn-acc-action green" onclick="saveReflectionText('${i}')">บันทึก</button><div class="clear-float"></div>`;
+          actionBtnHtml = `<button class="btn-acc-action ${isMandatory ? 'blue' : 'green'}" onclick="saveReflectionText('${i}')">บันทึก</button><div class="clear-float"></div>`;
       } else if (interactive && step3) {
           actionBtnHtml = `<button class="btn-acc-action yellow" onclick="document.getElementById('reflection-input-${i}').disabled=false; this.style.display='none'; document.getElementById('save-btn-hidden-${i}').style.display='block';">แก้ไข</button>
-                           <button id="save-btn-hidden-${i}" class="btn-acc-action green" style="display:none;" onclick="saveReflectionText('${i}')">บันทึก</button><div class="clear-float"></div>`;
+                           <button id="save-btn-hidden-${i}" class="btn-acc-action ${isMandatory ? 'blue' : 'green'}" style="display:none;" onclick="saveReflectionText('${i}')">บันทึก</button><div class="clear-float"></div>`;
       }
 
       return `
       <div class="activity-item">
         <div class="activity-box">
           <div class="activity-row" onclick="toggleActivity(${i})">
-            <div class="title" style="flex:1; padding-right:10px;">${courseTitleHtml}</div>
+            <div class="title" style="flex:1; padding-right:10px; line-height: 1.5;">${courseTitleHtml}</div>
             <div class="activity-provider" style="flex-shrink:0;">โดย ${escapeHtml(provider)} <i class="fa-solid fa-caret-${expanded?'up':'down'} fa-xl" style="margin-left:4px; color:#1c2130;"></i></div>
           </div>
           ${expanded ? `
@@ -2091,23 +2110,23 @@ window.renderModalBody = function(){
       </div>`;
   }).join('');
 
+  // 🌟 ส่วนของการเรียนรู้ด้วยตัวเอง (Self-learning)
   const selfCertInfo = (details && details.certs && details.certs['self']) ? details.certs['self'] : null;
   const selfFname = selfCertInfo ? selfCertInfo.name : null;
   const selfCertUrl = selfCertInfo ? selfCertInfo.url : null;
   const selfInst = selfCertInfo ? selfCertInfo.institute : '';
   const selfReflectionTxt = selfCertInfo ? selfCertInfo.reflection : '';
   const selfExpanded = expandedActivity === 'self';
-  
   const s_step3 = !!selfReflectionTxt;
 
   let s_actionBtnHtml = '';
   let s_reflectionHtml = `<textarea id="reflection-input-self" class="reflection-box" rows="2" placeholder="อธิบายการประเมินผลลัพธ์ทางการเรียนรู้ (สูงสุด 150 คำ)" maxlength="1500" ${(!interactive || s_step3 || !isSelected) ? 'disabled' : ''}>${escapeHtml(selfReflectionTxt || '')}</textarea>`;
   
   if (interactive && !!selfFname && !s_step3) {
-      s_actionBtnHtml = `<button class="btn-acc-action green" onclick="saveReflectionText('self')">บันทึก</button><div class="clear-float"></div>`;
+      s_actionBtnHtml = `<button class="btn-acc-action ${isMandatory ? 'blue' : 'green'}" onclick="saveReflectionText('self')">บันทึก</button><div class="clear-float"></div>`;
   } else if (interactive && s_step3) {
       s_actionBtnHtml = `<button class="btn-acc-action yellow" onclick="document.getElementById('reflection-input-self').disabled=false; this.style.display='none'; document.getElementById('save-btn-hidden-self').style.display='block';">แก้ไข</button>
-                       <button id="save-btn-hidden-self" class="btn-acc-action green" style="display:none;" onclick="saveReflectionText('self')">บันทึก</button><div class="clear-float"></div>`;
+                         <button id="save-btn-hidden-self" class="btn-acc-action ${isMandatory ? 'blue' : 'green'}" style="display:none;" onclick="saveReflectionText('self')">บันทึก</button><div class="clear-float"></div>`;
   }
 
   activitiesHtml += `
@@ -2115,8 +2134,8 @@ window.renderModalBody = function(){
     <div class="activity-box">
       <div class="activity-row" onclick="toggleActivity('self')">
         <div class="title" style="flex:1; padding-right:10px;">
-          <span style="display:inline-flex; align-items:center; gap:6px;">
-            <i class="fa-solid fa-graduation-cap" style="font-size:12px; color:#1c2130;"></i> เรียนรู้ด้วยตัวเองจากสถาบันอื่น
+          <span style="color:var(--navy-dark); font-weight:600; display:inline-flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:#1c2130;"></i> <span>เรียนรู้ด้วยตัวเองจากสถาบันอื่น</span>
           </span>
         </div>
         <div class="activity-provider" style="flex-shrink:0;">${selfInst ? `โดย ${escapeHtml(selfInst)}` : ''} <i class="fa-solid fa-caret-${selfExpanded?'up':'down'} fa-xl" style="margin-left:4px; color:#1c2130;"></i></div>
@@ -2125,7 +2144,7 @@ window.renderModalBody = function(){
         <div class="activity-detail">
           ${interactive && !selfFname && isSelected ? `
             <div style="margin-bottom:10px;">
-              <input type="text" id="custom-institute-input" placeholder="ระบุชื่อสถาบัน (เช่น Udemy, SkillLane...)" style="width:100%; border:1px solid var(--gray-line); border-radius:8px; padding:8px 10px; font-size:13px; outline:none;" value="${escapeAttr(selfInst)}">
+              <input type="text" id="custom-institute-input" placeholder="ระบุชื่อสถาบัน (เช่น Udemy, SkillLane...)" style="width:100%; border:1px solid var(--gray-input); border-radius:8px; padding:10px 14px; font-size:13px; outline:none;" value="${escapeAttr(selfInst)}">
             </div>
           ` : ''}
           
@@ -2150,49 +2169,44 @@ window.renderModalBody = function(){
   </div>
   `;
 
-  // 🌟 ป้ายสถานะมุมขวาบน (Tick box)
-  let topRightToggle = '';
-  if (isMandatory) {
-      if (isComp) {
-          topRightToggle = `<div class="top-right-status completed"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</div>`;
-      } else {
-          topRightToggle = `<div class="top-right-status mandatory"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</div>`;
-      }
-  } else {
-      if (interactive) {
-           if (isComp) {
-               topRightToggle = `<button class="top-right-status completed" onclick="toggleSelection('${key}')"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</button>`;
-           } else if (isSelected) {
-               topRightToggle = `<button class="top-right-status selective-selected" onclick="toggleSelection('${key}')"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</button>`;
-           } else {
-               topRightToggle = `<button class="top-right-status selective-unselected" onclick="toggleSelection('${key}')">คลิกเพื่อเลือกสมรรถนะ</button>`;
-           }
-      } else {
-           topRightToggle = `<div class="top-right-status ${isComp?'completed':(isSelected?'selective-selected':'selective-unselected')}" style="cursor:default;">${isSelected ? '<i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย' : 'ยังไม่ได้เลือก'}</div>`;
-      }
-  }
-
-  // 🌟 คำนวณ Overall Progress Stepper
+  // 🌟 คำนวณ Overall Progress Stepper แบบขีดและตัวหนังสือด้านล่าง
   const certs = details?.certs || {};
-  const overallStep1 = isSelected;
-  const overallStep2 = Object.values(certs).some(c => c.url);
-  const overallStep3 = Object.values(certs).some(c => c.url && c.reflection && c.reflection.trim() !== '');
+  const step1Done = isSelected;
+  const step2Done = Object.values(certs).some(c => c.url);
+  const step3Done = Object.values(certs).some(c => c.url && c.reflection && c.reflection.trim() !== '');
 
-  const themeClass = isMandatory ? 'mandatory' : 'selective';
+  const themeColor = isMandatory ? 'blue' : 'green';
+  
+  const s1Class = step1Done ? `${themeColor}-active` : '';
+  const s2Class = step2Done ? `${themeColor}-active` : '';
+  const s3Class = step3Done ? `${themeColor}-active` : '';
+
   const bottomBar = `
-    <div class="overall-stepper-container">
-       <div class="stepper-bar ${themeClass}">
-           <div class="step-pill ${overallStep1 ? 'active-1' : ''}">เลือกสมรรถนะ</div>
-           <div class="step-pill ${overallStep2 ? 'active-2' : ''}">แนบใบประกาศฯ</div>
-           <div class="step-pill ${overallStep3 ? 'active-3' : ''}">บันทึกผลประเมิน</div>
-       </div>
+    <div class="stepper-wrapper">
+        <div class="step-item ${s1Class}">
+           <div class="step-dash"></div>
+           <div class="step-label">เลือกสมรรถนะ</div>
+        </div>
+        <div class="step-item ${s2Class}">
+           <div class="step-dash"></div>
+           <div class="step-label">แนบใบประกาศฯ</div>
+        </div>
+        <div class="step-item ${s3Class}">
+           <div class="step-dash"></div>
+           <div class="step-label">บันทึกผลประเมิน</div>
+        </div>
     </div>
   `;
 
+  // 🌟 รวมโครงสร้าง HTML ของ Modal (ย้าย Top Toggle มาไว้ข้าง Tag)
   body.innerHTML = `
     <button class="modal-close-btn" onclick="window.closeModal()"><i class="fa-solid fa-xmark"></i></button>
-    ${topRightToggle}
-    <div class="tag">${escapeHtml(topLabel)}</div>
+    
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; padding-right:30px;">
+       <div class="tag">${escapeHtml(topLabel)}</div>
+       ${topRightToggle}
+    </div>
+
     <h2>${escapeHtml(c.th)}</h2>
     <h3>${escapeHtml(c.en)}</h3>
     <div class="desc">${escapeHtml(c.desc)}</div>
