@@ -1,2248 +1,849 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-<title>StarMeter</title>
-<meta name="description" content="StarMeter - Training Management Center จัดการแผนพัฒนาศักยภาพรายบุคคล (IDP) ประจำปี 2026">
-<meta property="og:title" content="StarMeter">
-<meta property="og:description" content="Training Management Center ระบบจัดการแผนพัฒนาศักยภาพรายบุคคล (IDP) ประจำปี 2026 สำหรับพนักงาน">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/gap-learning-plan.firebasestorage.app/o/logo.png?alt=media&token=0c6d0ed6-c5ea-46f2-b31a-3698d915ad56">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<!-- 🌟 SweetAlert2 Library -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<style>
-  :root{
-    --navy:#28344c;
-    --navy-dark:#1c2537;
-    --red:#ff3b30;
-    --red-dark:#e0281e;
-    --red-tint:#ffe3e1;
-    --blue:#0091ff;
-    --blue-dark:#0077d6;
-    --blue-tint:#eaf6fc;
-    --blue-tint-2:#d7edf9;
-    --green:#1fae4d;
-    --green-dark:#159440;
-    --green-tint:#e6faec;
-    --green-tint-2:#c8f0d2;
-    --green-select:#2bb94a;
-    --cream:#fdeecb;
-    --cream-text:#c98a1f;
-    --gray-input:#d6d6d6;
-    --gray-text:#8b90a0;
-    --gray-line:#e3e6ec;
-    font-family:'Noto Sans Thai','Inter',sans-serif;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:#f2f3f6;color:#1c2130;}
-  button{font-family:inherit;cursor:pointer;}
-  textarea,input{font-family:inherit;}
-  #app{max-width:1360px;margin:0 auto;background:#fff;min-height:100vh;position:relative;box-shadow:0 0 60px rgba(0,0,0,.06);}
-
-  .screen{display:none;min-height:100vh;}
-  .screen.active{display:block;}
-  .screen.center{display:none;}
-  .screen.center.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
-
-  /* ===== Proxy Banner ===== */
-  .proxy-banner {
-    position: fixed; top: 0; left: 0; width: 100%; height: 40px; background: var(--red-dark); color: #fff;
-    display: none; align-items: center; justify-content: center; gap: 15px; font-size: 13px; font-weight: 700; z-index: 99999;
-    box-shadow: 0 4px 10px rgba(224,40,30,0.25);
-  }
-  .proxy-banner.active { display: flex; }
-  .proxy-btn-exit { background: #fff; color: var(--red-dark); border: none; padding: 4px 14px; border-radius: 12px; font-weight: 800; font-size: 12px; cursor: pointer; transition: transform 0.1s; }
-  .proxy-btn-exit:hover { transform: scale(1.05); }
-  body.has-proxy .app-header { top: 40px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AirAsia PIP System - StarMeter</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
-  /* ===== Loading Spinner ===== */
-  .loader-container { text-align: center; }
-  .spinner { 
-    width: 44px; height: 44px; 
-    border: 4px solid var(--blue-tint-2); 
-    border-top: 4px solid var(--blue); 
-    border-radius: 50%; 
-    animation: spin 1s linear infinite; 
-    margin: 0 auto 20px; 
-  }
-  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-  .loading-text { font-size: 15px; font-weight: 700; color: #3a3f4c; margin-top:16px; }
-  .loading-subtext { font-size: 12px; color: #9aa0ae; margin-top:6px; }
+  <style>
+    /* Corporate Typography */
+    body { font-family: 'Sarabun', sans-serif; background-color: #f3f4f6; color: #1f2937; padding-top: 56px; }
+    h1, h2, h3, h4, h5, h6, .font-kanit, label, .badge { font-family: 'Kanit', sans-serif; }
+    
+    /* Workday-style Global Components */
+    .wd-topbar { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: white; border-bottom: 1px solid #d1d5db; z-index: 50; display: flex; align-items: center; padding: 0 1.5rem; justify-content: space-between; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    .wd-search { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 4px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; width: 250px; color: #6b7280; font-size: 0.8rem; }
+    
+    .wd-context-header { background-color: #E21E26; color: white; padding: 1.5rem 2rem; padding-top: 2.5rem; }
+    
+    .wd-card { background: white; border: 1px solid #d1d5db; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 1.5rem; }
+    .wd-card-header { border-bottom: 1px solid #e5e7eb; padding: 1rem 1.5rem; background: #f9fafb; font-family: 'Kanit', sans-serif; font-weight: 600; color: #374151; font-size: 1rem; }
+    .wd-card-body { padding: 1.5rem; }
+    
+    .wd-label { font-size: 0.75rem; font-weight: 600; color: #4b5563; text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Kanit', sans-serif; margin-bottom: 0.25rem; display: block; }
+    .wd-input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 2px; outline: none; transition: border-color 0.2s; font-family: 'Sarabun', sans-serif; font-size: 0.9rem; background: #fff; }
+    .wd-input:focus { border-color: #E21E26; box-shadow: inset 0 0 0 1px #E21E26; }
+    .wd-input[readonly] { background: #f3f4f6; color: #6b7280; border-color: #e5e7eb; cursor: not-allowed; }
+    
+    .wd-btn-primary { background-color: #E21E26; color: white; padding: 0.5rem 1.25rem; border-radius: 2px; font-weight: 500; font-size: 0.875rem; font-family: 'Kanit', sans-serif; transition: background-color 0.2s; border: 1px solid transparent; cursor: pointer; }
+    .wd-btn-primary:hover { background-color: #c81a22; }
+    .wd-btn-secondary { background-color: white; color: #374151; padding: 0.5rem 1.25rem; border-radius: 2px; font-weight: 500; font-size: 0.875rem; font-family: 'Kanit', sans-serif; border: 1px solid #d1d5db; transition: background-color 0.2s; cursor: pointer; }
+    .wd-btn-secondary:hover { background-color: #f3f4f6; }
+    
+    .wd-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .wd-table th { font-family: 'Kanit', sans-serif; font-size: 0.75rem; font-weight: 600; color: #6b7280; padding: 0.75rem 1rem; border-bottom: 2px solid #e5e7eb; background: #f9fafb; }
+    .wd-table td { padding: 1rem; border-bottom: 1px solid #e5e7eb; font-size: 0.875rem; vertical-align: top; }
+    .wd-table tr:hover { background-color: #fdf2f2; }
 
-  /* ===== logo ===== */
-  .logo-slot{display:inline-flex;align-items:center;gap:9px;}
-  .logo-slot .wordmark{font-weight:800;color:var(--navy);letter-spacing:-.3px;}
-  .logo-slot[data-size="small"] .wordmark{font-size:19px;}
-  .logo-slot[data-size="big"]{flex-direction:column;gap:6px;}
-  .logo-slot[data-size="big"] .wordmark{font-size:36px;letter-spacing:-.5px;}
-  .logo-img{display:block;object-fit:contain; max-height: 100%;}
-  .logo-slot[data-size="small"] .logo-img{height:42px;width:auto;}
-  .logo-slot[data-size="big"] .logo-img{height:100px;width:auto;}
-  .subtitle{font-size:18px;color:#333;margin-top:2px;font-weight:500;}
-
-  /* login */
-  .field-group{width:min(340px, 100%);margin-top:18px;text-align:left;}
-  .field-group label{display:block;font-size:14px;color:#3a3f4c;margin-bottom:8px;font-weight:500;}
-  .field-input{width:100%;height:46px;border-radius:10px;border:none;background:var(--gray-input);}
-  .btn-navy{background:var(--navy);color:#fff;border:none;border-radius:22px;padding:13px 40px;font-weight:700;font-size:15px;}
-  .btn-navy:hover{background:var(--navy-dark);}
-
-  .google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:min(320px,100%);background:#fff;border:1px solid #dadce0;border-radius:24px;padding:12px 20px;font-weight:600;font-size:15px;color:#3c4043;margin-top:26px;transition:box-shadow .15s ease,transform .15s ease;}
-  .google-btn:hover{box-shadow:0 4px 14px rgba(60,64,67,.18);transform:translateY(-1px);}
-  
-  .login-warning {
-    background: #fff8e1;
-    border: 1px solid #ffe082;
-    color: #d48806;
-    border-radius: 12px;
-    padding: 16px 20px;
-    font-size: 12.5px;
-    margin-top: 24px;
-    width: min(340px, 100%);
-    text-align: left;
-    line-height: 1.6;
-  }
-  .login-warning ul { margin: 8px 0 0; padding-left: 22px; color: #5a5f6c; }
-  .login-warning li { margin-bottom: 6px; }
-
-  /* ===== app shell ===== */
-  .app-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 40px;border-bottom:1px solid var(--gray-line);position:sticky;top:0;background:#fff;z-index:40; transition: top 0.2s;}
-  .tabbar-desktop{position:relative;display:flex;gap:4px;}
-  .tabbar-desktop .tab-btn{background:none;border:none;padding:10px 18px;font-weight:600;font-size:13.5px;color:#6a6f7c;border-radius:10px;position:relative;z-index:1;transition:color .2s ease,background .2s ease;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.3;}
-  .tabbar-desktop .tab-btn:hover{background:#f4f5f7;}
-  .tabbar-desktop .tab-btn.active{color:var(--blue);}
-  .tabbar-desktop .tab-btn .th-sub{font-size:10.5px;color:#9aa0ae;font-weight:500;}
-  .tabbar-desktop .tab-btn.active .th-sub{color:var(--blue-dark);}
-  .tab-indicator{position:absolute;bottom:-2px;height:3px;background:var(--blue);border-radius:3px;transition:left .28s cubic-bezier(.4,0,.2,1), width .28s cubic-bezier(.4,0,.2,1);}
-  .header-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
-  .header-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--gray-line);}
-  .header-name{font-size:13px;font-weight:700;color:#1c2130;text-align:right;}
-  .header-role{font-size:11px;color:#9aa0ae;text-align:right;}
-  .logout-link{background:none;border:none;font-size:11.5px;color:var(--red);font-weight:700;}
-
-  .tabbar-mobile{display:none;}
-  main#tab-content{padding:32px 56px 90px;position:relative;}
-  .tab-panel{display:none;}
-  .tab-panel.active{display:block;opacity:1;transform:translateY(0);transition:opacity .22s ease, transform .22s ease;}
-  .tab-panel.active.entering{opacity:0;transform:translateY(8px);}
-  .subscreen{padding:32px 56px 110px;position:relative;}
-
-  .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-14px);background:var(--navy-dark);color:#fff;font-size:13.5px;font-weight:600;padding:13px 22px;border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.25);z-index:9999;opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;max-width:90vw;text-align:center;}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-  .toast.error{background:var(--red-dark);}
-  .toast.success{background:var(--green-dark);}
-
-  .fab{position:fixed;bottom:30px;right:calc(50% - 624px);background:var(--blue);color:#fff;border:none;padding:11px 26px;border-radius:24px;font-weight:700;font-size:14px;box-shadow:0 6px 16px rgba(0,145,255,.35);transition:transform .15s ease;}
-  .fab:hover{transform:translateY(-2px);}
-  @media (max-width:1360px){.fab{right:30px;}}
-
-  .page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-top:6px;margin-bottom:8px;}
-  .page-title-en{font-size:15px;color:#9aa0ae;text-align:right;}
-  .page-title-th{font-size:13px;color:#b7bbc6;text-align:right;}
-
-  /* grids */
-  .team-grid-wrap{background:#f4f6f9;border-radius:26px;padding:22px;margin-top:26px;}
-  .members-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-  .member-card{background:linear-gradient(180deg,#eaf6fc 0%,#ffffff 100%);border:1px solid var(--blue-tint-2);border-radius:18px;padding:18px;}
-  .member-top{display:flex;gap:14px;align-items:center;}
-  .member-photo{width:78px;height:78px;border-radius:14px;object-fit:cover;flex-shrink:0;border:1px solid #fff; background:#fff;}
-  .member-name-wrap{flex:1; word-break:break-word;}
-  .member-name{font-weight:700;font-size:16.5px;color:#1c2130;line-height:1.2;}
-  .member-role-id{font-size:11.5px;color:#8b90a0;margin-top:4px;font-weight:500;}
-  .member-stats{display:flex;gap:10px;margin-top:16px;}
-  .stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
-  .stat .label-en{font-size:11px;font-weight:700;color:#333;}
-  .stat .label-th{font-size:10px;color:#8b90a0;}
-  .balance-pill{background:var(--cream);border-radius:10px;padding:8px 0;width:100%;text-align:center;font-weight:800;font-size:16px;color:#7a5410;}
-  .round-btn{width:38px;height:38px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;}
-  .round-btn.blue{background:var(--blue);}
-  .round-btn.blue-lt{background:#bfe0f5;color:var(--blue-dark);}
-  .entry-list{margin-top:14px;max-height:118px;overflow:auto;padding:0;font-size:12.5px;line-height:2;}
-  .entry-list .entry-item{cursor:default;display:block;font-weight:700;}
-  .entry-list .entry-item.g{color:var(--green-dark);}
-  .entry-list .entry-item.r{color:var(--red-dark);}
-  .entry-list .entry-item:hover{text-decoration:underline;}
-
-  .entry-tooltip{position:fixed;z-index:300;background:#161b26;color:#fff;padding:10px 14px;border-radius:10px;font-size:12px;line-height:1.55;max-width:230px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s ease, transform .12s ease;box-shadow:0 10px 26px rgba(0,0,0,.28);}
-  .entry-tooltip.show{opacity:1;transform:translateY(0);}
-  .entry-tooltip .tip-desc{color:#e7e9ee;}
-  .entry-tooltip .tip-points{margin-top:6px;font-weight:800;font-size:13px;}
-  .entry-tooltip .tip-points.g{color:#6fe39a;}
-  .entry-tooltip .tip-points.r{color:#ff8f88;}
-  
-  .pager{display:flex;justify-content:center;gap:0;margin-top:34px; flex-wrap: wrap;}
-  .pager button{border:1px solid var(--gray-line);background:#fff;padding:9px 26px;font-weight:600;font-size:13px;color:#666; margin-left:-1px;}
-  .pager button:first-child{border-radius:20px 0 0 20px;}
-  .pager button:last-child{border-radius:0 20px 20px 0;}
-  .pager button.active{background:#fff;border-color:var(--blue);color:var(--blue);position:relative;z-index:1;}
-
-  /* slim header */
-  .mini-header{display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:14px;}
-  .mini-identity{display:flex;align-items:center;gap:14px;}
-  .mini-avatar-wrap{position:relative;flex-shrink:0;}
-  .mini-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;display:block; background:#fff; border:1px solid var(--gray-line);}
-  .mini-photo-edit-btn{position:absolute;bottom:-4px;right:-4px;width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;box-shadow:0 3px 8px rgba(0,0,0,.25);border:2px solid #fff; cursor:pointer;}
-  .mini-name{font-weight:700;font-size:16px;color:#1c2130;line-height:1.3;}
-  .mini-role{font-size:13px;color:#8b90a0;line-height:1.3;}
-  .mini-balance{display:flex;align-items:center;gap:16px;}
-  .mini-balance-label{font-size:13px;color:#333;text-align:right;line-height:1.3;}
-  .mini-balance-label .sub{display:block;font-size:11px;color:#9aa0ae;}
-  .balance-pill-lg{background:#fff;border:1px solid #d8dbe2;border-radius:30px;padding:11px 30px;font-size:26px;font-weight:800;color:#1c2130;min-width:90px;text-align:center;}
-
-  /* fade panel */
-  .fade-panel{background:linear-gradient(180deg,#f8f9fb 0%,#eef1f5 100%);border-radius:22px;padding:22px;margin-top:18px;position:relative;}
-  .fade-panel.scroll{max-height:600px;overflow-y:auto;}
-  .fade-panel .entry-card{background:#fff;border:1px solid var(--gray-line);border-radius:16px;padding:18px 22px;margin-bottom:14px;}
-  .fade-panel .entry-card:first-child{border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,145,255,.15);}
-  .fade-colname{font-size:11px;color:#9aa0ae;margin-bottom:4px;}
-  .fade-topic{font-weight:700;font-size:16px;}
-  .fade-topic.g{color:var(--green-dark);}
-  .fade-topic.r{color:var(--red-dark);}
-  .fade-point{font-size:24px;font-weight:800;text-align:right;}
-  .fade-point.g{color:var(--green-dark);}
-  .fade-point.r{color:var(--red-dark);}
-  .fade-desc{font-size:13px;color:#4a4f5c;margin-top:10px;line-height:1.6;}
-  .fade-entry-top{display:flex;justify-content:space-between;gap:20px;}
-  .fade-entry-top .col{flex:1;}
-
-  .field-label{font-size:14px;font-weight:700;color:#1c2130;margin-top:4px;}
-  .field-hint{font-size:11.5px;color:#9aa0ae;margin-bottom:8px;}
-  .lorem-box{width:100%;border:1px solid var(--gray-line);border-radius:10px;background:#fff;padding:12px 14px;font-size:13px;color:#4a4f5c;resize:none;line-height:1.6;}
-  .char-hint{text-align:right;font-size:10.5px;color:#9aa0ae;margin-top:4px;}
-  .just-grid{display:flex;gap:30px;}
-  .just-fields{flex:1;min-width:0;}
-  .just-point{width:230px;flex-shrink:0;}
-  .point-pill-input{width:100%;height:64px;border-radius:32px;text-align:center;font-size:30px;font-weight:800;border:none;outline:none;}
-  .point-pill-input.pos{background:var(--green-tint-2);color:var(--green-dark);box-shadow:0 0 0 6px rgba(31,174,77,.12);}
-  .point-pill-input.neg{background:#fcd6d3;color:var(--red-dark);box-shadow:0 0 0 6px rgba(224,40,30,.12);}
-  .point-hint{font-size:11px;line-height:1.7;margin-top:6px;}
-  .point-hint .g{color:var(--green-dark);display:block;}
-  .point-hint .r{color:var(--red-dark);display:block;}
-  .just-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;}
-  .btn-pill{border:none;border-radius:20px;padding:11px 26px;font-weight:700;font-size:13.5px;color:#fff;}
-  .btn-pill.red{background:var(--red);}
-  .btn-pill.green{background:var(--green);}
-  .btn-pill.blue{background:var(--blue);}
-
-  .btn-primary-blue{background:var(--blue);color:#fff;border:none;border-radius:20px;padding:11px 24px;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:6px;}
-  .btn-primary-blue:hover{background:var(--blue-dark);}
-
-  .edit-table-head{display:grid;grid-template-columns:1fr 2fr 110px;gap:20px;font-weight:700;font-size:14px;color:#1c2130;padding-bottom:10px;border-bottom:1px solid var(--gray-line);}
-  .edit-table-row{display:grid;grid-template-columns:1fr 2fr 110px;gap:20px;padding:18px 0;border-bottom:1px solid var(--gray-line);align-items:start;}
-  .edit-table-row:last-child{border-bottom:none;}
-  .edit-table-topic{font-weight:700;font-size:14px;background:none;border:none;text-align:left;padding:0;cursor:pointer;font-family:inherit;}
-  .edit-table-topic.g{color:var(--green-dark);}
-  .edit-table-topic.r{color:var(--red-dark);}
-  .edit-table-desc{font-size:12.5px;color:#4a4f5c;line-height:1.6;}
-  .edit-table-point{background:#fff;border:1px solid var(--gray-line);border-radius:20px;padding:8px 0;text-align:center;font-weight:800;font-size:16px;color:#1c2130;}
-  .edit-table-editrow{grid-column:1/-1;background:var(--blue-tint);border-radius:14px;padding:16px;margin-top:-6px;}
-  .btn-chip{border:none;border-radius:16px;padding:8px 20px;font-size:12.5px;font-weight:700;}
-  .btn-chip.gray{background:#dfe2e8;color:#555;}
-  .btn-chip.blue{background:var(--blue);color:#fff;}
-
-  /* learning team grid */
-  .lteam-block{margin-bottom:20px;}
-  .lteam-row{background:var(--blue-tint);border:1px solid var(--blue-tint-2);border-radius:18px;padding:16px 20px;display:flex;align-items:center;gap:20px;}
-  .lteam-head{display:flex;align-items:center;gap:14px;flex-shrink:0;}
-  .lteam-row img{width:44px;height:44px;border-radius:10px;object-fit:cover; background:#fff;}
-  .lteam-name-wrap{width:145px; flex-shrink:0; word-break:break-word; padding-right:10px;}
-  .lteam-name{font-weight:700;font-size:14px;color:#1c2130;line-height:1.2;}
-  .lteam-role-id{font-size:11px;color:#8b90a0;margin-top:2px;font-weight:500;}
-  .comp-chips{display:flex;gap:10px;flex:1;flex-wrap:wrap;}
-  .comp-chip{flex:1;min-width:140px;border:none;border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer;font-size:12px;line-height:1.5;}
-  .comp-chip .en{font-weight:700;display:block;margin-bottom:2px;}
-  .comp-chip.on{background:var(--green-select);color:#fff;}
-  .comp-chip.off{background:var(--green-tint-2);color:#1a6b34;}
-  .comp-chip.plus{background:var(--blue-tint-2);color:var(--blue-dark);}
-  .comp-chip .arrow{float:right;opacity:.7;}
-  
-  /* goal page */
-  .goal-sub{font-size:13px;color:#5a5f6c;margin:4px 0 16px;}
-  .goal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-  .goal-card{border:none;text-align:left;border-radius:16px;padding:20px;cursor:pointer;position:relative;min-height:150px;transition:background .15s ease,color .15s ease;}
-  .goal-card.green{background:var(--green-tint);}
-  .goal-card.blue{background:var(--blue-tint);}
-  .goal-card.green.selected{background:var(--green-select);}
-  .goal-card.green.selected .th-name,.goal-card.green.selected .en-name{color:#fff;}
-  .goal-card.green.selected .desc{color:rgba(255,255,255,.88);}
-  .goal-card.green.selected .tag{color:rgba(255,255,255,.75);}
-  .goal-card.green.selected .arrow{color:#fff;}
-  .goal-card .tag{font-size:11px;color:#7a8090;}
-  .goal-card .th-name{font-weight:700;font-size:13.5px;margin-top:4px;color:#1c2130;padding-right:26px;}
-  .goal-card .en-name{font-weight:700;font-size:13.5px;color:#1c2130;}
-  .goal-card .desc{font-size:10.5px;color:#6b7280;margin-top:8px;line-height:1.5;}
-  .goal-card .arrow{position:absolute;bottom:14px;right:16px;color:var(--blue);font-size:15px;}
-  
-  /* 🌟 Complete Badge on Card */
-  .badge-complete { position:absolute; top:16px; right:16px; background:var(--green-dark); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:12px; box-shadow:0 2px 6px rgba(21,148,64,.2); z-index:2; }
-
-  /* ===== MODAL & CARDS NEW DESIGN ===== */
-  .modal-overlay{position:fixed;inset:0;background:rgba(20,25,40,.45);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;} 
-  .modal-overlay.active{display:flex;}
-  
-  .modal-card { border-radius:26px; padding:34px 38px; max-width:680px; width:100%; max-height:88vh; overflow-y:auto; overflow-x:hidden; position:relative; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-  
-  /* Close Button ปรับให้เป็นวงกลมสีเทาแบบใน Ref */
-  .modal-close-btn { position:absolute; top:24px; right:24px; background:#e3e6ec; border:none; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:#5a5f6c; cursor:pointer; transition:background 0.2s; z-index:10; }
-  .modal-close-btn:hover { background:#d1d5db; color:#1c2130; }
-
-  /* Theme: Mandatory (Plus One) สีฟ้าตาม Ref */
-  .modal-card.mandatory { background: #f0f8ff; border: none; }
-  
-  /* Theme: Selective (Competency 1) สีเขียวตาม Ref */
-  .modal-card.selective { background: #ffffff; border: 2px solid var(--green-select); }
-  .modal-card.selective.selected { background: #f2fcf5; border: none; }
-
-  .modal-card .tag{font-size:16px; font-weight:800; color:#1c2130; margin-bottom:0;} 
-  .modal-card h2{font-size:20px;margin:0 0 6px;color:#1c2130; line-height: 1.4;}
-  .modal-card h3{font-size:16px;margin:0 0 14px;color:#1c2130; font-weight: 700;}
-  .modal-card .desc{font-size:12.5px;color:#5a5f6c;line-height:1.6; margin-bottom: 24px;}
-  
-  .section-label{font-size:13px; color:#1c2130; display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 1px dashed #d1d5db; padding-bottom: 12px; margin-bottom: 16px;}
-  .section-label span.right { font-size:11px; color:#7a8090; font-weight: normal; }
-  
-  /* 🌟 Top Right Selection Button ปรับให้อยู่ระนาบเดียวกับ Tag */
-  .top-right-status { border-radius: 20px; padding: 8px 18px; font-weight: 700; font-size: 13.5px; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; border: none; cursor: pointer; }
-  .top-right-status.mandatory { background: var(--blue); color: #fff; cursor: default; }
-  
-  /* ปุ่มเขียวสำหรับ Selective */
-  .modal-card.selective .top-right-status.selective-selected,
-  .modal-card.selective .top-right-status.completed { background: var(--green-select); color: #fff; }
-  .modal-card.selective .top-right-status.selective-unselected { background: #fff; border: 1px solid var(--green-select); color: var(--green-select); }
-
-  /* 🌟 Activity Box Frame ปรับเป็นกล่องสีขาว ขอบมนสวยงาม */
-  .activity-box { border: 1px solid #d1d5db; border-radius: 12px; margin-bottom: 16px; background: #fff; overflow: hidden; transition: box-shadow 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.02);}
-  .activity-box:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-  
-  .activity-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;cursor:pointer; padding: 18px 20px; transition: background 0.2s;}
-  .activity-row:hover { background:rgba(0,0,0,0.01); }
-  
-  /* Provider Dropdown (ขวามือ) */
-  .activity-provider{font-size:13px;color:#4a4f5c;white-space:nowrap;display:flex;align-items:center;gap:6px; margin-top:2px;}
-  
-  /* Accordion Detail */
-  .activity-detail{padding:0 20px 24px 20px;}
-  .cert-upload{background:none;color:#5a5f6c;border:none;padding:0;font-size:12.5px;font-weight:400;display:inline-flex;align-items:center;gap:8px;cursor:pointer; margin-top:6px;}
-  .cert-upload i { font-size:16px; }
-  .file-status{font-size:12.5px;font-weight:700;color:var(--blue); display:inline-flex; align-items:center; gap:6px; margin-top:10px; margin-bottom:4px;}
-  
-  /* Reflection Textarea */
-  .reflection-box { width:100%; border:1px solid var(--gray-input); border-radius:12px; background:#fafafa; padding:16px; font-size:13px; color:#4a4f5c; resize:none; line-height:1.6; margin-top: 14px; }
-  .reflection-box:focus { outline: 1px solid var(--blue); background:#fff; }
-  .reflection-box:disabled { background: #f2f3f6; cursor: not-allowed; opacity:0.8;}
-  
-  .btn-acc-action { border:none; border-radius:16px; padding:10px 26px; font-weight:700; font-size:13px; color:#fff; margin-top: 12px; float: right; cursor: pointer;}
-  .btn-acc-action.green { background: var(--green-select); }
-  .btn-acc-action.blue { background: var(--blue); }
-  .btn-acc-action.yellow { background: #ffc107; color: #1c2130; }
-  .clear-float { clear: both; }
-
-  /* 🌟 Overall Stepper Progress ปรับเป็นขีดแถบสี และตัวหนังสือด้านล่าง ตาม Ref */
-  .stepper-wrapper { display: flex; gap: 12px; margin-top: 34px; padding-top: 24px; border-top: 1px dashed #d1d5db; }
-  .step-item { flex: 1; display: flex; flex-direction: column; gap: 8px; text-align: center; align-items: center; }
-  .step-dash { height: 6px; border-radius: 4px; background: #e3e6ec; transition: background 0.3s; width: 100%; }
-  .step-label { font-size: 11.5px; color: #8b90a0; font-weight: 700; transition: color 0.3s; }
-
-  /* Blue Theme (Mandatory) */
-  .step-item.blue-active .step-dash { background: var(--blue); }
-  .step-item.blue-active .step-label { color: var(--blue); }
-
-  /* Green Theme (Selective) */
-  .step-item.green-active .step-dash { background: var(--green-select); }
-  .step-item.green-active .step-label { color: var(--green-select); }
-
-  /* 🌟 CSS สำหรับ Toggle Switch ในตั้งค่าระบบ */
-  .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-  .switch input { opacity: 0; width: 0; height: 0; }
-  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #d7dade; transition: .3s; border-radius: 24px; }
-  .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-  input:checked + .slider { background-color: var(--green-select); }
-  input:checked + .slider:before { transform: translateX(20px); }
-  .config-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px dashed var(--gray-line); }
-  .config-row:last-child { border-bottom: none; }
-
-  .info-layout{display:flex;gap:56px;align-items:flex-start;margin-top:14px;}
-  .info-image-col{flex:0 0 auto;width:min(440px, 42%);}
-  .info-image-box{width:100%;aspect-ratio:1/1;border-radius:var(--radius-lg);background:#e3e6ec;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
-  .info-image-box img{width:100%;height:100%;object-fit:cover;display:block;}
-  .info-image-box .info-image-placeholder{font-size:12.5px;color:#9aa0ae;text-align:center;padding:0 20px;line-height:1.6;}
-  .info-text-col{flex:1 1 420px;min-width:0;}
-  .contact-copy{max-width:760px;font-size:13px;line-height:1.75;color:#1c2130;margin-top:8px;}
-  .contact-copy p{margin:0 0 16px;}
-  .info-contact-block{margin-top:40px;}
-  .contact-title{font-size:26px;font-weight:800;letter-spacing:9px;color:#1c2130;}
-  .contact-email{display:block;margin-top:10px;font-size:14px;color:var(--blue);text-decoration:underline;}
-
-  /* ============ MOBILE ============ */
-  @media (max-width:640px){
-    .app-header{padding:14px 16px;}
-    .tabbar-desktop{display:none;}
-    .header-name,.header-role{display:none;}
-    main#tab-content{padding:20px 16px 96px;}
-    .subscreen{padding:20px 16px 110px;}
-    .tabbar-mobile{display:flex;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--gray-line);padding:6px 4px max(6px, env(safe-area-inset-bottom));z-index:100;box-shadow:0 -4px 16px rgba(0,0,0,.06);}
-    .tabbar-mobile .tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;padding:6px 2px;font-size:10px;color:#9aa0ae;transition:color .2s ease;}
-    .tabbar-mobile .tab-btn .ic{font-size:19px;transition:transform .2s ease;}
-    .tabbar-mobile .tab-btn.active{color:var(--blue);}
-    .tabbar-mobile .tab-btn.active .ic{transform:translateY(-2px) scale(1.1);}
-    .fab{left:14px;right:14px;bottom:14px;width:auto;border-radius:14px;padding:14px 0;font-size:15px; padding-bottom:max(14px, env(safe-area-inset-bottom));}
-    .field-input{height:48px;font-size:16px;} 
-    .btn-navy{width:100%;padding:15px 0;font-size:16px;}
-    .google-btn{padding:14px 20px;font-size:15px;}
-    .team-grid-wrap{padding:14px;border-radius:20px;}
-    .members-grid{grid-template-columns:1fr;gap:16px;}
-    .goal-grid{grid-template-columns:1fr;gap:14px;}
-    .round-btn{width:44px;height:44px;font-size:19px;}
-    .pager button{padding:11px 22px;font-size:13.5px;}
-    .mini-header{margin-top:4px;}
-    .mini-balance{width:100%;justify-content:space-between;}
-    .fade-panel{padding:16px;margin-top:14px;}
-    .just-grid{flex-direction:column;gap:18px;}
-    .just-point{width:100%;}
-    .just-actions{flex-wrap:wrap;}
-    .just-actions .btn-pill{flex:1;text-align:center;}
-    .edit-table-head{display:none;}
-    .edit-table-row{grid-template-columns:1fr;gap:6px;padding:14px 0;}
-    .edit-table-point{width:90px;}
-    .lteam-row{flex-direction:column;align-items:stretch;gap:12px;padding:16px;border-radius:18px;}
-    .comp-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-    .modal-overlay{padding:16px;align-items:center;} 
-    .modal-card{padding:34px 20px 24px;border-radius:22px;max-height:85vh;width:100%;max-width:100%;} 
-    .progress-row{flex-direction:column-reverse;align-items:stretch;gap:12px;}
-    .progress-row > div:first-child{width:100%;}
-    .pill-status{width:100%;text-align:center;}
-    .btn-back-dark{width:100%;text-align:center;padding:13px 0;}
-    .btn-acc-action { width: 100%; padding: 12px 0;}
-    .info-layout{flex-direction:column;gap:22px;margin-top:6px;}
-    .info-image-col{width:min(320px, 72vw);margin:0 auto;}
-    .info-text-col{width:100%;}
-    .top-right-status { right: 16px; top: -14px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
-  }
-
-  @media (max-width:900px) and (min-width:641px){
-    .info-layout{gap:34px;}
-    .info-image-col{width:min(300px, 38%);}
-  }
- /* 🌟 Login Warning & Accordion (เพิ่มใหม่) */
-  .login-warning { background: #fff8e1; border: 1px solid #ffe082; color: #d48806; border-radius: 12px; padding: 16px 20px; font-size: 12.5px; margin-top: 24px; width: min(340px, 100%); text-align: left; line-height: 1.6; }
-  .login-warning ul { margin: 8px 0 0; padding-left: 22px; color: #5a5f6c; }
-  .login-warning li { margin-bottom: 6px; }
-
-  .cookie-accordion { width: min(340px, 100%); margin-top: 16px; border: 1px solid var(--gray-line); border-radius: 12px; background: #fff; overflow: hidden; text-align: left; }
-  .accordion-header { width: 100%; padding: 12px 16px; background: #f9f9fb; border: none; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; color: #4a4f5c; cursor: pointer; }
-  .accordion-content { display: none; padding: 16px; font-size: 12px; color: #5a5f6c; background: #fff; border-top: 1px solid var(--gray-line); }
-  .accordion-content.show { display: block; }
-  .accordion-content ul { margin: 0; padding-left: 20px; }
-  .accordion-content li { margin-bottom: 6px; line-height: 1.5; }
-  
-</style>
+    .required-star::after { content: " *"; color: #E21E26; }
+    textarea { resize: vertical; min-height: 60px; }
+    
+    /* Demo Controls */
+    .demo-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; border-top: 2px solid #E21E26; z-index: 100; padding: 6px 16px; display: flex; overflow-x: auto; gap: 6px; align-items: center; font-family: 'Kanit', sans-serif;}
+    .demo-btn { white-space: nowrap; padding: 4px 10px; font-size: 0.65rem; border-radius: 3px; background: transparent; border: 1px solid #475569; color: #cbd5e1; cursor: pointer; transition: 0.2s; font-weight: 400;}
+    .demo-btn.active { background: #E21E26; border-color: #E21E26; color: white; font-weight: 500;}
+    .demo-btn:hover:not(.active) { background: #334155; }
+    .hide-scroll::-webkit-scrollbar { display: none; }
+  </style>
 </head>
 <body>
 
-<!-- ADMIN MODAL (Hidden by default, triggered by clicking logo 3 times) -->
-<div class="modal-overlay" id="admin-modal" style="z-index: 999999;">
-  <div class="modal-card" style="background:#fff; max-width:500px; padding:30px;">
-    <button class="modal-close-btn" onclick="closeAdminModal()"><i class="fa-solid fa-xmark"></i></button>
-    
-    <div style="display:flex; align-items:center; gap: 14px; margin-bottom:20px;">
-        <div style="background:var(--blue-tint-2); color:var(--blue-dark); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;">
-            <i class="fa-solid fa-user-secret"></i>
-        </div>
-        <div>
-            <h3 style="margin:0; font-size:18px;">Proxy User Mode</h3>
-            <div style="font-size:12.5px; color:#5a5f6c; margin-top:2px;">ระบบ Proxy หน้าจอ (เฉพาะผู้ดูแลระบบ)</div>
-        </div>
+  <!-- ========================================== -->
+  <!-- 🌐 GLOBAL TOP NAV -->
+  <!-- ========================================== -->
+  <div class="wd-topbar">
+    <div class="flex items-center gap-6">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/AirAsia_New_Logo.svg/960px-AirAsia_New_Logo.svg.png" class="h-6 object-contain" alt="Logo">
+      <div class="hidden md:flex wd-search">
+        <span>🔍</span>
+        <input type="text" placeholder="Search StarMeter..." class="bg-transparent outline-none w-full">
+      </div>
     </div>
-    <div class="field-group" style="width:100%; margin-top:0; margin-bottom:34px;">
-        <label>รหัสพนักงาน (Employee ID)</label>
-        <div style="display:flex; gap:10px;">
-            <input type="text" id="proxy-empid-input" class="field-input" placeholder="ระบุรหัส 7 หลัก..." style="background:#f4f5f7; border:1px solid var(--gray-line); padding:0 15px;">
-            <button class="btn-primary-blue" onclick="startProxy()">👁️ Proxy</button>
+    <div class="flex items-center gap-5">
+      <span class="cursor-pointer hover:text-gray-800 text-gray-400 hidden md:block">🔔</span>
+      <div class="flex items-center gap-3 border-l border-gray-200 pl-5">
+        <div class="text-right hidden lg:block">
+          <p class="text-[13px] font-bold text-gray-800 font-kanit leading-tight">Vacharavadh Piyarattanamongkol</p>
+          <p class="text-[10px] text-gray-500 font-kanit">Head, Learning & Leadership Solutions</p>
         </div>
-        <div class="field-hint" style="margin-top:10px; line-height: 1.5;">* เมื่อเข้าสู่โหมด Proxy หน้าจอของคุณจะเปลี่ยนเป็นของพนักงานคนนั้น 100% คุณสามารถทำรายการแทนได้ โดยระบบจะแอบบันทึก Log ในชื่อของคุณเสมอ</div>
-    </div>
-
-    <!-- 🌟 ระบบ Config ใหม่ (เปิด/ปิดแท็บ และ สลับลำดับ) -->
-    <div style="display:flex; align-items:center; gap: 14px; margin-bottom:20px; padding-top:24px; border-top:1px solid var(--gray-line);">
-        <div style="background:var(--green-tint-2); color:var(--green-dark); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;">
-            <i class="fa-solid fa-toggle-on"></i>
-        </div>
-        <div>
-            <h3 style="margin:0; font-size:18px;">System Configuration</h3>
-            <div style="font-size:12.5px; color:#5a5f6c; margin-top:2px;">ตั้งค่าการแสดงผลหน้าจอหลัก (Real-time)</div>
-        </div>
-    </div>
-    <div id="admin-config-list" style="background:#f9f9fb; border:1px solid var(--gray-line); border-radius:14px; padding:0 20px;">
-        <!-- JS จะมาเติม Switch เปิด-ปิด ให้ตรงนี้ -->
+        <div class="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-xs font-bold text-gray-700 border border-gray-300 shadow-sm">VP</div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- PROXY BANNER -->
-<div id="proxy-banner" class="proxy-banner">
-  <div>🔴 <b>PROXY MODE:</b> คุณกำลัง Proxy เป็น <span id="proxy-target-name"></span></div>
-  <button class="proxy-btn-exit" onclick="exitProxy()">ออกจากการ Proxy (Exit)</button>
-</div>
+  <!-- ========================================== -->
+  <!-- 🎮 SYSTEM PRESENTER NAVIGATOR (10 Steps) -->
+  <!-- ========================================== -->
+  <div class="demo-bar hide-scroll">
+    <span class="text-[9px] font-medium text-gray-400 uppercase mr-2 tracking-widest">Flow:</span>
+    <button class="demo-btn active" id="btn-state-1" onclick="setDemoState(1)">1. Dashboard</button>
+    <button class="demo-btn" id="btn-state-2" onclick="setDemoState(2)">2. Setup</button>
+    <button class="demo-btn" id="btn-state-3" onclick="setDemoState(3)">3. ✉️ Invite</button>
+    <button class="demo-btn" id="btn-state-4" onclick="setDemoState(4)">4. Emp Accept</button>
+    <button class="demo-btn" id="btn-state-5" onclick="setDemoState(5)">5. ✉️ Acc Noti</button>
+    <button class="demo-btn" id="btn-state-6" onclick="setDemoState(6)">6. ✉️ Remind 30</button>
+    <button class="demo-btn" id="btn-state-7" onclick="setDemoState(7)">7. Check-in</button>
+    <button class="demo-btn" id="btn-state-8" onclick="setDemoState(8)">8. ✉️ Upd Noti</button>
+    <button class="demo-btn" id="btn-state-9" onclick="setDemoState(9)">9. Mid Eval</button>
+    <button class="demo-btn" id="btn-state-10" onclick="setDemoState(10)">10. Final</button>
+  </div>
 
-<div id="app">
-
-  <!-- LOADING SCREEN -->
-  <section id="scr-loading" class="screen center active">
-    <div class="loader-container">
-      <div class="logo-slot" data-size="big" style="margin-bottom: 40px;"></div>
-      <div class="spinner"></div>
-      <div class="loading-text">กำลังเข้าสู่ระบบและเตรียมข้อมูล...</div>
-      <div class="loading-subtext">Preparing your dashboard</div>
-    </div>
-  </section>
-
-  <!-- LOGIN -->
-  <section id="scr-login" class="screen center">
-    <div class="logo-slot" data-size="big"></div>
-    <div class="subtitle" style="margin-top:-2px;">Sign in to continue</div>
-    
-    <div class="login-warning">
-      <div><i class="fa-solid fa-triangle-exclamation"></i> <b>คำแนะนำการใช้งาน:</b></div>
-      <ul>
-        <li>กรุณาเข้าสู่ระบบด้วยอีเมล <b>@airasia.com</b> เท่านั้น</li>
-        <li style="margin-top: 4px;">หากเปิดลิงก์ผ่านแอป LINE แนะนำให้กดปุ่ม <b>⋮</b> (มุมขวาบน) แล้วเลือก <b>เปิดในเบราว์เซอร์อื่น</b> (Open in Browser) เพื่อป้องกันปัญหาการล็อกอิน</li>
-        <li style="margin-top: 4px;">กรุณาอนุญาตคุกกี้ (Allow Cookies)</li>
-      </ul>
-    </div>
-
-    <button class="google-btn" onclick="handleGoogleSignIn()">
-      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.03l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.97l2.99 2.33C4.66 5.17 6.65 3.58 9 3.58z"/></svg>
-      Continue with Google
-    </button>
-    
-    <!-- Checkbox ยอมรับเงื่อนไข -->
-    <div style="margin-top: 16px; font-size: 11.5px; color: #5a5f6c; display: flex; align-items: center; justify-content: center; gap: 6px; width: min(340px, 100%);">
-        <input type="checkbox" id="privacy-check" checked style="cursor: pointer; width: 14px; height: 14px; accent-color: var(--blue);">
-        <label for="privacy-check" style="cursor: pointer;">I have read and accept the <b>Privacy Statement</b></label>
-    </div>
-
-    <!-- 🌟 Accordion วิธีอนุญาตคุกกี้ -->
-    <div class="cookie-accordion">
-       <button class="accordion-header" onclick="toggleCookieInfo()">วิธีอนุญาตคุกกี้ <i class="fa-solid fa-chevron-down" id="cookie-chevron"></i></button>
-       <div class="accordion-content" id="cookie-content">
-           <ul>
-               <li>แตะ จุด 3 จุด (มุมจอ) > เลือก "การตั้งค่า" (Settings)</li>
-               <li>เลื่อนลงไปและแตะ "การตั้งค่าเว็บไซต์" (Site settings)</li>
-               <li>เลือก "ป๊อปอัปและการเปลี่ยนเส้นทาง" (Pop-ups)</li>
-               <li>เปิดสวิตช์เพื่อ อนุญาต (Allow)</li>
-               <li>กลับมาที่หน้าเว็บ รีเฟรช 1 ครั้ง แล้วกดอนุญาตคุกกี้อีกครั้ง</li>
-               <li>หากติดปัญหาเพิ่มเติม ติดต่อ taa_learning@airasia.com</li>
-           </ul>
-       </div>
-    </div>
-  </section>
-
-  <!-- POST-LOGIN APP SHELL -->
-  <section id="scr-app" class="screen">
-    <header class="app-header">
-      <div class="logo-slot" data-size="small" onclick="handleLogoClick()" style="cursor:pointer;" title="Click 3 times for Admin Menu"></div>
-      <nav class="tabbar-desktop" id="tabbar-desktop">
-        <span class="tab-indicator" id="tab-indicator"></span>
-      </nav>
-      <div class="header-right">
+  <div class="w-full">
+    <!-- DYNAMIC CONTEXT HEADER -->
+    <div class="wd-context-header" id="dynamic-header">
+      <div class="max-w-6xl mx-auto flex justify-between items-end">
         <div>
-          <div class="header-name" id="header-name"></div>
-          <div class="header-role" id="header-role"></div>
+          <h1 class="text-2xl font-semibold tracking-wide font-kanit" id="header_title">Performance Improvement Plan</h1>
+          <p class="text-sm mt-1 opacity-90 font-light font-kanit" id="header_subtitle">StarMeter Module</p>
         </div>
-        <img id="header-avatar" class="header-avatar" src="" alt="" onerror="this.onerror=null; this.src=window.avatarUrl();">
-        <button class="logout-link" onclick="handleLogout()">ออกจากระบบ</button>
-      </div>
-    </header>
-
-    <main id="tab-content">
-
-      <!-- INFO -->
-      <div id="panel-info" class="tab-panel">
-        <div class="info-layout">
-          <div class="info-image-col">
-            <div class="info-image-box">
-              <img id="info-image" src="" alt="Instructional guide" style="display:none;">
-              <div class="info-image-placeholder" id="info-image-placeholder">Instructional image<br>1:1 · set INFO_IMAGE_URL</div>
-            </div>
-          </div>
-          <div class="info-text-col">
-           <div class="contact-copy">
-              <p>Training Management Center: TMC พร้อมดูแลทุกท่านในการจัดทำแผนพัฒนาศักยภาพรายบุคคล (Individual Development Plan: IDP) ประจำปี 2026 หากท่านพบปัญหาหรือมีข้อสงสัยในกรณีดังต่อไปนี้ สามารถติดต่อทีมงานของเราได้ทันที:</p>
-              
-              <p><strong>1. ปัญหาการเข้าสู่ระบบ (Technical Assistance & Access)</strong></p>
-              <ul style="margin-top:-10px; margin-bottom:16px; padding-left:24px;">
-                <li>ไม่สามารถเข้าสู่ระบบ StarMeter ได้</li>
-                <li>ระบบหมดเวลาเชื่อมต่อ (System Timeout) หรือเกิดข้อผิดพลาดขณะบันทึกข้อมูลเป้าหมาย</li>
-                <li>หน้าแดชบอร์ด (Dashboard) แสดงผลไม่ถูกต้อง</li>
-              </ul>
-              
-              <p><strong>2. สอบถามข้อมูลการตั้งเป้าหมายและการประเมินผลงาน (Performance & Goal Setting Inquiries)</strong></p>
-              <ul style="margin-top:-10px; margin-bottom:16px; padding-left:24px;">
-                <li>มีข้อสงสัยเกี่ยวกับขั้นตอนการส่งและการอนุมัติ IDP</li>
-                <li>ต้องการคำแนะนำในการค้นหาหลักสูตรการเรียนรู้เพื่อแนบในแผนพัฒนาตนเอง</li>
-              </ul>
-              
-              <p><strong>3. การแก้ไขข้อมูลส่วนตัวและข้อมูลในระบบ (Data & Profile Corrections)</strong></p>
-              <ul style="margin-top:-10px; margin-bottom:16px; padding-left:24px;">
-                <li>ข้อมูลในโปรไฟล์ส่วนตัวไม่ถูกต้อง เช่น ตำแหน่งงานไม่อัปเดต, แผนกไม่ถูกต้อง หรือผู้บังคับบัญชา (Reporting Manager) ไม่ถูกต้อง (เนื่องจากการระบุสายการรายงานที่ถูกต้องมีความสำคัญอย่างยิ่ง เพื่อให้ระบบส่ง IDP ไปยังผู้อนุมัติได้ถูกต้อง)</li>
-                <li>ประวัติการฝึกอบรมหรือใบรับรอง (Certifications) ในอดีตสูญหายหรือไม่แสดงในโปรไฟล์</li>
-              </ul>
-              
-              <p><strong>ช่องทางการติดต่อ (How to Reach Us)</strong><br>
-              หากท่านพบปัญหาตามข้างต้น หรือมีข้อสงสัยทั่วไปเกี่ยวกับการเรียนรู้และการประเมินผลงานบนแพลตฟอร์ม สามารถส่งอีเมลถึงศูนย์บริหารการจัดการการฝึกอบรม (TMC) ได้ที่: taa_learning@airasia.com </p>
-              
-              <p><strong>ข้อแนะนำสำหรับการติดต่อ:</strong> เพื่อความรวดเร็วในการประสานงานและแก้ไขปัญหา กรุณาระบุข้อมูลต่อไปนี้ในอีเมลของท่าน:</p>
-              <ul style="margin-top:-10px; margin-bottom:16px; padding-left:24px;">
-                <li>ชื่อ-นามสกุล</li>
-                <li>รหัสพนักงาน (Employee ID)</li>
-                <li>รายละเอียดของปัญหาหรือข้อสงสัยโดยสังเขป</li>
-              </ul>
-            </div>
-          </div>
+        <div class="hidden md:flex gap-2">
+            <button class="bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-sm text-xs transition border border-white/30 font-kanit tracking-wide">Actions ▾</button>
         </div>
       </div>
-
-      <!-- MY PERFORMANCE -->
-      <div id="panel-my-performance" class="tab-panel">
-        <div class="mini-header">
-          <div class="mini-identity">
-            <div class="mini-avatar-wrap">
-              <img id="me-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=window.avatarUrl();">
-              <label class="mini-photo-edit-btn" title="Edit photo · แก้ไขรูปภาพ">
-                <i class="fa-solid fa-camera"></i>
-                <input type="file" accept="image/png, image/jpeg, image/jpg" style="display:none" onchange="handleProfileUpload(event)">
-              </label>
-            </div>
-            <div>
-              <div class="mini-name" id="me-name"></div>
-              <div class="mini-role" id="me-role"></div>
-            </div>
-          </div>
-          <div class="mini-balance">
-            <div class="mini-balance-label">Balance<span class="sub">ยอดคงเหลือ</span></div>
-            <div class="balance-pill-lg" id="me-balance">100</div>
-          </div>
-        </div>
-        <div class="fade-panel scroll" id="my-perf-list"></div>
-      </div>
-
-      <!-- MY LEARNING -->
-      <div id="panel-my-learning" class="tab-panel">
-        <h2 style="font-size:22px;margin:0 0 4px;">Learning <span style="font-weight:400;color:#5a5f6c;">| การเรียนรู้</span></h2>
-        
-        <!-- 🌟 โครงสร้างแบบ Flexbox เพื่อให้สลับลำดับบน-ล่างได้อิสระผ่าน JS -->
-        <div id="my-learning-container" style="display:flex; flex-direction:column; gap:26px;">
-            <div id="section-mandatory">
-                <div class="goal-sub"><b>Mandatory</b> บังคับตามตำแหน่งงานของท่าน (เริ่ม "กำลังเรียนรู้" ให้อัตโนมัติ)</div>
-                <div class="goal-grid" id="mylearn-mandatory"></div>
-            </div>
-            <div id="section-selective">
-                <div class="goal-sub"><b>Selective</b> บังคับเลือกอย่างน้อย 1 สมรรถนะ (เลือกได้มากกว่า 1)</div>
-                <div class="goal-grid" id="mylearn-selective"></div>
-            </div>
-        </div>
-        
-      </div>
-
-      <!-- TEAM PERFORMANCE -->
-      <div id="panel-team-performance" class="tab-panel">
-        <div class="page-header">
-          <div></div>
-          <div><div class="page-title-en">Your Team Members</div><div class="page-title-th">สมาชิกทีมของท่าน</div></div>
-        </div>
-        <div class="team-grid-wrap"><div class="members-grid" id="perf-grid"></div></div>
-        <div class="pager" id="perf-pager"></div>
-      </div>
-
-      <!-- TEAM LEARNING -->
-      <div id="panel-team-learning" class="tab-panel">
-        <div class="page-header">
-          <div></div>
-          <div><div class="page-title-en">Your Team Members</div><div class="page-title-th">สมาชิกทีมของท่าน</div></div>
-        </div>
-        <div id="learn-rows" style="margin-top:26px;"></div>
-        <div class="pager" id="learn-pager"></div>
-      </div>
-
-      <!-- JUSTIFICATION -->
-      <div id="panel-justification" class="tab-panel subscreen" style="padding-left:0;padding-right:0;">
-        <div class="mini-header" style="margin-top:0;">
-          <div class="mini-identity">
-            <img id="just-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=window.avatarUrl();">
-            <div>
-              <div class="mini-name" id="just-name"></div>
-              <div class="mini-role" id="just-role">Officer</div>
-            </div>
-          </div>
-          <div class="mini-balance">
-            <div class="mini-balance-label">Balance<span class="sub">ยอดคงเหลือ</span></div>
-            <div class="balance-pill-lg" id="just-balance">100</div>
-          </div>
-        </div>
-        <div class="fade-panel">
-          <h2 style="margin:0 0 18px;font-size:20px;">Justification <span style="font-weight:400;color:#20232c;">เหตุผลประกอบ</span></h2>
-          <div class="just-grid">
-            <div class="just-fields">
-              <div class="field-label">Topic | หัวเรื่อง</div>
-              <div class="field-hint">เช่น เวลาการเข้าทำงาน</div>
-              <textarea class="lorem-box" id="just-topic-input" rows="2" placeholder="พิมพ์หัวเรื่อง..."></textarea>
-              <div class="field-label" style="margin-top:16px;">Description | คำอธิบาย</div>
-              <div class="field-hint">เช่น มาเข้างานตรงต่อเวลาตลอดทั้งปี 2026</div>
-              <textarea class="lorem-box" id="just-desc-input" rows="5" placeholder="พิมพ์คำอธิบาย..."></textarea>
-              <div class="char-hint">*ตัวอักษรไม่ควรเกิน 100 คำ</div>
-            </div>
-            <div class="just-point">
-              <div class="field-label">Point | จำนวนคะแนน</div>
-              <div class="point-hint">
-                <span class="g">เพิ่มคะแนน กรอกคะแนน กล่องจะเป็นสีเขียว</span>
-                <span class="r">หักคะแนน กรอกคะแนนพร้อมเครื่องหมายลบ กล่องจะเป็นสีแดง</span>
-              </div>
-              <input type="number" id="just-point-input" class="point-pill-input pos" value="10" oninput="updatePointBox(this)" style="margin-top:14px;">
-            </div>
-          </div>
-          <div class="just-actions">
-            <button class="btn-pill red" onclick="showContent('team-performance')">ยกเลิก</button>
-            <button class="btn-pill green" onclick="submitJustification(false)">บันทึก (ไม่ปรับคะแนน)</button>
-            <button class="btn-pill blue" onclick="submitJustification(true)">บันทึกและปรับคะแนน</button>
-          </div>
-        </div>
-        <button class="fab" onclick="showContent('team-performance')">กลับ</button>
-      </div>
-
-      <!-- EDIT -->
-      <div id="panel-edit" class="tab-panel subscreen" style="padding-left:0;padding-right:0;">
-        <div class="mini-header" style="margin-top:0;">
-          <div class="mini-identity">
-            <img id="edit-photo" class="mini-avatar" src="" alt="" onerror="this.onerror=null; this.src=window.avatarUrl();">
-            <div>
-              <div class="mini-name" id="edit-name"></div>
-              <div class="mini-role" id="edit-role">Officer</div>
-            </div>
-          </div>
-          <div class="mini-balance">
-            <div class="mini-balance-label">Balance<span class="sub">ยอดคงเหลือ</span></div>
-            <div class="balance-pill-lg" id="edit-balance">100</div>
-          </div>
-        </div>
-        <div class="fade-panel scroll" style="max-height:520px;">
-          <h2 style="margin:0 0 18px;font-size:20px;">Edit <span style="font-weight:400;color:#20232c;">แก้ไขประวัติ</span></h2>
-          <div id="edit-entries"></div>
-        </div>
-        <button class="fab" onclick="showContent('team-performance')">กลับ</button>
-      </div>
-
-    </main>
-    <nav class="tabbar-mobile" id="tabbar-mobile"></nav>
-  </section>
-
-</div>
-
-<!-- toast / tooltip / modal -->
-<div class="toast" id="toast"></div>
-<div class="entry-tooltip" id="entry-tooltip"></div>
-<div class="modal-overlay" id="modal">
-  <div class="modal-card" id="modal-body"></div>
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, doc, updateDoc, runTransaction, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBM-mbbvUJO9iOKmIcqD2zAIulnWfmUfZU",
-  authDomain: "gap-learning-plan.firebaseapp.com",
-  projectId: "gap-learning-plan",
-  storageBucket: "gap-learning-plan.firebasestorage.app",
-  messagingSenderId: "1068192174083",
-  appId: "1:1068192174083:web:cec4e9a90e0621b4f7fe36",
-  measurementId: "G-Q4CXEL7C17"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
-const provider = new GoogleAuthProvider();
-
-window.onload = () => {
-    renderLogos();
-    renderInfo();
-};
-window.toggleCookieInfo = function() {
-    const content = document.getElementById('cookie-content');
-    const chevron = document.getElementById('cookie-chevron');
-    if (content.classList.contains('show')) {
-        content.classList.remove('show');
-        chevron.classList.replace('fa-chevron-up', 'fa-chevron-down');
-    } else {
-        content.classList.add('show');
-        chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
-    }
-};
-let LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/gap-learning-plan.firebasestorage.app/o/logo.png?alt=media&token=0c6d0ed6-c5ea-46f2-b31a-3698d915ad56'; 
-let INFO_IMAGE_URL = 'https://firebasestorage.googleapis.com/v0/b/gap-learning-plan.firebasestorage.app/o/logo.png?alt=media&token=0c6d0ed6-c5ea-46f2-b31a-3698d915ad56'; 
-
-function renderLogos(){
-  const LOGO_SVG_SMALL = `<svg class="logo-img" xmlns="http://www.w3.org/2000/svg" width="26" height="17" viewBox="0 0 66 42"><defs><radialGradient id="g1s" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1s)"/><circle cx="48" cy="21" r="18" fill="url(#g1s)"/></svg>`;
-  const LOGO_SVG_BIG = `<svg class="logo-img" xmlns="http://www.w3.org/2000/svg" width="60" height="38" viewBox="0 0 66 42"><defs><radialGradient id="g1b" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#ffb648"/><stop offset="55%" stop-color="#ff5a3c"/><stop offset="100%" stop-color="#ff2f2f"/></radialGradient></defs><circle cx="18" cy="21" r="18" fill="url(#g1b)"/><circle cx="48" cy="21" r="18" fill="url(#g1b)"/></svg>`;
-
-  document.querySelectorAll('.logo-slot').forEach(el=>{
-    const size = el.dataset.size;
-    const markOnly = size==='mark';
-    const mark = LOGO_URL ? `<img src="${LOGO_URL}" alt="StarMeter logo" class="logo-img">` : (size === 'big' ? LOGO_SVG_BIG : LOGO_SVG_SMALL);
-    el.innerHTML = mark + (markOnly || LOGO_URL ? '' : `<span class="wordmark">StarMeter</span>`);
-  });
-}
-
-function renderInfo(){
-  const img = document.getElementById('info-image');
-  const placeholder = document.getElementById('info-image-placeholder');
-  if(!img || !placeholder) return;
-  if(INFO_IMAGE_URL){
-    img.src = INFO_IMAGE_URL;
-    img.style.display = 'block';
-    placeholder.style.display = 'none';
-  } else {
-    img.removeAttribute('src');
-    img.style.display = 'none';
-    placeholder.style.display = 'block';
-  }
-}
-
-function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
-function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&gt;'); }
-
-function avatarUrl() {
-  return "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2Y4ZjlmYiIgLz4KICA8cGF0aCBkPSJNNzIgMzJoLTcuM2wtMy41LTUuM0M2MC40IDI1LjUgNTkuMSAyNC43IDU3LjUgMjQuN0g0Mi41Yy0xLjYgMC0yLjkuOC0zLjcgMkwzNS4zIDMySDI4Yy0zLjMgMC02IDIuNy02IDZ2MzJjMCAzLjMgMi43IDYgNiA2aDQ0YzMuMyAwIDYtMi43IDYtNlYzOGMwLTMuMy0yLjctNi02LTZ6bS0yMiAzNmMtOC4zIDAtMTUtNi43LTE1LTE1czYuNy0xNSAxNS0xNSAxNSA2LjcgMTUgMTUtNi43IDE1LTE1IDE1em0wLTI1Yy01LjUgMC0xMCA0LjUtMTAgMTBzNC41IDEwIDEwIDEwIDEwLTQuNSAxMC0xMC00LjUtMTAtMTAtMTB6IiBmaWxsPSIjYjdiYmM2Ii8+Cjwvc3ZnPg==";
-}
-window.avatarUrl = avatarUrl; 
-
-function compressImage(file, maxWidth, maxHeight, quality) {
-  return new Promise((resolve, reject) => {
-    if (!file.type.match(/image.*/)) return resolve(file); 
-    const reader = new FileReader();
-    reader.onload = (readerEvent) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        let width = img.width;
-        let height = img.height;
-        if (width > height) {
-          if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
-        } else {
-          if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
-        }
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-        canvas.toBlob((blob) => {
-          const newFile = new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() });
-          resolve(newFile);
-        }, 'image/jpeg', quality);
-      };
-      img.src = readerEvent.target.result;
-    };
-    reader.onerror = error => reject(error);
-    reader.readAsDataURL(file);
-  });
-}
-
-function generatePagerHtml(totalItems, itemsPerPage, currentPage, renderFnName) {
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    if (totalPages <= 1) return ''; 
-    let html = '';
-    for (let i = 1; i <= totalPages; i++) {
-        const activeClass = i === currentPage ? 'active' : '';
-        html += `<button class="${activeClass}" onclick="${renderFnName}(${i})">Page ${i}</button>`;
-    }
-    return html;
-}
-
-let ALL_COMPETENCIES = []; 
-let MATRIX_MAP = {}; 
-let TEAM = []; 
-let MY_ENTRIES = [];
-let CURRENT_MEMBER_ENTRIES = []; 
-let isTeamLoaded = false; 
-let isTransitioning = false; 
-
-let session = { loggedIn:false, role:'', empId:'', name:'', position: '', seed:'me', balance: 100, selections:{}, idpDetails:{}, outcomeNotes:{}, realUser: null, jobCode: '' };
-let profileImages = { me:null };
-let currentTabId = null; 
-
-let systemConfig = {
-    mandatoryFirst: true, 
-    tabs: {
-        'info': true,
-        'my-performance': true,
-        'my-learning': true,
-        'team-performance': true,
-        'team-learning': true
-    }
-};
-
-const TABS = {
-  superadmin: [
-    {id:'info',            en:'Info',              th:'ข้อมูล',            ic:'ℹ️'},
-    {id:'my-performance', en:'My Performance', th:'ผลงานของฉัน', ic:'★'},
-    {id:'my-learning',    en:'My Learning',    th:'การเรียนรู้ของฉัน', ic:'🎓'},
-    {id:'team-performance', en:"Team's Performance", th:'ผลงานทีม', ic:'👥'},
-    {id:'team-learning',    en:"Team's Learning",    th:'การเรียนรู้ทีม', ic:'📘'},
-  ],
-  manager: [
-    {id:'info',            en:'Info',              th:'ข้อมูล',            ic:'ℹ️'},
-    {id:'my-performance', en:'My Performance', th:'ผลงานของฉัน', ic:'★'},
-    {id:'my-learning',    en:'My Learning',    th:'การเรียนรู้ของฉัน', ic:'🎓'},
-    {id:'team-performance', en:"Team's Performance", th:'ผลงานทีม', ic:'👥'},
-    {id:'team-learning',    en:"Team's Learning",    th:'การเรียนรู้ทีม', ic:'📘'},
-  ],
-  staff: [
-    {id:'info',            en:'Info',              th:'ข้อมูล',            ic:'ℹ️'},
-    {id:'my-performance', en:'My Performance', th:'ผลงานของฉัน', ic:'★'},
-    {id:'my-learning',    en:'My Learning',    th:'การเรียนรู้ของฉัน', ic:'🎓'},
-  ]
-};
-
-window.getCompetenciesForUser = function(jobCode, selections) {
-    let userMandatory = [];
-    let userElectives = [];
-    if (jobCode) {
-        let safeJobCode = jobCode.replace(/\//g, '_');
-        let mData = MATRIX_MAP[safeJobCode];
-        if (mData) {
-            if (Array.isArray(mData.mandatory)) userMandatory = mData.mandatory;
-            else if (mData.mandatory) userMandatory = [mData.mandatory];
-            
-            if (Array.isArray(mData.electives)) userElectives = mData.electives;
-            else if (mData.electives) userElectives = [mData.electives];
-        }
-    }
-
-    const cleanStr = (s) => s ? s.toString().toLowerCase().replace(/\s+/g, '') : '';
-    const mandatoryClean = userMandatory.map(cleanStr);
-    const electivesClean = userElectives.map(cleanStr);
-
-    let userComps = [];
-    let addedComps = new Set();
-
-    ALL_COMPETENCIES.forEach(c => {
-        let isMandatory = mandatoryClean.some(m => m !== "" && c.rawName.includes(m));
-        let isElective = !isMandatory && electivesClean.some(el => el !== "" && c.rawName.includes(el));
-        let wasPreviouslySelected = !!selections[c.key];
-
-        if (!isMandatory && !isElective && !wasPreviouslySelected) return;
-
-        let uniqueKey = cleanStr(c.en);
-        if (addedComps.has(uniqueKey)) return;
-        addedComps.add(uniqueKey);
-
-        userComps.push({
-            ...c,
-            type: isMandatory ? 'mandatory' : 'selective',
-            tag: isMandatory ? 'Mandatory (วิชาบังคับ)' : 'Selective (วิชาเลือก)'
-        });
-    });
-    return userComps;
-};
-
-const checkComplete = (details) => {
-    if(!details || !details.certs) return false;
-    return Object.values(details.certs).some(c => c.url && c.reflection && c.reflection.trim() !== '');
-};
-
-let logoClickCount = 0;
-let logoClickTimeout;
-window.handleLogoClick = function() {
-    if (session.realUser && session.realUser.role !== 'superadmin') return; 
-    logoClickCount++;
-    clearTimeout(logoClickTimeout);
-    if (logoClickCount >= 3) {
-        logoClickCount = 0;
-        document.getElementById('admin-modal').classList.add('active');
-    } else {
-        logoClickTimeout = setTimeout(() => { logoClickCount = 0; }, 600);
-    }
-};
-
-window.closeAdminModal = function() {
-    document.getElementById('admin-modal').classList.remove('active');
-};
-
-window.renderAdminConfig = function() {
-    const list = document.getElementById('admin-config-list');
-    if(!list) return;
-    
-    const isMandatoryFirst = systemConfig.mandatoryFirst !== false; 
-    let html = `
-    <div class="config-row" style="background:#eaf6fc; padding: 14px 16px; border-radius:10px; margin: 10px 0 16px; border:1px solid var(--blue-tint-2);">
-        <div style="font-size:14px; font-weight:700; color:var(--blue-dark);">แสดงวิชาบังคับ (Mandatory) ก่อนวิชาเลือก</div>
-        <label class="switch">
-          <input type="checkbox" ${isMandatoryFirst ? 'checked' : ''} onchange="toggleTabConfig('mandatoryFirst', this.checked)">
-          <span class="slider"></span>
-        </label>
     </div>
-    <div style="font-size:11px; font-weight:700; color:#8b90a0; margin-bottom:10px;">เปิด/ปิด การแสดงผลเมนูแท็บ</div>
-    `;
 
-    const tabsToConfig = [
-        { id: 'info', name: "Info (หน้าข้อมูล)" },
-        { id: 'my-performance', name: "My Performance (ผลงานของฉัน)" },
-        { id: 'my-learning', name: "My Learning (การเรียนรู้ของฉัน)" },
-        { id: 'team-performance', name: "Team's Performance (ผลงานทีม)" },
-        { id: 'team-learning', name: "Team's Learning (การเรียนรู้ทีม)" }
-    ];
+    <!-- MAIN CONTENT AREA -->
+    <div class="max-w-6xl mx-auto p-4 md:p-6 mt-4">
 
-    html += tabsToConfig.map(t => {
-        const isChecked = systemConfig.tabs[t.id] !== false; 
-        return `
-        <div class="config-row">
-            <div style="font-size:14px; font-weight:600; color:#1c2130;">${t.name}</div>
-            <label class="switch">
-              <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTabConfig('${t.id}', this.checked)">
-              <span class="slider"></span>
-            </label>
-        </div>
-        `;
-    }).join('');
-    
-    list.innerHTML = html;
-};
-
-window.toggleTabConfig = async function(key, isEnabled) {
-    try {
-        if(key === 'mandatoryFirst') {
-            systemConfig.mandatoryFirst = isEnabled;
-        } else {
-            systemConfig.tabs[key] = isEnabled;
-        }
-        
-        const configDocRef = doc(db, "system", "config");
-        await setDoc(configDocRef, { tabs: systemConfig.tabs, mandatoryFirst: systemConfig.mandatoryFirst }, { merge: true });
-        
-        buildTabBars();
-        if(currentTabId === 'my-learning') window.renderMyLearning(); 
-        
-        window.showToast("บันทึกการตั้งค่าเรียบร้อย");
-    } catch(e) {
-        console.error(e);
-        Swal.fire({ text: 'ไม่สามารถบันทึกการตั้งค่าได้: ' + e.message, icon: 'error', confirmButtonColor: '#0091ff' });
-    }
-};
-
-window.loadTeamData = async function() {
-    try {
-        TEAM = [];
-        const teamQ = query(collection(db, "employees"), where("managerId", "==", session.empId));
-        const teamSnap = await getDocs(teamQ);
-        
-        if (!teamSnap.empty) {
-            const teamPromises = teamSnap.docs.map(async (docSnap) => {
-                let tData = docSnap.data();
-                let member = {
-                    empId: tData.empId,
-                    name: tData.name,
-                    position: tData.position || 'Officer',
-                    jobCode: tData.jobCode || '',
-                    balance: tData.pointBalance !== undefined ? tData.pointBalance : 100,
-                    seed: tData.empId, 
-                    photoURL: tData.photoURL || null,
-                    selections: {}, idpDetails: {}, outcomeNotes: {},
-                    recentLogs: []
-                };
-                
-                const logQ = query(collection(db, "performance_logs"), where("empId", "==", tData.empId));
-                const teamIdpQ = query(collection(db, "idp_records"), where("empId", "==", tData.empId));
-                
-                const [logSnap, teamIdpSnap] = await Promise.all([getDocs(logQ), getDocs(teamIdpQ)]);
-                
-                logSnap.forEach(l => {
-                    let lData = l.data();
-                    member.recentLogs.push({ topic: lData.topic, points: lData.point, desc: lData.desc, timestamp: lData.timestamp });
-                });
-                member.recentLogs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-                member.recentLogs = member.recentLogs.slice(0, 3);
-                
-                teamIdpSnap.forEach(d => {
-                    member.selections[d.data().compKey] = true;
-                    member.idpDetails[d.data().compKey] = {
-                        status: d.data().status || 'In Progress',
-                        certs: d.data().certificates || {}
-                    };
-                });
-                return member;
-            });
+      <!-- ========================================== -->
+      <!-- VIEW: DYNAMIC EMAIL MOCKUP -->
+      <!-- ========================================== -->
+      <div id="view-email" class="view-content hidden max-w-3xl mx-auto">
+        <div class="wd-card border-gray-300 shadow-md">
+          <div class="bg-gray-50 p-4 border-b border-gray-200 flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-600 rounded flex items-center justify-center text-white font-bold text-xl">✉️</div>
+            <div class="flex-1">
+              <p class="font-bold text-gray-800 text-sm font-sans" id="email_sender">StarMeter Notification</p>
+              <p class="text-xs text-gray-500 font-sans">To: <span id="email_to" class="text-blue-600">-</span></p>
+            </div>
+          </div>
+          <div class="p-8 space-y-4 font-sans text-gray-700 text-sm leading-relaxed">
+            <h2 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-3 font-kanit" id="email_subject">-</h2>
+            <div id="email_body" class="space-y-4">
+               <!-- Content injected via JS -->
+            </div>
             
-            TEAM = await Promise.all(teamPromises);
-            TEAM.sort((a, b) => a.name.localeCompare(b.name, 'th'));
-        }
-        isTeamLoaded = true;
-    } catch(e) {
-        console.error("Error loading team data:", e);
-        Swal.fire({ text: 'โหลดข้อมูลทีมไม่สำเร็จ: ' + e.message, icon: 'error', confirmButtonColor: '#0091ff' });
-    }
-};
-
-window.initializeUser = async function(targetEmpId, isProxy = false) {
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-    document.getElementById('scr-loading').classList.add('active');
-    
-    isTeamLoaded = false;
-    TEAM = []; 
-
-    try {
-        try {
-            const configDocRef = doc(db, "system", "config");
-            const configDoc = await getDoc(configDocRef);
-            if (configDoc.exists()) {
-                const loadedConfig = configDoc.data();
-                if(loadedConfig.tabs) systemConfig.tabs = loadedConfig.tabs;
-                if(loadedConfig.mandatoryFirst !== undefined) systemConfig.mandatoryFirst = loadedConfig.mandatoryFirst;
-            } else {
-                await setDoc(configDocRef, systemConfig); 
-            }
-        } catch(e) {
-            console.warn("Could not load config, using defaults.", e);
-        }
-
-        const cachedComps = sessionStorage.getItem('star_competencies');
-        if (cachedComps) {
-            ALL_COMPETENCIES = JSON.parse(cachedComps);
-        } else {
-            ALL_COMPETENCIES = [];
-            const compSnap = await getDocs(collection(db, "competencies"));
-            compSnap.forEach(c => {
-                let data = c.data();
-                let originalName = data.competencyName || "";
-                let cleanStr = (s) => s ? s.toString().toLowerCase().replace(/\s+/g, '') : '';
-                let compClean = cleanStr(originalName);
-                let th = originalName;
-                let en = originalName;
-                if (originalName.includes('\n')) {
-                    let parts = originalName.split('\n');
-                    th = parts[0].trim();
-                    en = parts[1].trim();
-                }
-                let activities = [];
-                if (data.courses && Array.isArray(data.courses)) {
-                    activities = data.courses.map(course => {
-                        let instName = course.institute;
-                        if (instName === 'Academy') {
-                            instName = 'Airasia Academy';
-                        }
-                        return [course.name, instName, course.link || ''];
-                    });
-                }
-                ALL_COMPETENCIES.push({
-                    key: c.id, th: th, en: en, desc: data.description || '', activities: activities, rawName: compClean
-                });
-            });
-            sessionStorage.setItem('star_competencies', JSON.stringify(ALL_COMPETENCIES));
-        }
-
-        const cachedMatrix = sessionStorage.getItem('star_matrices');
-        if (cachedMatrix) {
-            MATRIX_MAP = JSON.parse(cachedMatrix);
-        } else {
-            MATRIX_MAP = {};
-            const matrixSnap = await getDocs(collection(db, "training_matrices"));
-            matrixSnap.forEach(d => {
-                MATRIX_MAP[d.id] = d.data();
-            });
-            sessionStorage.setItem('star_matrices', JSON.stringify(MATRIX_MAP));
-        }
-
-        const empDoc = await getDoc(doc(db, "employees", targetEmpId));
-        if (!empDoc.exists()) {
-            Swal.fire({ text: 'ไม่พบข้อมูลพนักงานรหัส: ' + targetEmpId, icon: 'error', confirmButtonColor: '#0091ff' });
-            if(isProxy) await window.initializeUser(session.realUser.empId, false);
-            else { await signOut(auth); document.getElementById('scr-login').classList.add('active'); }
-            return;
-        }
-        const empData = empDoc.data();
-
-        MY_ENTRIES = [];
-        const myLogQ = query(collection(db, "performance_logs"), where("empId", "==", targetEmpId)); 
-        const myLogSnap = await getDocs(myLogQ);
-        myLogSnap.forEach(lSnap => {
-            let lData = lSnap.data();
-            MY_ENTRIES.push({ logId: lSnap.id, topic: lData.topic, point: lData.point, desc: lData.desc, timestamp: lData.timestamp });
-        });
-        MY_ENTRIES.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-        if(MY_ENTRIES.length === 0) {
-            MY_ENTRIES.push({topic:'ยังไม่มีประวัติคะแนน', point:0, desc:'เมื่อคุณได้รับคะแนนหรือถูกหักคะแนน ประวัติจะแสดงที่นี่'});
-        }
-
-        const myIdpQ = query(collection(db, "idp_records"), where("empId", "==", targetEmpId));
-        const myIdpSnap = await getDocs(myIdpQ);
-        let mySelections = {};
-        let myIdpDetails = {};
-        myIdpSnap.forEach(d => {
-            mySelections[d.data().compKey] = true;
-            myIdpDetails[d.data().compKey] = {
-                status: d.data().status || 'In Progress',
-                certs: d.data().certificates || {}
-            };
-        });
-
-        const checkManagerQ = query(collection(db, "employees"), where("managerId", "==", targetEmpId));
-        const checkManagerSnap = await getDocs(checkManagerQ);
-        const isManager = !checkManagerSnap.empty;
-
-        let realRole = empData.role || (isManager ? 'manager' : 'staff');
-        let effectiveRole = isProxy ? (isManager ? 'manager' : 'staff') : realRole;
-
-        if (!isProxy) {
-            session.realUser = { empId: empData.empId, role: realRole };
-        }
-
-        session.loggedIn = true;
-        session.role = effectiveRole;
-        session.empId = empData.empId;
-        session.name = empData.name || "Unknown User";
-        session.position = empData.position || (isManager ? 'Manager' : 'Officer');
-        session.jobCode = empData.jobCode || '';
-        session.balance = empData.pointBalance !== undefined ? empData.pointBalance : 100;
-        session.seed = empData.empId;
-        session.selections = mySelections; 
-        session.idpDetails = myIdpDetails;
-        profileImages.me = empData.photoURL || null;
-
-        document.getElementById('header-name').textContent = session.name;
-        document.getElementById('header-role').textContent = isManager ? 'Line Manager' : 'AllStar';
-        document.getElementById('header-avatar').src = profileImages.me || avatarUrl();
-
-        const proxyBanner = document.getElementById('proxy-banner');
-        if(isProxy) {
-            document.getElementById('proxy-target-name').textContent = `${session.name} (${session.empId})`;
-            proxyBanner.classList.add('active');
-            document.body.classList.add('has-proxy');
-        } else {
-            proxyBanner.classList.remove('active');
-            document.body.classList.remove('has-proxy');
-        }
-
-        if (realRole === 'superadmin' && !isProxy) {
-            window.renderAdminConfig(); 
-        }
-
-        buildTabBars();
-        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-        document.getElementById('scr-app').classList.add('active');
-        window.scrollTo(0,0);
-        
-        if (isProxy) {
-            window.switchTab('my-performance', true);
-        } else {
-            window.switchTab('info', true);
-        }
-
-    } catch (error) {
-        console.error(error);
-        Swal.fire({ text: 'เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
-        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-        document.getElementById('scr-login').classList.add('active');
-    }
-};
-
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        try {
-            const empRef = collection(db, "employees");
-            const q = query(empRef, where("email", "==", user.email.toLowerCase()));
-            const querySnapshot = await getDocs(q);
-
-            if (querySnapshot.empty) {
-                Swal.fire({ text: 'ไม่พบข้อมูลพนักงานในระบบ กรุณาติดต่อ HR', icon: 'error', confirmButtonColor: '#0091ff' });
-                await signOut(auth);
-                document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-                document.getElementById('scr-login').classList.add('active');
-                return;
-            }
-
-            const empData = querySnapshot.docs[0].data();
-            await window.initializeUser(empData.empId, false);
+            <div class="py-6 border-t border-gray-100 mt-6 pt-6">
+               <button id="email_action_btn" class="wd-btn-primary w-full md:w-auto shadow">Proceed to Portal</button>
+            </div>
             
-        } catch (error) {
-            console.error(error);
-            document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-            document.getElementById('scr-login').classList.add('active');
-        }
-    } else {
-        session.loggedIn = false;
-        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-        document.getElementById('scr-login').classList.add('active');
-    }
-});
-
-window.handleGoogleSignIn = async () => {
-    const privacyCheck = document.getElementById('privacy-check');
-    if(privacyCheck && !privacyCheck.checked) {
-        alert('กรุณากดยอมรับ Privacy Statement ก่อนเข้าสู่ระบบ');
-        return;
-    }
-
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-    document.getElementById('scr-loading').classList.add('active');
-    try { 
-        await signInWithPopup(auth, provider); 
-    } catch (err) { 
-        console.error(err); 
-        alert("การเข้าสู่ระบบถูกยกเลิก หรือเกิดข้อผิดพลาด: " + err.message); 
-        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-        document.getElementById('scr-login').classList.add('active');
-    }
-};
-
-window.handleLogout = async () => {
-    try { await signOut(auth); } catch (err) { console.error(err); }
-};
-
-window.startProxy = async function() {
-    const empId = document.getElementById('proxy-empid-input').value.trim();
-    if(!empId) return Swal.fire({ text: 'กรุณาระบุรหัสพนักงานที่ต้องการดูข้อมูล', icon: 'warning', confirmButtonColor: '#0091ff' });
-    if(empId === session.realUser.empId) return Swal.fire({ text: 'นี่คือรหัสของคุณเองอยู่แล้ว!', icon: 'warning', confirmButtonColor: '#0091ff' });
-    window.closeAdminModal();
-    await window.initializeUser(empId, true);
-};
-
-window.exitProxy = async function() {
-    if(!session.realUser) return;
-    document.getElementById('proxy-empid-input').value = '';
-    await window.initializeUser(session.realUser.empId, false);
-};
-
-function buildTabBars(){
-  let tabs = TABS[session.role] || TABS.staff;
-  
-  tabs = tabs.filter(t => systemConfig.tabs[t.id] !== false);
-
-  if (currentTabId && systemConfig.tabs[currentTabId] === false) {
-      if(tabs.length > 0) currentTabId = tabs[0].id;
-      window.showContent(currentTabId);
-  }
-
-  const desktop = document.getElementById('tabbar-desktop');
-  const mobile = document.getElementById('tabbar-mobile');
-  
-  desktop.innerHTML = '<span class="tab-indicator" id="tab-indicator"></span>' + tabs.map(t=>`
-    <button class="tab-btn" data-tab="${t.id}" onclick="switchTab('${t.id}')">
-      <span>${t.en}</span><span class="th-sub">${t.th}</span>
-    </button>`).join('');
-    
-  mobile.innerHTML = tabs.map(t=>`
-    <button class="tab-btn" data-tab="${t.id}" onclick="switchTab('${t.id}')">
-      <span class="ic">${t.ic}</span><span>${t.en}</span>
-    </button>`).join('');
-    
-  setTimeout(() => {
-      const indicator = document.getElementById('tab-indicator');
-      const activeBtn = document.querySelector(`.tabbar-desktop .tab-btn[data-tab="${currentTabId}"]`);
-      if(indicator && activeBtn) {
-        indicator.style.left = activeBtn.offsetLeft + 'px';
-        indicator.style.width = activeBtn.offsetWidth + 'px';
-      }
-  }, 50);
-}
-
-window.switchTab = function(id, skipValidation){
-  if(isTransitioning || currentTabId === id) return; 
-
-  if(!skipValidation && currentTabId==='my-learning' && id!=='my-learning'){
-    window.validateLearningSelection(); 
-  }
-  
-  let tabs = TABS[session.role] || TABS.staff;
-  tabs = tabs.filter(t => systemConfig.tabs[t.id] !== false);
-  
-  let targetTab = tabs.find(t => t.id === id);
-  if (!targetTab) {
-      if(tabs.length > 0) targetTab = tabs[0];
-      else return; 
-  }
-  currentTabId = targetTab.id;
-  
-  document.querySelectorAll('.tab-btn').forEach(b=>{
-    b.classList.toggle('active', b.dataset.tab===currentTabId);
-  });
-  
-  const indicator = document.getElementById('tab-indicator');
-  const activeBtn = document.querySelector(`.tabbar-desktop .tab-btn[data-tab="${currentTabId}"]`);
-  if(indicator && activeBtn) {
-    indicator.style.left = activeBtn.offsetLeft + 'px';
-    indicator.style.width = activeBtn.offsetWidth + 'px';
-  }
-  window.showContent(currentTabId);
-};
-
-window.addEventListener('resize', () => {
-  const indicator = document.getElementById('tab-indicator');
-  const activeBtn = document.querySelector('.tabbar-desktop .tab-btn.active');
-  if(indicator && activeBtn) {
-    indicator.style.left = activeBtn.offsetLeft + 'px';
-    indicator.style.width = activeBtn.offsetWidth + 'px';
-  }
-});
-
-window.showContent = async function(id){
-  isTransitioning = true; 
-
-  if ((id === 'team-performance' || id === 'team-learning') && !isTeamLoaded) {
-      document.getElementById('scr-loading').classList.add('active');
-      document.querySelector('.loading-text').textContent = "กำลังโหลดข้อมูลลูกน้อง...";
-      document.querySelector('.loading-subtext').textContent = "Fetching team members...";
-      
-      await window.loadTeamData();
-      
-      document.getElementById('scr-loading').classList.remove('active');
-      document.querySelector('.loading-text').textContent = "กำลังเข้าสู่ระบบและเตรียมข้อมูล...";
-      document.querySelector('.loading-subtext').textContent = "Preparing your dashboard";
-  }
-
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active','entering'));
-  const next = document.getElementById('panel-'+id);
-  
-  if(!next) {
-      isTransitioning = false; 
-      return;
-  }
-  
-  next.classList.add('active','entering');
-  
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-      next.classList.remove('entering');
-      setTimeout(() => { isTransitioning = false; }, 250); 
-  }));
-
-  window.closeModal();
-  window.scrollTo({top:0, behavior:'smooth'});
-
-  if(id==='info') renderInfo();
-  if(id==='my-performance') window.renderMyPerformance();
-  if(id==='my-learning') window.renderMyLearning();
-  if(id==='team-performance') window.renderPerfGrid(1); 
-  if(id==='team-learning') window.renderLearnRows(1); 
-};
-
-let toastTimer = null;
-window.showToast = function(msg, isError=false){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast';
-  if(isError) t.classList.add('error');
-  else t.classList.add('success');
-  
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.remove('show'), 3400);
-};
-
-window.validateLearningSelection = function(){
-  const myComps = window.getCompetenciesForUser(session.jobCode, session.selections);
-  const selectiveKeys = myComps.filter(c=>c.type==='selective').map(c=>c.key);
-  const anySelected = selectiveKeys.some(k=>session.selections[k]);
-  if(!anySelected && selectiveKeys.length > 0){
-    window.showToast('Select at least 1 competency (selective) to continue · กรุณาเลือกอย่างน้อย 1 สมรรถนะ (Selective)', true);
-  }
-};
-
-window.renderMyPerformance = function(){
-  document.getElementById('me-photo').src = profileImages.me || avatarUrl();
-  document.getElementById('me-name').textContent = session.name;
-  document.getElementById('me-role').textContent = session.position;
-  document.getElementById('me-balance').textContent = session.balance;
-  document.getElementById('my-perf-list').innerHTML = MY_ENTRIES.map(e=>`
-    <div class="entry-card">
-      <div class="fade-entry-top">
-        <div class="col"><div class="fade-colname">Topic | หัวเรื่อง</div><div class="fade-topic ${e.point>=0?'g':'r'}">${escapeHtml(e.topic)}</div></div>
-        <div class="fade-point ${e.point>=0?'g':'r'}">${e.point>=0?'+':''}${e.point}</div>
-      </div>
-      <div class="fade-desc"><div class="fade-colname">Description | คำอธิบาย</div>${escapeHtml(e.desc)}</div>
-    </div>`).join('');
-};
-
-window.handleProfileUpload = async function(evt){
-  let f = evt.target.files[0];
-  if(!f) return;
-  
-  const avatarImg = document.getElementById('me-photo');
-  avatarImg.style.opacity = '0.5';
-  window.showToast("กำลังบีบอัดและอัปโหลดรูปภาพ...");
-
-  try {
-      f = await compressImage(f, 800, 800, 0.8);
-      const storageRef = ref(storage, `profile_images/${session.empId}.jpg`);
-      await uploadBytes(storageRef, f);
-      const downloadURL = await getDownloadURL(storageRef);
-      
-      await updateDoc(doc(db, "employees", session.empId), { photoURL: downloadURL });
-
-      profileImages.me = downloadURL;
-      avatarImg.src = downloadURL;
-      const topAvatar = document.getElementById('header-avatar');
-      if(topAvatar) topAvatar.src = downloadURL;
-      
-      window.showToast("อัปเดตรูปโปรไฟล์สำเร็จ!");
-  } catch (error) {
-      console.error(error);
-      Swal.fire({ text: 'อัปโหลดไม่สำเร็จ: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
-  } finally {
-      avatarImg.style.opacity = '1';
-  }
-};
-
-window.renderMyLearning = function(){
-  const myComps = window.getCompetenciesForUser(session.jobCode, session.selections);
-  const sel = myComps.filter(c=>c.type==='selective');
-  const man = myComps.filter(c=>c.type==='mandatory');
-  
-  const isMandatoryFirst = systemConfig.mandatoryFirst !== false;
-  document.getElementById('section-mandatory').style.order = isMandatoryFirst ? "1" : "2";
-  document.getElementById('section-selective').style.order = isMandatoryFirst ? "2" : "1";
-  
-  document.getElementById('mylearn-selective').innerHTML = sel.length > 0 ? sel.map(c=>{
-    const active = !!session.selections[c.key];
-    const details = session.idpDetails[c.key];
-    const isComp = checkComplete(details);
-    return `<button class="goal-card green ${active?'selected':''}" onclick="openCompetency('${c.key}', true, 'me')">
-      <div class="tag" style="padding-right:70px;">${c.tag}</div>
-      ${isComp ? `<div class="badge-complete">Complete ✓</div>` : ''}
-      <div class="th-name">${c.th}</div><div class="en-name">${c.en}</div>
-      <div class="desc">${c.desc.slice(0,90)}…</div><div class="arrow">↘</div>
-    </button>`;
-  }).join('') : '<div style="color:#8b90a0; font-size:14px;">ยังไม่มีวิชาเลือกสำหรับตำแหน่งของคุณ</div>';
-  
-  document.getElementById('mylearn-mandatory').innerHTML = man.length > 0 ? man.map(c=>{
-    const details = session.idpDetails[c.key];
-    const isComp = checkComplete(details);
-    return `<button class="goal-card blue" onclick="openCompetency('${c.key}', true, 'me')">
-      <div class="tag" style="padding-right:70px;">${c.tag}</div>
-      ${isComp ? `<div class="badge-complete">Complete ✓</div>` : ''}
-      <div class="th-name">${c.th}</div><div class="en-name">${c.en}</div>
-      <div class="desc">${c.desc.slice(0,90)}…</div><div class="arrow">↘</div>
-    </button>`;
-  }).join('') : '<div style="color:#8b90a0; font-size:14px;">ยังไม่มีวิชาบังคับสำหรับตำแหน่งของคุณ</div>';
-};
-
-window.renderPerfGrid = function(page = 1){
-  const ITEMS_PER_PAGE = 9;
-  const grid = document.getElementById('perf-grid');
-  const pager = document.getElementById('perf-pager');
-  
-  if (TEAM.length === 0) {
-      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#9aa0ae;padding:60px 0;">ไม่มีลูกน้องในทีม · No team members found</div>';
-      if(pager) pager.innerHTML = '';
-      return;
-  }
-  
-  const startIndex = (page - 1) * ITEMS_PER_PAGE;
-  const currentMembers = TEAM.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-  grid.innerHTML = currentMembers.map(m => {
-    const originalIndex = TEAM.indexOf(m); 
-    let logsHtml = m.recentLogs.length > 0 
-        ? m.recentLogs.map(e=>`<span class="entry-item ${e.points>=0?'g':'r'}" data-desc="${escapeAttr(e.desc)}" data-points="${e.points}">${escapeHtml(e.topic)}</span>`).join('') 
-        : '<span style="color:#9aa0ae; font-size:11px;">ยังไม่มีประวัติ</span>';
-
-    return `
-    <div class="member-card">
-      <div class="member-top">
-        <img class="member-photo" src="${m.photoURL || avatarUrl()}" onerror="this.onerror=null; this.src=window.avatarUrl();" alt="">
-        <div class="member-name-wrap">
-          <div class="member-name">${m.name}</div>
-          <div class="member-role-id">${escapeHtml(m.position)} | ${escapeHtml(m.empId)}</div>
-        </div>
-      </div>
-      <div class="member-stats">
-        <div class="stat"><div class="balance-pill">${m.balance}</div><div class="label-en">Balance</div><div class="label-th">ยอดคงเหลือ</div></div>
-        <div class="stat"><button class="round-btn blue" onclick="openJustification(${originalIndex})">★</button><div class="label-en">Point</div><div class="label-th">ให้คะแนน</div></div>
-        <div class="stat"><button class="round-btn blue-lt" onclick="openEdit(${originalIndex})">✎</button><div class="label-en">Edit</div><div class="label-th">แก้ไข</div></div>
-      </div>
-      <div class="entry-list">
-        ${logsHtml}
-      </div>
-    </div>`;
-  }).join('');
-
-  if(pager) pager.innerHTML = generatePagerHtml(TEAM.length, ITEMS_PER_PAGE, page, 'renderPerfGrid');
-};
-
-let currentMemberIdx = 0;
-window.openJustification = function(i){
-  currentMemberIdx = i;
-  const m = TEAM[i];
-  document.getElementById('just-photo').src = m.photoURL || avatarUrl();
-  document.getElementById('just-name').textContent = m.name;
-  document.getElementById('just-role').textContent = m.position;
-  document.getElementById('just-balance').textContent = m.balance;
-  document.getElementById('just-topic-input').value = '';
-  document.getElementById('just-desc-input').value = '';
-  document.getElementById('just-point-input').value = 10;
-  window.updatePointBox(document.getElementById('just-point-input'));
-  window.showContent('justification');
-};
-
-window.updatePointBox = function(input){
-  const val = parseInt(input.value||'0',10);
-  input.classList.toggle('pos', val>=0);
-  input.classList.toggle('neg', val<0);
-};
-
-window.submitJustification = async function(adjustBalance){
-  const m = TEAM[currentMemberIdx];
-  const topic = document.getElementById('just-topic-input').value.trim();
-  const desc = document.getElementById('just-desc-input').value.trim();
-  const val = parseInt(document.getElementById('just-point-input').value || '0', 10);
-  
-  if (!topic) { Swal.fire({ text: 'กรุณากรอกหัวเรื่อง (Topic)', icon: 'warning', confirmButtonColor: '#0091ff' }); return; }
-  if (val === 0) { Swal.fire({ text: 'กรุณาใส่คะแนนที่ไม่ใช่ 0', icon: 'warning', confirmButtonColor: '#0091ff' }); return; }
-
-  window.showToast("กำลังประมวลผล...");
-
-  try {
-      const empRef = doc(db, "employees", m.empId);
-      const logRef = doc(collection(db, "performance_logs")); 
-
-      await runTransaction(db, async (transaction) => {
-          const empDoc = await transaction.get(empRef);
-          if (!empDoc.exists()) throw "ไม่พบข้อมูลพนักงานท่านนี้ในระบบ!";
-
-          let currentBalance = empDoc.data().pointBalance;
-          if (currentBalance === undefined) currentBalance = 100;
-          let newBalance = currentBalance;
-          
-          if (adjustBalance) {
-              newBalance = currentBalance + val;
-              transaction.update(empRef, { pointBalance: newBalance });
-          }
-
-          transaction.set(logRef, {
-              empId: m.empId,
-              managerId: session.empId,
-              topic: topic,
-              desc: desc,
-              point: val,
-              timestamp: new Date().toISOString(),
-              actedBy: session.realUser.empId 
-          });
-
-          m.balance = newBalance; 
-          m.recentLogs.unshift({ topic: topic, points: val, desc: desc, timestamp: new Date().toISOString() });
-          m.recentLogs = m.recentLogs.slice(0, 3);
-      });
-
-      window.showToast(adjustBalance ? `ปรับคะแนนลูกน้องสำเร็จ! ยอดใหม่: ${m.balance}` : 'บันทึกประวัติเรียบร้อยแล้ว');
-      window.renderPerfGrid(1); 
-      window.showContent('team-performance'); 
-
-  } catch (error) {
-      console.error("Transaction failed: ", error);
-      Swal.fire({ text: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error, icon: 'error', confirmButtonColor: '#0091ff' });
-  }
-};
-
-window.editingIdx = null;
-
-window.openEdit = async function(i){
-  currentMemberIdx = i;
-  const m = TEAM[i];
-  
-  document.getElementById('edit-photo').src = m.photoURL || avatarUrl();
-  document.getElementById('edit-name').textContent = m.name;
-  document.getElementById('edit-role').textContent = m.position;
-  document.getElementById('edit-balance').textContent = m.balance;
-  
-  const wrap = document.getElementById('edit-entries');
-  wrap.innerHTML = `<div style="text-align:center; padding: 40px; color:#9aa0ae;"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br>กำลังโหลดประวัติของ ${m.name}...</div>`;
-  window.showContent('edit');
-
-  try {
-      CURRENT_MEMBER_ENTRIES = [];
-      const logRef = collection(db, "performance_logs");
-      const logQ = query(logRef, where("empId", "==", m.empId)); 
-      const logSnap = await getDocs(logQ);
-      
-      logSnap.forEach(lSnap => {
-          let lData = lSnap.data();
-          CURRENT_MEMBER_ENTRIES.push({ 
-              logId: lSnap.id, 
-              topic: lData.topic, 
-              point: lData.point, 
-              sign: lData.point >= 0 ? 'g' : 'r',
-              desc: lData.desc,
-              timestamp: lData.timestamp
-          });
-      });
-      CURRENT_MEMBER_ENTRIES.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-      window.renderEditEntries();
-
-  } catch (error) {
-      wrap.innerHTML = `<div style="text-align:center; color:#e0281e; padding:40px;">ดึงข้อมูลผิดพลาด: ${error.message}</div>`;
-  }
-};
-
-window.renderEditEntries = function(){
-  const wrap = document.getElementById('edit-entries');
-  
-  if (CURRENT_MEMBER_ENTRIES.length === 0) {
-      wrap.innerHTML = `<div style="text-align:center; color:#9aa0ae; padding:40px;">ลูกน้องคนนี้ยังไม่มีประวัติให้แก้ไข</div>`;
-      return;
-  }
-
-  wrap.innerHTML = `<div class="edit-table-head"><div>Topic</div><div>Description</div><div>Point</div></div>` +
-    CURRENT_MEMBER_ENTRIES.map((e,idx)=>{
-    const editing = window.editingIdx===idx;
-    return `
-    <div class="edit-table-row" id="edit-entry-${idx}">
-      ${editing ? `
-        <div class="edit-table-editrow" style="grid-column:1/-1;">
-          <div class="fade-entry-top">
-            <div class="col"><div class="fade-colname">Topic | หัวเรื่อง</div>
-              <input class="edit-input-topic" id="edit-topic-input-${idx}" type="text" value="${escapeAttr(e.topic)}" style="width:100%;border:1px solid rgba(20,22,30,.2);border-radius:8px;padding:7px 10px;font-size:14px;font-weight:700;"></div>
-            <div><div class="fade-colname" style="text-align:right;">Point | คะแนน (ห้ามแก้)</div>
-              <input class="edit-input-point" id="edit-point-input-${idx}" type="number" value="${e.point}" disabled style="width:100px;border:1px solid rgba(20,22,30,.2);border-radius:8px;padding:7px 10px;font-size:15px;font-weight:800;text-align:right; background:#e3e6ec; color:#8b90a0; cursor:not-allowed;"></div>
-          </div>
-          <div class="fade-desc"><div class="fade-colname">Description | คำอธิบาย</div>
-            <textarea id="edit-desc-input-${idx}" rows="3" style="width:100%;border:1px solid rgba(20,22,30,.2);border-radius:8px;padding:8px 10px;font-size:13px;line-height:1.6;">${escapeHtml(e.desc)}</textarea></div>
-          <div class="edit-actions" style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
-            <button class="btn-chip gray" onclick="editingIdx=null;renderEditEntries();">ยกเลิก</button>
-            <button class="btn-chip blue" onclick="saveEditFull(${idx})">✎ บันทึกการแก้ไข</button>
+            <p class="text-[11px] text-gray-400 mt-4 text-center">This is an automated message from StarMeter (PIP Module). Please do not reply.</p>
           </div>
         </div>
-      ` : `
-        <button class="edit-table-topic ${e.sign}" onclick="editingIdx=${idx};renderEditEntries();">${escapeHtml(e.topic)}</button>
-        <div class="edit-table-desc">${escapeHtml(e.desc)}</div>
-        <div class="edit-table-point">${e.point>=0?'+':''}${e.point}</div>
-      `}
-    </div>`;
-  }).join('');
-};
-
-window.saveEditFull = async function(idx){
-  const newTopic = document.getElementById(`edit-topic-input-${idx}`).value.trim();
-  const newDesc = document.getElementById(`edit-desc-input-${idx}`).value.trim();
-  const targetLog = CURRENT_MEMBER_ENTRIES[idx];
-
-  try {
-      window.showToast("กำลังบันทึกข้อมูล...");
-      const logDocRef = doc(db, "performance_logs", targetLog.logId);
-      await updateDoc(logDocRef, { 
-          topic: newTopic, 
-          desc: newDesc,
-          editedBy: session.realUser.empId,
-          editTimestamp: new Date().toISOString()
-      });
-      
-      CURRENT_MEMBER_ENTRIES[idx].topic = newTopic;
-      CURRENT_MEMBER_ENTRIES[idx].desc = newDesc;
-      window.editingIdx = null;
-      window.renderEditEntries();
-      
-      const m = TEAM[currentMemberIdx];
-      let logIndex = m.recentLogs.findIndex(l => l.timestamp === targetLog.timestamp);
-      if(logIndex !== -1){
-          m.recentLogs[logIndex].topic = newTopic;
-          m.recentLogs[logIndex].desc = newDesc;
-          window.renderPerfGrid(1); 
-      }
-      
-      window.showToast("บันทึกการแก้ไขเรียบร้อยแล้ว");
-
-  } catch (error) {
-      console.error(error);
-      Swal.fire({ text: 'บันทึกผิดพลาด: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
-  }
-};
-
-window.renderLearnRows = function(page = 1){
-  const ITEMS_PER_PAGE = 10;
-  const wrap = document.getElementById('learn-rows');
-  const pager = document.getElementById('learn-pager');
-  
-  if (TEAM.length === 0) {
-      wrap.innerHTML = '<div style="text-align:center;color:#9aa0ae;padding:60px 0;">ไม่มีลูกน้องในทีม · No team members found</div>';
-      if(pager) pager.innerHTML = '';
-      return;
-  }
-
-  const startIndex = (page - 1) * ITEMS_PER_PAGE;
-  const currentMembers = TEAM.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-  wrap.innerHTML = currentMembers.map(m => {
-    let mandatoryChips = [];
-    let selectiveChips = [];
-
-    const mComps = window.getCompetenciesForUser(m.jobCode, m.selections);
-
-    mComps.forEach(c => {
-      const isMandatory = c.type === 'mandatory';
-      const active = isMandatory || !!m.selections[c.key];
-      const cls = isMandatory ? 'plus' : (active ? 'on' : 'off');
-      const isComp = checkComplete(m.idpDetails[c.key]);
-      const compText = isComp ? ' <span style="color:var(--green-dark);">✓</span>' : '';
-      
-      const chipHtml = `<button class="comp-chip ${cls}" onclick="openCompetency('${c.key}', false, '${m.seed}')">
-        <span class="en">${c.tag}${compText}</span>${c.th.slice(0,26)}…<span class="arrow">↘</span>
-      </button>`;
-
-      if(isMandatory) mandatoryChips.push(chipHtml);
-      else selectiveChips.push(chipHtml);
-    });
-
-    const chips = [...mandatoryChips, ...selectiveChips].join('');
-
-    return `<div class="lteam-block">
-      <div class="lteam-row">
-        <div class="lteam-head">
-          <img src="${m.photoURL || avatarUrl()}" onerror="this.onerror=null; this.src=window.avatarUrl();" alt="">
-          <div class="lteam-name-wrap">
-            <div class="lteam-name">${m.name}</div>
-            <div class="lteam-role-id">${escapeHtml(m.position)} | ${escapeHtml(m.empId)}</div>
-          </div>
-        </div>
-        <div class="comp-chips">${chips}</div>
       </div>
-    </div>`;
-  }).join('');
 
-  if(pager) pager.innerHTML = generatePagerHtml(TEAM.length, ITEMS_PER_PAGE, page, 'renderLearnRows');
-};
-
-let modalCtx = null;
-let expandedActivity = null; 
-
-window.openCompetency = function(key, interactive, scope){
-  modalCtx = {key, interactive, scope};
-  expandedActivity = null;
-  window.renderModalBody();
-  document.getElementById('modal').classList.add('active');
-};
-
-window.toggleActivity = function(i){
-  expandedActivity = (expandedActivity===i) ? null : i;
-  window.renderModalBody();
-};
-
-window.handleUpload = async function(evt, i){
-  let f = evt.target.files[0];
-  if(!f) return;
-
-  if (!f.type.match(/image.*/) && f.type !== 'application/pdf') {
-      Swal.fire({ text: 'รองรับเฉพาะไฟล์ PDF และรูปภาพ (.png, .jpg, .jpeg) เท่านั้น', icon: 'warning', confirmButtonColor: '#0091ff' });
-      return;
-  }
-
-  const {key, scope} = modalCtx;
-  if(scope !== 'me') return;
-
-  let instituteName = '';
-  if (i === 'self') {
-      instituteName = document.getElementById('custom-institute-input').value.trim();
-      if (!instituteName) {
-          Swal.fire({ text: 'กรุณาระบุชื่อสถาบันให้เรียบร้อยก่อนแนบไฟล์', icon: 'warning', confirmButtonColor: '#0091ff' });
-          return;
-      }
-  }
-
-  window.showToast("กำลังย่อขนาดและอัปโหลดไฟล์...");
-
-  try {
-      f = await compressImage(f, 1200, 1200, 0.8);
-      const ext = f.name.split('.').pop();
-      const fileName = `cert_${session.empId}_${key}_${i}.${ext}`;
-      const storageRef = ref(storage, `certificates/${session.empId}/${fileName}`);
-      
-      await uploadBytes(storageRef, f);
-      const downloadURL = await getDownloadURL(storageRef);
-
-      const docId = `${session.empId}_${key}`;
-      const docRef = doc(db, "idp_records", docId);
-      
-      let existingData = session.idpDetails[key]?.certs?.[i] || {};
-      
-      await setDoc(docRef, {
-          status: 'Completed',
-          certificates: {
-              [i]: { url: downloadURL, name: f.name, institute: instituteName, reflection: existingData.reflection || '' }
-          },
-          timestamp: new Date().toISOString(),
-          actedBy: session.realUser.empId 
-      }, { merge: true });
-
-      if(!session.idpDetails[key]) session.idpDetails[key] = { status: 'In Progress', certs: {} };
-      session.idpDetails[key].status = 'Completed';
-      session.idpDetails[key].certs[i] = { url: downloadURL, name: f.name, institute: instituteName, reflection: existingData.reflection || '' };
-
-      window.showToast("อัปโหลดสำเร็จ! ก้าวไปสู่ขั้นตอนถัดไปได้เลย");
-      window.renderModalBody();
-
-  } catch (error) {
-      console.error(error);
-      Swal.fire({ text: 'อัปโหลดไม่สำเร็จ: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
-  }
-};
-
-window.saveReflectionText = async function(i) {
-    const {key, scope} = modalCtx;
-    if(scope !== 'me') return;
-    
-    const textarea = document.getElementById(`reflection-input-${i}`);
-    if(!textarea) return;
-    
-    const text = textarea.value.trim();
-    if(!text) { Swal.fire({ text: 'กรุณากรอกคำอธิบายผลลัพธ์ทางการเรียนรู้ก่อนบันทึก', icon: 'warning', confirmButtonColor: '#0091ff' }); return; }
-    
-    window.showToast("กำลังบันทึกข้อมูล...");
-
-    try {
-        const docId = `${session.empId}_${key}`;
-        const docRef = doc(db, "idp_records", docId);
-        
-        let existingData = session.idpDetails[key]?.certs?.[i] || {};
-        
-        await setDoc(docRef, {
-            certificates: {
-                [i]: { ...existingData, reflection: text }
-            },
-            timestamp: new Date().toISOString(),
-            actedBy: session.realUser.empId 
-        }, { merge: true });
-
-        if(!session.idpDetails[key]) session.idpDetails[key] = { status: 'In Progress', certs: {} };
-        if(!session.idpDetails[key].certs[i]) session.idpDetails[key].certs[i] = {};
-        session.idpDetails[key].certs[i].reflection = text;
-
-        window.showToast("บันทึกผลการประเมินเรียบร้อยแล้ว!");
-        window.renderModalBody();
-        window.renderMyLearning();
-
-    } catch (error) {
-        console.error(error);
-        Swal.fire({ text: 'บันทึกไม่สำเร็จ: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
-    }
-};
-
-window.toggleSelection = async function(key){
-  const myComps = window.getCompetenciesForUser(session.jobCode, session.selections);
-  const c = myComps.find(x=>x.key===key);
-  if(c.type==='mandatory') return; 
-
-  const isCurrentlySelected = !!session.selections[key];
-  
-  // 🌟 ใช้ SweetAlert2 สำหรับหน้าต่างยืนยัน
-  const result = await Swal.fire({
-      text: isCurrentlySelected 
-          ? "ยกเลิกการเลือกสมรรถนะนี้ใช่หรือไม่?" 
-          : "ยืนยันการเลือกสมรรถนะนี้เป็นเป้าหมายการเรียนรู้ของคุณ?",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: isCurrentlySelected ? '#e0281e' : '#159440',
-      cancelButtonColor: '#8b90a0',
-      confirmButtonText: isCurrentlySelected ? 'ใช่, ยกเลิก' : 'ใช่, ยืนยัน',
-      cancelButtonText: 'ปิดหน้าต่าง'
-  });
-
-  if (!result.isConfirmed) return;
-
-  try {
-      window.showToast("กำลังบันทึกข้อมูล...");
-      const docId = `${session.empId}_${key}`;
-      const docRef = doc(db, "idp_records", docId);
-
-      if (isCurrentlySelected) {
-          await deleteDoc(docRef);
-          delete session.selections[key];
-          if(session.idpDetails[key]) delete session.idpDetails[key];
-          window.showToast("ยกเลิกสมรรถนะเรียบร้อยแล้ว");
-      } else {
-          await setDoc(docRef, {
-              empId: session.empId,
-              compKey: key,
-              compName: c.en,
-              type: c.type,
-              status: 'In Progress',
-              certificates: {},
-              timestamp: new Date().toISOString(),
-              actedBy: session.realUser.empId 
-          });
-          session.selections[key] = true;
-          session.idpDetails[key] = { status: 'In Progress', certs: {} };
-          window.showToast("บันทึกสมรรถนะเรียบร้อยแล้ว");
-      }
-
-      window.renderModalBody();
-      window.renderMyLearning();
-  } catch (error) {
-      console.error(error);
-      Swal.fire({ text: 'เกิดข้อผิดพลาดในการบันทึก: ' + error.message, icon: 'error', confirmButtonColor: '#0091ff' });
-  }
-};
-
-window.renderModalBody = function(){
-  const {key, interactive, scope} = modalCtx;
-  
-  let mComps;
-  let details;
-  let isSelected;
-
-  if (scope === 'me') {
-      mComps = window.getCompetenciesForUser(session.jobCode, session.selections);
-      details = session.idpDetails[key];
-      isSelected = mComps.find(x=>x.key===key).type === 'mandatory' || !!session.selections[key];
-  } else {
-      const m = TEAM.find(t=>t.seed===scope);
-      mComps = window.getCompetenciesForUser(m.jobCode, m.selections);
-      details = m.idpDetails[key];
-      isSelected = mComps.find(x=>x.key===key).type === 'mandatory' || !!m.selections[key];
-  }
-
-  const c = mComps.find(x=>x.key===key);
-  const isMandatory = c.type==='mandatory';
-  const isComp = checkComplete(details);
-  
-  let topLabel = '';
-  if (isMandatory) {
-      const numberWords = ["Zero", "One", "Two", "Three", "Four", "Five"];
-      const manList = mComps.filter(x => x.type === 'mandatory');
-      const idx = manList.findIndex(x => x.key === key);
-      topLabel = `Plus ${numberWords[idx + 1] || (idx + 1)}`;
-  } else {
-      const selList = mComps.filter(x => x.type === 'selective');
-      const idx = selList.findIndex(x => x.key === key);
-      topLabel = `Competency ${idx + 1}`;
-  }
-  
-  const body = document.getElementById('modal-body');
-  
-  body.className = 'modal-card';
-  if (isMandatory) {
-      body.classList.add('mandatory');
-  } else {
-      body.classList.add('selective');
-      if(isSelected) body.classList.add('selected');
-  }
-  
-  // 🌟 ป้ายสถานะมุมขวาบน (ปรับให้อยู่ระนาบเดียวกับ Tag)
-  let topRightToggle = '';
-  if (isMandatory) {
-      topRightToggle = `<div class="top-right-status mandatory"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</div>`;
-  } else {
-      if (interactive) {
-           if (isSelected || isComp) {
-               topRightToggle = `<button class="top-right-status selective-selected" onclick="toggleSelection('${key}')"><i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย</button>`;
-           } else {
-               topRightToggle = `<button class="top-right-status selective-unselected" onclick="toggleSelection('${key}')">คลิกเพื่อเลือกสมรรถนะ</button>`;
-           }
-      } else {
-           topRightToggle = `<div class="top-right-status ${isSelected?'selective-selected':'selective-unselected'}" style="cursor:default;">${isSelected ? '<i class="fa-solid fa-check"></i> เลือกสมรรถนะเรียบร้อย' : 'ยังไม่ได้เลือก'}</div>`;
-      }
-  }
-
-  // 🌟 ลูปสร้างกล่อง Activity
-  let activitiesHtml = c.activities.map((a,i)=>{
-      const expanded = expandedActivity===i;
-      const certInfo = (details && details.certs && details.certs[i]) ? details.certs[i] : null;
-      const fname = certInfo ? certInfo.name : null;
-      const reflectionTxt = certInfo ? certInfo.reflection : '';
-      
-      const courseName = a[0];
-      const provider = a[1];
-      const link = a[2];
-
-      // ปรับ Title ให้เป็นสีฟ้าและมี Icon ตาม Ref
-      const courseTitleHtml = link 
-          ? `<a href="${escapeAttr(link)}" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue); font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
-               <i class="fa-solid fa-desktop" style="color:#1c2130;"></i> <span>${escapeHtml(courseName)}</span> 
-               <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px;"></i>
-             </a>`
-          : `<span style="color:var(--blue); font-weight:600; display:inline-flex; align-items:center; gap:8px;">
-               <i class="fa-solid fa-desktop" style="color:#1c2130;"></i> <span>${escapeHtml(courseName)}</span>
-             </span>`;
-
-      const step3 = !!reflectionTxt;
-      
-      let actionBtnHtml = '';
-      let reflectionHtml = `<textarea id="reflection-input-${i}" class="reflection-box" rows="2" placeholder="อธิบายการประเมินผลลัพธ์ทางการเรียนรู้ (สูงสุด 150 คำ)" maxlength="1500" ${(!interactive || step3 || !isSelected) ? 'disabled' : ''}>${escapeHtml(reflectionTxt || '')}</textarea>`;
-      
-      if (interactive && !!fname && !step3) {
-          actionBtnHtml = `<button class="btn-acc-action ${isMandatory ? 'blue' : 'green'}" onclick="saveReflectionText('${i}')">บันทึก</button><div class="clear-float"></div>`;
-      } else if (interactive && step3) {
-          actionBtnHtml = `<button class="btn-acc-action yellow" onclick="document.getElementById('reflection-input-${i}').disabled=false; this.style.display='none'; document.getElementById('save-btn-hidden-${i}').style.display='block';">แก้ไข</button>
-                           <button id="save-btn-hidden-${i}" class="btn-acc-action ${isMandatory ? 'blue' : 'green'}" style="display:none;" onclick="saveReflectionText('${i}')">บันทึก</button><div class="clear-float"></div>`;
-      }
-
-      return `
-      <div class="activity-item">
-        <div class="activity-box">
-          <div class="activity-row" onclick="toggleActivity(${i})">
-            <div class="title" style="flex:1; padding-right:10px; line-height: 1.5;">${courseTitleHtml}</div>
-            <div class="activity-provider" style="flex-shrink:0;">โดย ${escapeHtml(provider)} <i class="fa-solid fa-caret-${expanded?'up':'down'} fa-xl" style="margin-left:4px; color:#1c2130;"></i></div>
-          </div>
-          ${expanded ? `
-            <div class="activity-detail">
-              ${interactive ? `
-                <label class="cert-upload">
-                   <i class="fa-regular fa-file"></i> Upload Certificate (Maximum 10 MB, PDF, PNG, JPG, JPEG)
-                   <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, ${i})" ${!isSelected ? 'disabled' : ''}>
-                </label>
-              ` : ''}
-              
-              ${fname ? `
-                <div class="file-status" style="margin-top:8px;">
-                  <i class="fa-solid fa-file-contract"></i> 
-                  <a href="${escapeAttr(certInfo.url)}" target="_blank" style="color:var(--blue);text-decoration:underline;">${escapeHtml(fname)}</a>
+      <!-- ========================================== -->
+      <!-- VIEW 1: STARMETER DASHBOARD -->
+      <!-- ========================================== -->
+      <div id="view-dashboard" class="view-content">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="wd-card p-4 flex justify-between items-center border-l-4 border-l-yellow-500">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full border-4 border-yellow-400 flex items-center justify-center text-yellow-600 font-bold text-sm">3</div>
+                    <div><p class="text-xs text-gray-500 font-kanit uppercase font-semibold">Active PIPs</p><p class="text-xl font-bold text-gray-800">In Progress</p></div>
                 </div>
-              ` : ''}
-
-              ${reflectionHtml}
-              ${actionBtnHtml}
-            </div>` : ''}
+                <div class="text-[10px] text-gray-500 font-sans border-l border-gray-200 pl-3 leading-relaxed hidden sm:block">
+                    <div class="flex justify-between gap-3"><span>0-33%:</span><span class="font-bold text-gray-700">1</span></div>
+                    <div class="flex justify-between gap-3"><span>34-66%:</span><span class="font-bold text-gray-700">1</span></div>
+                    <div class="flex justify-between gap-3"><span>67-100%:</span><span class="font-bold text-gray-700">1</span></div>
+                </div>
+            </div>
+            <div class="wd-card p-4 flex items-center gap-4 border-l-4 border-l-green-500">
+                <div class="w-12 h-12 rounded-full border-4 border-green-400 flex items-center justify-center text-green-600 font-bold text-sm">24</div>
+                <div><p class="text-xs text-gray-500 font-kanit uppercase font-semibold">Completed</p><p class="text-xl font-bold text-gray-800">Passed</p></div>
+            </div>
+            <div class="wd-card p-4 flex items-center gap-4 border-l-4 border-l-red-500">
+                <div class="w-12 h-12 rounded-full border-4 border-red-400 flex items-center justify-center text-red-600 font-bold text-sm">5</div>
+                <div><p class="text-xs text-gray-500 font-kanit uppercase font-semibold">Completed</p><p class="text-xl font-bold text-gray-800">Failed</p></div>
+            </div>
         </div>
-      </div>`;
-  }).join('');
 
-  // 🌟 ส่วนของการเรียนรู้ด้วยตัวเอง (Self-learning)
-  const selfCertInfo = (details && details.certs && details.certs['self']) ? details.certs['self'] : null;
-  const selfFname = selfCertInfo ? selfCertInfo.name : null;
-  const selfCertUrl = selfCertInfo ? selfCertInfo.url : null;
-  const selfInst = selfCertInfo ? selfCertInfo.institute : '';
-  const selfReflectionTxt = selfCertInfo ? selfCertInfo.reflection : '';
-  const selfExpanded = expandedActivity === 'self';
-  const s_step3 = !!selfReflectionTxt;
-
-  let s_actionBtnHtml = '';
-  let s_reflectionHtml = `<textarea id="reflection-input-self" class="reflection-box" rows="2" placeholder="อธิบายการประเมินผลลัพธ์ทางการเรียนรู้ (สูงสุด 150 คำ)" maxlength="1500" ${(!interactive || s_step3 || !isSelected) ? 'disabled' : ''}>${escapeHtml(selfReflectionTxt || '')}</textarea>`;
-  
-  if (interactive && !!selfFname && !s_step3) {
-      s_actionBtnHtml = `<button class="btn-acc-action ${isMandatory ? 'blue' : 'green'}" onclick="saveReflectionText('self')">บันทึก</button><div class="clear-float"></div>`;
-  } else if (interactive && s_step3) {
-      s_actionBtnHtml = `<button class="btn-acc-action yellow" onclick="document.getElementById('reflection-input-self').disabled=false; this.style.display='none'; document.getElementById('save-btn-hidden-self').style.display='block';">แก้ไข</button>
-                         <button id="save-btn-hidden-self" class="btn-acc-action ${isMandatory ? 'blue' : 'green'}" style="display:none;" onclick="saveReflectionText('self')">บันทึก</button><div class="clear-float"></div>`;
-  }
-
-  activitiesHtml += `
-  <div class="activity-item">
-    <div class="activity-box">
-      <div class="activity-row" onclick="toggleActivity('self')">
-        <div class="title" style="flex:1; padding-right:10px;">
-          <span style="color:var(--navy-dark); font-weight:600; display:inline-flex; align-items:center; gap:8px;">
-            <i class="fa-solid fa-graduation-cap" style="color:#1c2130;"></i> <span>เรียนรู้ด้วยตัวเองจากสถาบันอื่น</span>
-          </span>
+        <div class="wd-card">
+            <div class="wd-card-header flex justify-between items-center">
+                <span>Active Improvement Plans</span>
+                <button onclick="setDemoState(2)" class="wd-btn-secondary text-xs py-1">+ Create New PIP</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="wd-table">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Department</th>
+                            <th>Status / Milestone</th>
+                            <th>Timeline Progress</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="cursor-pointer" onclick="setDemoState(9)">
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-gray-200 rounded text-gray-600 flex items-center justify-center text-xs font-bold font-sans">👤</div>
+                                    <div><p class="font-medium text-blue-600 hover:underline" id="dash_emp_name">(รอสร้างข้อมูล)</p><p class="text-xs text-gray-500" id="dash_id">-</p></div>
+                                </div>
+                            </td>
+                            <td class="text-gray-600">RAMP</td>
+                            <td><span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide">Awaiting Manager Review</span><p class="text-xs text-gray-500 mt-1">Day 30</p></td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-full bg-gray-200 rounded-full h-1.5 w-24"><div class="bg-yellow-500 h-1.5 rounded-full" style="width: 33%"></div></div>
+                                    <span class="text-xs text-gray-500">33%</span>
+                                </div>
+                            </td>
+                            <td><button class="wd-btn-secondary text-xs px-2 py-1">Review ▾</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-gray-200 rounded text-gray-600 flex items-center justify-center text-xs font-bold font-sans">NS</div>
+                                    <div><p class="font-medium text-gray-800">Nattapong Sukprasert</p><p class="text-xs text-gray-500">AA54321</p></div>
+                                </div>
+                            </td>
+                            <td class="text-gray-600">RAMP</td>
+                            <td><span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide">In Progress</span><p class="text-xs text-gray-500 mt-1">Day 60</p></td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-full bg-gray-200 rounded-full h-1.5 w-24"><div class="bg-blue-500 h-1.5 rounded-full" style="width: 66%"></div></div>
+                                    <span class="text-xs text-gray-500">66%</span>
+                                </div>
+                            </td>
+                            <td><button class="wd-btn-secondary text-xs px-2 py-1">View ▾</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="activity-provider" style="flex-shrink:0;">${selfInst ? `โดย ${escapeHtml(selfInst)}` : ''} <i class="fa-solid fa-caret-${selfExpanded?'up':'down'} fa-xl" style="margin-left:4px; color:#1c2130;"></i></div>
       </div>
-      ${selfExpanded ? `
-        <div class="activity-detail">
-          ${interactive && !selfFname && isSelected ? `
-            <div style="margin-bottom:10px;">
-              <input type="text" id="custom-institute-input" placeholder="ระบุชื่อสถาบัน (เช่น Udemy, SkillLane...)" style="width:100%; border:1px solid var(--gray-input); border-radius:8px; padding:10px 14px; font-size:13px; outline:none;" value="${escapeAttr(selfInst)}">
+
+      <!-- ========================================== -->
+      <!-- VIEW 2: MANAGER SETUP (PIP CREATION) -->
+      <!-- ========================================== -->
+      <div id="view-setup" class="view-content hidden max-w-4xl mx-auto">
+        <div class="wd-card">
+          <div class="wd-card-header">Initiate Performance Improvement Plan</div>
+          <div class="wd-card-body">
+            
+            <h3 class="font-kanit font-semibold text-gray-700 border-b border-gray-200 pb-2 mb-4 text-sm uppercase">Employee Information</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div class="col-span-1 md:col-span-3">
+                <label class="wd-label required-star">Email Address</label>
+                <input type="email" id="s_email" class="wd-input" value="" onfocus="autoFill(this, 'empEmail')" placeholder="Click to autofill">
+              </div>
+              <div>
+                <label class="wd-label required-star">Full Name</label>
+                <input type="text" id="s_name" class="wd-input" value="" onfocus="autoFill(this, 'empName')" placeholder="Click to autofill">
+              </div>
+              <div>
+                <label class="wd-label required-star">Employee ID</label>
+                <input type="text" id="s_id" class="wd-input" value="" onfocus="autoFill(this, 'empId')" placeholder="Click to autofill">
+              </div>
+              <div>
+                <label class="wd-label required-star">Start Date</label>
+                <input type="date" id="s_date" class="wd-input" onfocus="autoFill(this, 'empDate')">
+              </div>
             </div>
-          ` : ''}
-          
-          ${interactive ? `
-            <label class="cert-upload">
-               <i class="fa-regular fa-file"></i> Upload Certificate (Maximum 10 MB, PDF, PNG, JPG, JPEG)
-               <input type="file" style="display:none" accept=".pdf,.png,.jpeg,.jpg" onchange="handleUpload(event, 'self')" ${!isSelected ? 'disabled' : ''}>
-            </label>
-          ` : ''}
-          
-          ${selfFname ? `
-            <div class="file-status" style="margin-top:8px;">
-              <i class="fa-solid fa-file-contract"></i> 
-              <a href="${escapeAttr(selfCertUrl)}" target="_blank" style="color:var(--blue);text-decoration:underline;">${escapeHtml(selfFname)}</a>
+            
+            <h3 class="font-kanit font-semibold text-gray-700 border-b border-gray-200 pb-2 mb-4 text-sm uppercase">Development Goals (K-S-A)</h3>
+            
+            <div class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 border border-gray-200 rounded">
+                <div class="md:col-span-3">
+                  <label class="wd-label required-star">Goal 1 Category</label>
+                  <select id="s_g1_type" class="wd-input bg-white"><option selected>Knowledge (K)</option><option>Skill (S)</option><option>Attitude (A)</option></select>
+                </div>
+                <div class="md:col-span-9 space-y-3">
+                  <div>
+                      <label class="wd-label required-star">Targeted Behavior</label>
+                      <textarea id="s_g1_b" class="wd-input" rows="2" onfocus="autoFill(this, 'g1b')" placeholder="Click to autofill..."></textarea>
+                  </div>
+                  <div>
+                      <label class="wd-label required-star">Targeted Result</label>
+                      <textarea id="s_g1_r" class="wd-input" rows="2" onfocus="autoFill(this, 'g1r')" placeholder="Click to autofill..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 border border-gray-200 rounded">
+                <div class="md:col-span-3">
+                  <label class="wd-label required-star">Goal 2 Category</label>
+                  <select id="s_g2_type" class="wd-input bg-white"><option>Knowledge (K)</option><option selected>Skill (S)</option><option>Attitude (A)</option></select>
+                </div>
+                <div class="md:col-span-9 space-y-3">
+                  <div>
+                      <label class="wd-label required-star">Targeted Behavior</label>
+                      <textarea id="s_g2_b" class="wd-input" rows="2" onfocus="autoFill(this, 'g2b')" placeholder="Click to autofill..."></textarea>
+                  </div>
+                  <div>
+                      <label class="wd-label required-star">Targeted Result</label>
+                      <textarea id="s_g2_r" class="wd-input" rows="2" onfocus="autoFill(this, 'g2r')" placeholder="Click to autofill..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 border border-gray-200 rounded">
+                <div class="md:col-span-3">
+                  <label class="wd-label required-star">Goal 3 Category</label>
+                  <select id="s_g3_type" class="wd-input bg-white"><option>Knowledge (K)</option><option>Skill (S)</option><option selected>Attitude (A)</option></select>
+                </div>
+                <div class="md:col-span-9 space-y-3">
+                  <div>
+                      <label class="wd-label required-star">Targeted Behavior</label>
+                      <textarea id="s_g3_b" class="wd-input" rows="2" onfocus="autoFill(this, 'g3b')" placeholder="Click to autofill..."></textarea>
+                  </div>
+                  <div>
+                      <label class="wd-label required-star">Targeted Result</label>
+                      <textarea id="s_g3_r" class="wd-input" rows="2" onfocus="autoFill(this, 'g3r')" placeholder="Click to autofill..."></textarea>
+                  </div>
+                </div>
+              </div>
             </div>
-          ` : ''}
-          
-          ${s_reflectionHtml}
-          ${s_actionBtnHtml}
-        </div>` : ''}
+
+            <div class="mt-8 flex justify-end gap-3 border-t border-gray-200 pt-4">
+                <button onclick="setDemoState(1)" class="wd-btn-secondary">Cancel</button>
+                <button onclick="saveSetupAndSendEmail()" class="wd-btn-primary">Submit & Issue PIP</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- VIEW 4: EMPLOYEE ACCEPTANCE -->
+      <!-- ========================================== -->
+      <div id="view-accept" class="view-content hidden max-w-4xl mx-auto">
+        <div class="wd-card">
+          <div class="wd-card-header bg-gray-800 text-white">Employee Acknowledgment</div>
+          <div class="wd-card-body">
+            
+            <div class="flex flex-wrap gap-x-12 gap-y-4 mb-6 pb-4 border-b border-gray-200 text-sm">
+              <div><span class="wd-label">Employee</span><span id="acc_emp_info" class="font-medium text-gray-800">-</span></div>
+              <div><span class="wd-label">Start Date</span><span id="acc_start_date" class="font-medium text-gray-800">-</span></div>
+              <div><span class="wd-label">End Date</span><span id="acc_end_date" class="font-medium text-gray-800">-</span></div>
+            </div>
+            
+            <table class="wd-table border border-gray-200 mb-8">
+              <thead>
+                <tr>
+                  <th width="20%">Category</th>
+                  <th width="40%">Expectations (Behavior & Result)</th>
+                  <th width="40%">Employee Action Plan <span class="text-red-500">*</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="font-semibold text-gray-700" id="acc_g1_type">-</span></td>
+                  <td>
+                    <p class="text-xs text-gray-500 mb-1">Targeted Behavior:</p>
+                    <p class="text-sm text-gray-800 mb-3" id="acc_g1_b">-</p>
+                    <p class="text-xs text-gray-500 mb-1">Targeted Result:</p>
+                    <p class="text-sm font-medium text-red-700" id="acc_g1_r">-</p>
+                  </td>
+                  <td><textarea id="ack_comment_g1" class="wd-input h-full min-h-[100px]" onfocus="autoFill(this, 'ack1')" placeholder="Click to autofill..."></textarea></td>
+                </tr>
+                <tr>
+                  <td><span class="font-semibold text-gray-700" id="acc_g2_type">-</span></td>
+                  <td>
+                    <p class="text-xs text-gray-500 mb-1">Targeted Behavior:</p>
+                    <p class="text-sm text-gray-800 mb-3" id="acc_g2_b">-</p>
+                    <p class="text-xs text-gray-500 mb-1">Targeted Result:</p>
+                    <p class="text-sm font-medium text-red-700" id="acc_g2_r">-</p>
+                  </td>
+                  <td><textarea id="ack_comment_g2" class="wd-input h-full min-h-[100px]" onfocus="autoFill(this, 'ack2')" placeholder="Click to autofill..."></textarea></td>
+                </tr>
+                <tr>
+                  <td><span class="font-semibold text-gray-700" id="acc_g3_type">-</span></td>
+                  <td>
+                    <p class="text-xs text-gray-500 mb-1">Targeted Behavior:</p>
+                    <p class="text-sm text-gray-800 mb-3" id="acc_g3_b">-</p>
+                    <p class="text-xs text-gray-500 mb-1">Targeted Result:</p>
+                    <p class="text-sm font-medium text-red-700" id="acc_g3_r">-</p>
+                  </td>
+                  <td><textarea id="ack_comment_g3" class="wd-input h-full min-h-[100px]" onfocus="autoFill(this, 'ack3')" placeholder="Click to autofill..."></textarea></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="bg-gray-50 border border-gray-200 p-4 rounded mb-6 flex items-start gap-3">
+                <input type="checkbox" id="accept-tickbox" class="mt-1">
+                <label for="accept-tickbox" class="text-sm text-gray-800 cursor-pointer select-none">
+                    <b>ข้าพเจ้ารับทราบและยอมรับเงื่อนไขโครงการ PIP</b><br>
+                    <span class="text-xs text-gray-500">ข้าพเจ้าตกลงที่จะดำเนินการปรับปรุงผลงานและรายงานความคืบหน้าการเปลี่ยนแปลงพฤติกรรมในรอบ 30, 60 และ 90 วัน</span>
+                </label>
+            </div>
+
+            <div class="flex justify-end">
+               <button onclick="submitAcceptance()" class="wd-btn-primary">Acknowledge & Start Program</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- VIEW 7: EMPLOYEE UPDATE (CHECK-IN) -->
+      <!-- ========================================== -->
+      <div id="view-update" class="view-content hidden max-w-4xl mx-auto">
+        <div class="wd-card">
+          <div class="wd-card-header flex justify-between items-center bg-gray-800 text-white">
+              <span>Milestone Check-in Update</span>
+              <span class="bg-yellow-500 text-white px-2 py-0.5 rounded text-xs">Day 30 - Pending</span>
+          </div>
+          <div class="wd-card-body">
+            
+            <div class="mb-8 px-4">
+                <div class="flex justify-between text-[10px] font-kanit font-bold text-gray-400 mb-1 px-1">
+                    <span class="text-blue-600">DAY 30</span><span>DAY 60</span><span>DAY 90</span>
+                </div>
+                <div class="w-full bg-gray-200 h-1 rounded-full relative">
+                    <div class="absolute top-0 left-0 bg-blue-600 h-1 rounded-full" style="width: 33%"></div>
+                    <div class="absolute top-[-3px] left-[33%] w-2.5 h-2.5 bg-blue-600 rounded-full ring-4 ring-blue-100"></div>
+                </div>
+            </div>
+
+            <table class="wd-table border border-gray-200 mb-6">
+              <thead>
+                <tr>
+                  <th width="35%">Targeted Behavior</th>
+                  <th width="65%">Your Progress Update</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                      <p class="font-semibold text-gray-800 text-sm leading-tight" id="upd_g1_b">-</p>
+                      <p class="text-[10px] text-gray-500 mt-2 bg-gray-100 inline-block px-1.5 py-0.5 rounded font-kanit" id="upd_g1_type">-</p>
+                  </td>
+                  <td><textarea id="emp_upd_g1" class="wd-input h-full min-h-[80px]" onfocus="autoFill(this, 'upd1')" placeholder="Click to autofill..."></textarea></td>
+                </tr>
+                <tr>
+                  <td>
+                      <p class="font-semibold text-gray-800 text-sm leading-tight" id="upd_g2_b">-</p>
+                      <p class="text-[10px] text-gray-500 mt-2 bg-gray-100 inline-block px-1.5 py-0.5 rounded font-kanit" id="upd_g2_type">-</p>
+                  </td>
+                  <td><textarea id="emp_upd_g2" class="wd-input h-full min-h-[80px]" onfocus="autoFill(this, 'upd2')" placeholder="Click to autofill..."></textarea></td>
+                </tr>
+                <tr>
+                  <td>
+                      <p class="font-semibold text-gray-800 text-sm leading-tight" id="upd_g3_b">-</p>
+                      <p class="text-[10px] text-gray-500 mt-2 bg-gray-100 inline-block px-1.5 py-0.5 rounded font-kanit" id="upd_g3_type">-</p>
+                  </td>
+                  <td><textarea id="emp_upd_g3" class="wd-input h-full min-h-[80px]" onfocus="autoFill(this, 'upd3')" placeholder="Click to autofill..."></textarea></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="flex justify-end">
+               <button onclick="submitEmpUpdate()" class="wd-btn-primary">Submit Report</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- VIEW 9: MANAGER EVALUATION (MID-REVIEW) -->
+      <!-- ========================================== -->
+      <div id="view-eval-1" class="view-content hidden max-w-4xl mx-auto">
+        <div class="wd-card">
+          <div class="wd-card-header flex justify-between items-center">
+              <span>Manager Review (Day 30)</span>
+              <span class="text-sm font-normal text-gray-500" id="mid_emp_name">-</span>
+          </div>
+          <div class="wd-card-body p-0">
+            <table class="wd-table">
+              <thead>
+                <tr>
+                  <th width="30%">Targeted Behavior</th>
+                  <th width="35%">Employee Update</th>
+                  <th width="35%">Manager Feedback <span class="text-red-500">*</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                      <p class="font-semibold text-gray-800 text-sm leading-tight" id="mid_g1_b">-</p>
+                      <p class="text-[10px] text-gray-500 mt-2 bg-gray-100 inline-block px-1.5 py-0.5 rounded font-kanit" id="mid_g1_type">-</p>
+                  </td>
+                  <td><p class="text-sm text-gray-700 bg-gray-50 p-2 border border-gray-200 rounded min-h-[80px]" id="mid_g1_upd">-</p></td>
+                  <td class="p-2"><textarea id="mid_fb_g1" class="wd-input h-full min-h-[80px]" onfocus="autoFill(this, 'mid1')" placeholder="Click to autofill..."></textarea></td>
+                </tr>
+                <tr>
+                  <td>
+                      <p class="font-semibold text-gray-800 text-sm leading-tight" id="mid_g2_b">-</p>
+                      <p class="text-[10px] text-gray-500 mt-2 bg-gray-100 inline-block px-1.5 py-0.5 rounded font-kanit" id="mid_g2_type">-</p>
+                  </td>
+                  <td><p class="text-sm text-gray-700 bg-gray-50 p-2 border border-gray-200 rounded min-h-[80px]" id="mid_g2_upd">-</p></td>
+                  <td class="p-2"><textarea id="mid_fb_g2" class="wd-input h-full min-h-[80px]" onfocus="autoFill(this, 'mid2')" placeholder="Click to autofill..."></textarea></td>
+                </tr>
+                <tr>
+                  <td>
+                      <p class="font-semibold text-gray-800 text-sm leading-tight" id="mid_g3_b">-</p>
+                      <p class="text-[10px] text-gray-500 mt-2 bg-gray-100 inline-block px-1.5 py-0.5 rounded font-kanit" id="mid_g3_type">-</p>
+                  </td>
+                  <td><p class="text-sm text-gray-700 bg-gray-50 p-2 border border-gray-200 rounded min-h-[80px]" id="mid_g3_upd">-</p></td>
+                  <td class="p-2"><textarea id="mid_fb_g3" class="wd-input h-full min-h-[80px]" onfocus="autoFill(this, 'mid3')" placeholder="Click to autofill..."></textarea></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="p-6 border-t border-gray-200 flex justify-end bg-gray-50">
+               <button onclick="Swal.fire('Saved', 'บันทึกและแจ้ง Feedback ให้พนักงานทราบแล้ว', 'success').then(()=>setDemoState(10))" class="wd-btn-primary">Submit Feedback</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- VIEW 10: FINAL EVALUATION (DAY 90) -->
+      <!-- ========================================== -->
+      <div id="view-eval-final" class="view-content hidden max-w-4xl mx-auto">
+        <div class="wd-card">
+          <div class="wd-card-header flex justify-between items-center bg-gray-800 text-white">
+              <span>Final Assessment (Day 90)</span>
+              <span class="text-sm font-normal" id="fin_emp_name">-</span>
+          </div>
+          <div class="wd-card-body">
+            
+            <h3 class="font-kanit font-semibold text-gray-700 border-b border-gray-200 pb-2 mb-4 text-sm uppercase">Targeted Results Grading</h3>
+            
+            <table class="wd-table border border-gray-200 mb-6">
+              <thead>
+                <tr>
+                  <th width="80%">Targeted Result Validation</th>
+                  <th width="20%" class="text-center">Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="align-middle"><p class="text-sm text-gray-800" id="fin_g1_r">-</p></td>
+                  <td class="text-center">
+                     <select id="final_grade_g1" onchange="autoCalculateResult()" class="wd-input text-center w-20 mx-auto font-bold"><option value="A" selected>A</option><option value="B">B</option><option value="C">C</option></select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="align-middle"><p class="text-sm text-gray-800" id="fin_g2_r">-</p></td>
+                  <td class="text-center">
+                     <select id="final_grade_g2" onchange="autoCalculateResult()" class="wd-input text-center w-20 mx-auto font-bold"><option value="A" selected>A</option><option value="B">B</option><option value="C">C</option></select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="align-middle"><p class="text-sm text-gray-800" id="fin_g3_r">-</p></td>
+                  <td class="text-center">
+                     <select id="final_grade_g3" onchange="autoCalculateResult()" class="wd-input text-center w-20 mx-auto font-bold"><option value="A" selected>A</option><option value="B">B</option><option value="C">C</option></select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="mb-8">
+              <label class="wd-label">Executive Summary</label>
+              <textarea class="wd-input" rows="4" onfocus="autoFill(this, 'finSum')" placeholder="Click to autofill summary..."></textarea>
+            </div>
+
+            <!-- AUTO DECISION -->
+            <div class="border-t border-gray-200 pt-6 flex flex-col items-center">
+                <p class="wd-label mb-2 text-center">Committee Decision</p>
+                <button id="btn_submit_decision" onclick="submitFinalEval()" class="px-12 py-3 rounded text-white font-kanit font-bold text-lg shadow transition bg-green-600 hover:bg-green-700">
+                    Submit Assessment: PASS
+                </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
     </div>
+    
+    <!-- STAR METER FOOTER -->
+    <div class="pb-16 pt-4 text-center opacity-60 flex items-center justify-center gap-1.5">
+       <span class="text-[11px] font-kanit font-medium text-gray-500">Powered by</span>
+       <span class="text-[13px] font-kanit font-bold text-gray-800 tracking-wide">StarMeter</span>
+    </div>
+    
   </div>
-  `;
 
-  // 🌟 คำนวณ Overall Progress Stepper แบบขีดและตัวหนังสือด้านล่าง
-  const certs = details?.certs || {};
-  const step1Done = isSelected;
-  const step2Done = Object.values(certs).some(c => c.url);
-  const step3Done = Object.values(certs).some(c => c.url && c.reflection && c.reflection.trim() !== '');
+  <script>
+    // ==========================================
+    // AUTOFILL DEFAULTS
+    // ==========================================
+    const DEFAULT_TEXTS = {
+        'empEmail': 'guntrakon@airasia.com',
+        'empName': 'Guntrakon Jittaksa',
+        'empId': 'AA12345',
+        'empDate': '2026-04-10',
+        'g1b': 'ปรับทัศนคติในการสื่อสารกับเพื่อนร่วมงานให้มีความเป็นมืออาชีพมากขึ้น',
+        'g1r': 'ข้อร้องเรียนลดลง และผลประเมิน 360 องศาจากทีมงานดีขึ้นอย่างน้อย 20%',
+        'g2b': 'เพิ่มทักษะการเจรจาต่อรองและการให้ Feedback (Coaching) แก่ Line Manager',
+        'g2r': 'Line Manager สามารถจัดทำแผน IDP ให้พนักงานในทีมได้อย่างสมบูรณ์ 100%',
+        'g3b': 'ทำงานเชิงรุกมากขึ้น ลงพื้นที่พูดคุยเพื่อรับฟังปัญหาด้วยความเข้าอกเข้าใจ (Empathy)',
+        'g3r': 'คะแนน Employee Engagement Survey ในภาพรวมเพิ่มขึ้นจากเดิม 10%',
+        
+        // Auto-fill Data ชุดใหม่สำหรับ Demo แบบเนียนๆ
+        'ack1': 'จะพยายามควบคุมอารมณ์ รับฟังความคิดเห็นของเพื่อนร่วมงานให้มากขึ้น และจะขอ Feedback ทุกสัปดาห์',
+        'ack2': 'จะจัดสรรเวลาเข้าประกบ Line Manager เพื่อสอนเทคนิคการทำ IDP แบบ 1-on-1 ทุกวันศุกร์',
+        'ack3': 'ตั้งเป้าหมายจะลงพื้นที่ทุกสาขาอย่างน้อยสาขาละ 1 ครั้งต่อเดือน เพื่อรับฟังปัญหาด้วยตัวเอง',
+        'upd1': 'ในรอบเดือนที่ผ่านมา ไม่มีการใช้อารมณ์ในที่ประชุม และรับฟังไอเดียของทีมมากขึ้นโดยไม่ขัดจังหวะ',
+        'upd2': 'ได้ทำการนัดหมายและประกบสอน Line Manager ไปแล้ว 3 ท่าน พบว่าสามารถเขียน IDP เบื้องต้นได้แล้ว',
+        'upd3': 'ลงพื้นที่สาขาเชียงใหม่และภูเก็ต ได้พูดคุยและรับฟังปัญหาจากพนักงานหน้างานมาแก้ไขกว่า 5 รายการ',
+        'mid1': 'ทำได้ดีขึ้นมาก ขอให้รักษาความใจเย็นนี้ไว้ และพยายามใช้คำพูดเชิงบวกในการสื่อสารเพิ่มขึ้น',
+        'mid2': 'เริ่มต้นได้ดี ขอให้ติดตามผลและให้ Feedback กลับไปยัง Line Manager ทั้ง 3 ท่านอย่างสม่ำเสมอด้วย',
+        'mid3': 'ชื่นชมความทุ่มเทในการลงพื้นที่ ขอให้นำปัญหาที่รับฟังมาเข้าที่ประชุมเพื่อหา Solution ร่วมกับทีม',
+        'finSum': 'พนักงานให้ความร่วมมือในโครงการ PIP อย่างดีเยี่ยม มีความตั้งใจและมีพัฒนาการในทุกมิติที่กำหนดไว้ โดยเฉพาะความสามารถในการเข้าถึงปัญหาหน้างานและการปรับปรุงการสื่อสารกับเพื่อนร่วมงาน จึงเห็นสมควรให้ผ่านการประเมินโครงการ PIP'
+    };
 
-  const themeColor = isMandatory ? 'blue' : 'green';
-  
-  const s1Class = step1Done ? `${themeColor}-active` : '';
-  const s2Class = step2Done ? `${themeColor}-active` : '';
-  const s3Class = step3Done ? `${themeColor}-active` : '';
+    function autoFill(el, key) {
+        if (!el.value.trim()) {
+            el.value = DEFAULT_TEXTS[key];
+        }
+    }
 
-  const bottomBar = `
-    <div class="stepper-wrapper">
-        <div class="step-item ${s1Class}">
-           <div class="step-dash"></div>
-           <div class="step-label">เลือกสมรรถนะ</div>
-        </div>
-        <div class="step-item ${s2Class}">
-           <div class="step-dash"></div>
-           <div class="step-label">แนบใบประกาศฯ</div>
-        </div>
-        <div class="step-item ${s3Class}">
-           <div class="step-dash"></div>
-           <div class="step-label">บันทึกผลประเมิน</div>
-        </div>
-    </div>
-  `;
+    // ==========================================
+    // DATA STORE & BINDING
+    // ==========================================
+    let PIP_DATA = {
+        name: "", email: "", id: "", startDate: "", endDate: "", managerEmail: "vacharavadh@airasia.com",
+        g1: { type: "Knowledge (K)", behavior: "", result: "", update: "" },
+        g2: { type: "Skill (S)", behavior: "", result: "", update: "" },
+        g3: { type: "Attitude (A)", behavior: "", result: "", update: "" }
+    };
 
-  // 🌟 รวมโครงสร้าง HTML ของ Modal (ย้าย Top Toggle มาไว้ข้าง Tag)
-  body.innerHTML = `
-    <button class="modal-close-btn" onclick="window.closeModal()"><i class="fa-solid fa-xmark"></i></button>
-    
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; padding-right:30px;">
-       <div class="tag">${escapeHtml(topLabel)}</div>
-       ${topRightToggle}
-    </div>
+    function formatDate(dateStr, addDays = 0) {
+        if (!dateStr) return "-";
+        const d = new Date(dateStr); d.setDate(d.getDate() + addDays);
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        return `${d.getDate().toString().padStart(2, '0')}-${months[d.getMonth()]}-${d.getFullYear()}`;
+    }
 
-    <h2>${escapeHtml(c.th)}</h2>
-    <h3>${escapeHtml(c.en)}</h3>
-    <div class="desc">${escapeHtml(c.desc)}</div>
-    
-    <div class="section-label">Activity | ช่องทางการเรียนรู้ <span class="right">สามารถเลือกเรียนอย่างน้อย 1 หลักสูตร</span></div>
-    
-    <div style="margin-top:16px;">
-        ${activitiesHtml}
-    </div>
-    
-    ${bottomBar}
-  `;
-};
+    function syncDataToUI() {
+        PIP_DATA.endDate = PIP_DATA.startDate ? formatDate(PIP_DATA.startDate, 90) : "-";
+        const fStart = PIP_DATA.startDate ? formatDate(PIP_DATA.startDate, 0) : "-";
+        const empName = PIP_DATA.name || "(รอการสร้าง PIP)";
+        const idDisplay = PIP_DATA.id || "-";
 
-window.closeModal = function(){ document.getElementById('modal').classList.remove('active'); modalCtx=null; };
-document.getElementById('modal').addEventListener('click', (e)=>{ if(e.target.id==='modal') window.closeModal(); });
+        document.getElementById('dash_emp_name').innerText = empName;
+        document.getElementById('dash_id').innerText = idDisplay;
+        
+        document.getElementById('acc_emp_info').innerText = PIP_DATA.name ? `${PIP_DATA.name} (${PIP_DATA.id})` : "-";
+        document.getElementById('acc_start_date').innerText = fStart;
+        document.getElementById('acc_end_date').innerText = PIP_DATA.endDate;
+        document.getElementById('acc_g1_type').innerText = PIP_DATA.g1.type;
+        document.getElementById('acc_g1_b').innerText = PIP_DATA.g1.behavior || "-";
+        document.getElementById('acc_g1_r').innerText = PIP_DATA.g1.result || "-";
+        document.getElementById('acc_g2_type').innerText = PIP_DATA.g2.type;
+        document.getElementById('acc_g2_b').innerText = PIP_DATA.g2.behavior || "-";
+        document.getElementById('acc_g2_r').innerText = PIP_DATA.g2.result || "-";
+        document.getElementById('acc_g3_type').innerText = PIP_DATA.g3.type;
+        document.getElementById('acc_g3_b').innerText = PIP_DATA.g3.behavior || "-";
+        document.getElementById('acc_g3_r').innerText = PIP_DATA.g3.result || "-";
+        
+        document.getElementById('upd_g1_type').innerText = PIP_DATA.g1.type;
+        document.getElementById('upd_g1_b').innerText = PIP_DATA.g1.behavior || "-";
+        document.getElementById('upd_g2_type').innerText = PIP_DATA.g2.type;
+        document.getElementById('upd_g2_b').innerText = PIP_DATA.g2.behavior || "-";
+        document.getElementById('upd_g3_type').innerText = PIP_DATA.g3.type;
+        document.getElementById('upd_g3_b').innerText = PIP_DATA.g3.behavior || "-";
+        
+        document.getElementById('mid_emp_name').innerText = empName;
+        document.getElementById('mid_g1_type').innerText = PIP_DATA.g1.type;
+        document.getElementById('mid_g1_b').innerText = PIP_DATA.g1.behavior || "-";
+        document.getElementById('mid_g1_upd').innerText = PIP_DATA.g1.update || "-";
+        document.getElementById('mid_g2_type').innerText = PIP_DATA.g2.type;
+        document.getElementById('mid_g2_b').innerText = PIP_DATA.g2.behavior || "-";
+        document.getElementById('mid_g2_upd').innerText = PIP_DATA.g2.update || "-";
+        document.getElementById('mid_g3_type').innerText = PIP_DATA.g3.type;
+        document.getElementById('mid_g3_b').innerText = PIP_DATA.g3.behavior || "-";
+        document.getElementById('mid_g3_upd').innerText = PIP_DATA.g3.update || "-";
+        
+        document.getElementById('fin_emp_name').innerText = empName;
+        document.getElementById('fin_g1_r').innerText = PIP_DATA.g1.result || "-";
+        document.getElementById('fin_g2_r').innerText = PIP_DATA.g2.result || "-";
+        document.getElementById('fin_g3_r').innerText = PIP_DATA.g3.result || "-";
+    }
 
-const entryTip = document.getElementById('entry-tooltip');
-function positionEntryTip(clientX, clientY){
-  let x = clientX + 14, y = clientY + 14;
-  if(x + 200 > window.innerWidth - 10) x = clientX - 200 - 14;
-  if(y + 50 > window.innerHeight - 10) y = clientY - 50 - 14;
-  entryTip.style.left = Math.max(x, 8) + 'px';
-  entryTip.style.top = y + 'px';
-}
-document.addEventListener('mouseover', (e)=>{
-  const el = e.target.closest('.entry-item');
-  if(!el) return;
-  const pts = parseInt(el.dataset.points, 10);
-  entryTip.innerHTML = `<div class="tip-desc">${escapeHtml(el.dataset.desc)}</div><div class="tip-points ${pts>=0?'g':'r'}">${pts>0?'+':''}${pts} pts</div>`;
-  entryTip.classList.add('show');
-  positionEntryTip(e.clientX, e.clientY);
-});
-document.addEventListener('mousemove', (e)=>{ if(entryTip.classList.contains('show')) positionEntryTip(e.clientX, e.clientY); });
-document.addEventListener('mouseout', (e)=>{ if(e.target.closest('.entry-item')) entryTip.classList.remove('show'); });
+    // ==========================================
+    // ACTIONS & NOTIFICATIONS LOGIC
+    // ==========================================
+    function saveSetupAndSendEmail() {
+        PIP_DATA.email = document.getElementById('s_email').value;
+        PIP_DATA.name = document.getElementById('s_name').value;
+        PIP_DATA.id = document.getElementById('s_id').value;
+        PIP_DATA.startDate = document.getElementById('s_date').value;
+        PIP_DATA.g1.type = document.getElementById('s_g1_type').value; PIP_DATA.g1.behavior = document.getElementById('s_g1_b').value; PIP_DATA.g1.result = document.getElementById('s_g1_r').value;
+        PIP_DATA.g2.type = document.getElementById('s_g2_type').value; PIP_DATA.g2.behavior = document.getElementById('s_g2_b').value; PIP_DATA.g2.result = document.getElementById('s_g2_r').value;
+        PIP_DATA.g3.type = document.getElementById('s_g3_type').value; PIP_DATA.g3.behavior = document.getElementById('s_g3_b').value; PIP_DATA.g3.result = document.getElementById('s_g3_r').value;
 
-</script>
+        if(!PIP_DATA.name || !PIP_DATA.email) return Swal.fire({ icon: 'warning', text: 'Please enter employee name and email.', confirmButtonColor: '#E21E26' });
+
+        syncDataToUI(); 
+        Swal.fire({ icon: 'success', title: 'PIP Initiated', text: 'Email notification sent to employee.', timer: 1500, showConfirmButton: false }).then(() => {
+            setDemoState(3); // Go to Email Invite
+        });
+    }
+
+    function submitAcceptance() {
+      const c1 = document.getElementById('ack_comment_g1').value.trim(); const c2 = document.getElementById('ack_comment_g2').value.trim(); const c3 = document.getElementById('ack_comment_g3').value.trim(); const isChecked = document.getElementById('accept-tickbox').checked;
+      if (!c1 || !c2 || !c3) return Swal.fire({ icon: 'warning', text: 'Please fill in all Action Plans.', confirmButtonColor: '#E21E26' });
+      if (!isChecked) return Swal.fire({ icon: 'warning', text: 'Please accept the terms.', confirmButtonColor: '#E21E26' });
+      Swal.fire({ icon: 'success', title: 'Acknowledged', text: 'Saved successfully.', timer: 1500, showConfirmButton: false }).then(() => { 
+          setDemoState(5); // Go to Email to Manager (Accepted)
+      });
+    }
+
+    function submitEmpUpdate() {
+        PIP_DATA.g1.update = document.getElementById('emp_upd_g1').value || "-"; 
+        PIP_DATA.g2.update = document.getElementById('emp_upd_g2').value || "-"; 
+        PIP_DATA.g3.update = document.getElementById('emp_upd_g3').value || "-";
+        syncDataToUI();
+        Swal.fire({ icon: 'success', title: 'Submitted', text: 'Report sent to manager.', timer: 1500, showConfirmButton: false }).then(() => { 
+            setDemoState(8); // Go to Email to Manager (Update Submitted)
+        });
+    }
+
+    let isFinalPass = true;
+    function autoCalculateResult() {
+        const g1 = document.getElementById('final_grade_g1').value; 
+        const g2 = document.getElementById('final_grade_g2').value; 
+        const g3 = document.getElementById('final_grade_g3').value;
+        const btn = document.getElementById('btn_submit_decision');
+        
+        if (g1 === 'C' || g2 === 'C' || g3 === 'C') {
+            isFinalPass = false;
+            btn.className = "px-12 py-3 rounded text-white font-kanit font-bold text-lg shadow transition bg-red-600 hover:bg-red-700";
+            btn.innerText = "Submit Assessment: FAIL";
+        } else {
+            isFinalPass = true;
+            btn.className = "px-12 py-3 rounded text-white font-kanit font-bold text-lg shadow transition bg-green-600 hover:bg-green-700";
+            btn.innerText = "Submit Assessment: PASS";
+        }
+    }
+
+    function submitFinalEval() {
+        if (isFinalPass) {
+            Swal.fire({ icon: 'success', title: 'Assessment Complete', html: 'Final Result: <b>PASS</b><br><br><span class="text-sm text-gray-500">Notified Management & StarMeter System.</span>', confirmButtonColor: '#10B981' });
+        } else {
+            Swal.fire({ icon: 'error', title: 'Assessment Complete', html: 'Final Result: <b>FAIL</b><br><br><span class="text-sm text-gray-500">Notified Management to proceed with company policy.</span>', confirmButtonColor: '#E21E26' });
+        }
+    }
+
+    // ==========================================
+    // DYNAMIC EMAIL GENERATOR
+    // ==========================================
+    function renderEmail(type) {
+        const to = document.getElementById('email_to');
+        const subject = document.getElementById('email_subject');
+        const body = document.getElementById('email_body');
+        const btn = document.getElementById('email_action_btn');
+        const nameVal = PIP_DATA.name || "[Employee Name]";
+
+        if (type === 'invite') {
+            to.innerText = PIP_DATA.email || "-";
+            subject.innerText = "Action Required: Performance Improvement Plan (PIP)";
+            body.innerHTML = `
+                <p>เรียน <b>${nameVal}</b>,</p>
+                <p>ขอแจ้งให้ท่านทราบว่า ท่านได้รับการพิจารณาให้เข้าร่วมกระบวนการ <b>Performance Improvement Plan (PIP)</b> ระยะเวลา 90 วัน เพื่อเป็นแนวทางในการพัฒนาศักยภาพและปรับปรุงผลการปฏิบัติงานให้สอดคล้องกับมาตรฐานขององค์กร</p>
+                <p>ผู้บังคับบัญชาของท่านได้ระบุเป้าหมาย (Development Goals) ที่คาดหวังในระบบเรียบร้อยแล้ว ขอให้ท่านดำเนินการเข้าสู่ระบบเพื่อรับทราบเงื่อนไข เสนอแผนการดำเนินการ และเริ่มต้นกระบวนการประเมินตามกรอบเวลาที่กำหนด</p>
+            `;
+            btn.innerText = "Proceed to Portal";
+            btn.onclick = () => setDemoState(4); // To Accept view
+        } 
+        else if (type === 'accepted') {
+            to.innerText = PIP_DATA.managerEmail;
+            subject.innerText = `Update: PIP Acknowledged by ${nameVal}`;
+            body.innerHTML = `
+                <p>เรียน <b>Manager</b>,</p>
+                <p>พนักงาน <b>${nameVal}</b> ได้กดยอมรับเงื่อนไขและส่ง Action Plan สำหรับโครงการ PIP 90 วันเรียบร้อยแล้ว</p>
+                <p>ท่านสามารถเข้าสู่ระบบเพื่อตรวจสอบข้อมูลและเตรียมพร้อมสำหรับการติดตามผล (Check-in) ในรอบถัดไป</p>
+            `;
+            btn.innerText = "Fast Forward ⏩ Day 30";
+            btn.onclick = () => setDemoState(6); // Forward to next email
+        }
+        else if (type === 'reminder') {
+            to.innerText = PIP_DATA.email || "-";
+            subject.innerText = `Reminder: PIP Day 30 Check-in Due`;
+            body.innerHTML = `
+                <p>เรียน <b>${nameVal}</b>,</p>
+                <p>ถึงกำหนดการรายงานความคืบหน้าโครงการ PIP (Milestone Check-in)</p>
+                <p>ขอให้ท่านเข้าสู่ระบบ StarMeter เพื่ออัปเดตผลการดำเนินงานและพฤติกรรมที่ท่านได้ปรับปรุงตามเป้าหมาย (Goals) ที่ตกลงร่วมกันไว้ เพื่อให้ผู้บังคับบัญชาพิจารณาให้คำแนะนำต่อไป</p>
+            `;
+            btn.innerText = "Submit Check-in";
+            btn.onclick = () => setDemoState(7); // To Check-in view
+        }
+        else if (type === 'updated') {
+            to.innerText = PIP_DATA.managerEmail;
+            subject.innerText = `Action Required: Review PIP Check-in for ${nameVal}`;
+            body.innerHTML = `
+                <p>เรียน <b>Manager</b>,</p>
+                <p>พนักงาน <b>${nameVal}</b> ได้ส่งรายงานความคืบหน้าโครงการ PIP เข้าสู่ระบบเรียบร้อยแล้ว</p>
+                <p>ขอให้ท่านเข้าสู่ระบบ StarMeter เพื่อตรวจสอบรายละเอียดความคืบหน้า และดำเนินการให้คำแนะนำ (Feedback) เพื่อให้พนักงานนำไปปรับปรุงในรอบถัดไป</p>
+            `;
+            btn.innerText = "Review & Provide Feedback";
+            btn.onclick = () => setDemoState(9); // To Mid Eval view
+        }
+    }
+
+    // ==========================================
+    // NAVIGATION CONTROLLER
+    // ==========================================
+    function setDemoState(stateNum) {
+      document.querySelectorAll('.view-content').forEach(v => v.classList.add('hidden'));
+      document.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-state-${stateNum}`);
+      if(activeBtn) activeBtn.classList.add('active');
+      
+      const headerTitle = document.getElementById('header_title');
+      const headerSub = document.getElementById('header_subtitle');
+
+      if(stateNum === 1) { 
+          document.getElementById('view-dashboard').classList.remove('hidden'); 
+          headerTitle.innerText = "PIP Dashboard"; headerSub.innerText = "StarMeter Module";
+      }
+      else if(stateNum === 2) { 
+          document.getElementById('view-setup').classList.remove('hidden'); 
+          headerTitle.innerText = "Initiate PIP"; headerSub.innerText = "StarMeter Module";
+      } 
+      else if(stateNum === 3) { 
+          document.getElementById('view-email').classList.remove('hidden'); 
+          headerTitle.innerText = "Email Inbox"; headerSub.innerText = "Employee View";
+          renderEmail('invite');
+      }
+      else if(stateNum === 4) { 
+          document.getElementById('view-accept').classList.remove('hidden'); 
+          headerTitle.innerText = "My Performance Plan"; headerSub.innerText = "Employee Portal";
+      }
+      else if(stateNum === 5) { 
+          document.getElementById('view-email').classList.remove('hidden'); 
+          headerTitle.innerText = "Email Inbox"; headerSub.innerText = "Manager View";
+          renderEmail('accepted');
+      }
+      else if(stateNum === 6) { 
+          document.getElementById('view-email').classList.remove('hidden'); 
+          headerTitle.innerText = "Email Inbox"; headerSub.innerText = "Employee View";
+          renderEmail('reminder');
+      }
+      else if(stateNum === 7) { 
+          document.getElementById('view-update').classList.remove('hidden'); 
+          headerTitle.innerText = "My Performance Plan"; headerSub.innerText = "Employee Portal";
+      }
+      else if(stateNum === 8) { 
+          document.getElementById('view-email').classList.remove('hidden'); 
+          headerTitle.innerText = "Email Inbox"; headerSub.innerText = "Manager View";
+          renderEmail('updated');
+      }
+      else if(stateNum === 9) { 
+          document.getElementById('view-eval-1').classList.remove('hidden'); 
+          headerTitle.innerText = "Milestone Review"; headerSub.innerText = "StarMeter Module";
+      }
+      else if(stateNum === 10) { 
+          document.getElementById('view-eval-final').classList.remove('hidden'); 
+          headerTitle.innerText = "Final Evaluation"; headerSub.innerText = "StarMeter Module";
+          autoCalculateResult(); 
+      }
+      window.scrollTo(0, 0); 
+    }
+
+    window.onload = () => {
+      syncDataToUI(); setDemoState(1);
+    };
+  </script>
 </body>
 </html>
